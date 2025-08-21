@@ -8,8 +8,8 @@
 //        The User section is not over-written by powerSUITE
 //
 //#############################################################################
-#ifndef PROJSETTINGS_H
-#define PROJSETTINGS_H
+#ifndef _PROJSETTINGS_H
+#define _PROJSETTINGS_H
 
 #ifdef __cplusplus
 
@@ -60,8 +60,8 @@ extern "C" {
 // 1 -> Voltage
 // 2 -> Current
 //
-// #define VOLTAGE_MODE 1
-// #define CURRENT_MODE 2
+#define VOLTAGE_MODE 1
+#define CURRENT_MODE 2
 
 //
 // POWER FLOW ,
@@ -107,6 +107,24 @@ extern "C" {
 #endif
 
 //
+// SFRA Options
+// 0 -> disabled
+// 1 -> Current
+// 2 -> Voltage
+//
+#define SFRA_DISABLED 0
+#define SFRA_CURRENT 1
+#define SFRA_VOLTAGE 2
+
+//
+// SFRA injection amplitude, use higher injection in open loop  because plant
+// response is low
+//
+#define SFRA_INJECTION_AMPLITUDE_LEVEL1 0.001
+#define SFRA_INJECTION_AMPLITUDE_LEVEL2 0.01
+#define SFRA_INJECTION_AMPLITUDE_LEVEL3 0.015
+
+//
 // CLLLC LAB
 // Power Flow Prim -> Sec
 // 1 -> Open loop check for PWM drivers,
@@ -132,22 +150,99 @@ extern "C" {
 #define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL2
 #endif
 
+#if LAB == 2
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_PRIM_SEC
+#define INCR_BUILD OPEN_LOOP_BUILD
+#define TEST_SETUP TEST_SETUP_RES_LOAD
+#define PROTECTION PROTECTION_ENABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL2
+#endif
+
+#if LAB == 3
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_PRIM_SEC
+#define INCR_BUILD CLOSED_LOOP_BUILD
+#define CONTROL_MODE VOLTAGE_MODE
+#define TEST_SETUP TEST_SETUP_RES_LOAD
+#define PROTECTION PROTECTION_ENABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL1
+#endif
+
+#if LAB == 4
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_PRIM_SEC
+#define INCR_BUILD CLOSED_LOOP_BUILD
+#define CONTROL_MODE CURRENT_MODE
+#define TEST_SETUP TEST_SETUP_RES_LOAD
+#define PROTECTION PROTECTION_ENABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL1
+#endif
+
+#if LAB == 5
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_PRIM_SEC
+#define INCR_BUILD CLOSED_LOOP_BUILD
+#define CONTROL_MODE CURRENT_MODE
+#define TEST_SETUP TEST_SETUP_EMULATED_BATTERY
+#define PROTECTION PROTECTION_ENABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL1
+#endif
+
+
+#if LAB == 6
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_SEC_PRIM
+#define INCR_BUILD OPEN_LOOP_BUILD
+#define CONTROL_MODE VOLTAGE_MODE
+#define TEST_SETUP TEST_SETUP_RES_LOAD
+#define PROTECTION PROTECTION_DISABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL2
+#endif
+
+#if LAB == 7
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_SEC_PRIM
+#define INCR_BUILD OPEN_LOOP_BUILD
+#define CONTROL_MODE VOLTAGE_MODE
+#define TEST_SETUP TEST_SETUP_RES_LOAD
+#define PROTECTION PROTECTION_ENABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL2
+#endif
+
+#if LAB == 8
+#define CONTROL_RUNNING_ON 1
+#define POWER_FLOW POWER_FLOW_SEC_PRIM
+#define INCR_BUILD CLOSED_LOOP_BUILD
+#define CONTROL_MODE VOLTAGE_MODE
+#define TEST_SETUP TEST_SETUP_RES_LOAD
+#define PROTECTION PROTECTION_ENABLED
+#define SFRA_TYPE  0
+#define SFRA_AMPLITUDE (float32_t)SFRA_INJECTION_AMPLITUDE_LEVEL1
+#endif
+
+
 #define ISR1_RUNNING_ON CONTROL_RUNNING_ON
 
 #define ISR2_FREQUENCY_HZ ((float32_t)100000)
 #define ISR3_FREQUENCY_HZ ((float32_t)10000)
-// #define SFRA_ISR_FREQ_HZ       ISR2_FREQUENCY_HZ
+#define SFRA_ISR_FREQ_HZ       ISR2_FREQUENCY_HZ
 
 //
 // Power Stage Related Values
 //
-// #define NOMINAL_PWM_SWITCHING_FREQUENCY_HZ  ((float32_t)500.8*1000)
-#define NOMINAL_PWM_SWITCHING_FREQUENCY_HZ  ((float32_t)100.0*1000)
+#define NOMINAL_PWM_SWITCHING_FREQUENCY_HZ  ((float32_t)500.8*1000)
 #define MAX_PWM_SWITCHING_FREQUENCY_HZ ((float32_t)700*1000)
 #define MIN_PWM_SWITCHING_FREQUENCY_HZ ((float32_t)300*1000)
 
-#define PRIM_PWM_DEADBAND_RED_NS ((float32_t)200)
-#define PRIM_PWM_DEADBAND_FED_NS ((float32_t)200)
+#define PRIM_PWM_DEADBAND_RED_NS ((float32_t)102.3)
+#define PRIM_PWM_DEADBAND_FED_NS ((float32_t)102.3)
 #define SEC_PWM_DEADBAND_RED_NS  ((float32_t)102)
 #define SEC_PWM_DEADBAND_FED_NS  ((float32_t)102)
 
@@ -167,6 +262,54 @@ extern "C" {
 #define IPRIM_TANK_TRIP_LIMIT_AMPS ((float32_t)30)
 #define ISEC_TANK_TRIP_LIMIT_AMPS  ((float32_t)40)
 
+//
+// Control Loop Design
+//
+
+//
+// LAB3
+//
+#define GV1_2P2Z_A1    (float32_t) -1.7284895037
+#define GV1_2P2Z_A2    (float32_t) 0.7284895037
+#define GV1_2P2Z_A3    (float32_t) 0.0000000000
+#define GV1_2P2Z_B0    (float32_t) 4.8280130584
+#define GV1_2P2Z_B1    (float32_t) 0.1493277469
+#define GV1_2P2Z_B2    (float32_t) -4.6786792593
+#define GV1_2P2Z_B3    (float32_t) 0.0000000000
+
+//
+// LAB4
+//
+#define GI1_2P2Z_A1    (float32_t) -1.8277396009
+#define GI1_2P2Z_A2    (float32_t) 0.8277396009
+#define GI1_2P2Z_A3    (float32_t) 0.0000000000
+#define GI1_2P2Z_B0    (float32_t) 1.2500036172
+#define GI1_2P2Z_B1    (float32_t) 0.2153188876
+#define GI1_2P2Z_B2    (float32_t) -1.0346715071
+#define GI1_2P2Z_B3    (float32_t) 0.0000000000
+
+//
+// LAB5 
+//
+#define GI2_2P2Z_A1    (float32_t) 0.0341879720
+#define GI2_2P2Z_A2    (float32_t) -0.7668017816
+#define GI2_2P2Z_A3    (float32_t) -0.2673861903
+#define GI2_2P2Z_B0    (float32_t) 1.3436620732
+#define GI2_2P2Z_B1    (float32_t) 0.3459370813
+#define GI2_2P2Z_B2    (float32_t) -0.7200660800
+#define GI2_2P2Z_B3    (float32_t) -0.2790608258
+
+//
+// LAB8 
+//
+#define GV2_2P2Z_A1    (float32_t) -0.4829060140
+#define GV2_2P2Z_A2    (float32_t) -0.5170939860
+#define GV2_2P2Z_A3    (float32_t) 0.0000000000
+#define GV2_2P2Z_B0    (float32_t) 1.3436620732
+#define GV2_2P2Z_B1    (float32_t) -0.3488624959
+#define GV2_2P2Z_B2    (float32_t) -0.5396713815
+#define GV2_2P2Z_B3    (float32_t) 0.0000000000
+
 //=============================================================================
 // User code settings file
 //=============================================================================
@@ -176,4 +319,4 @@ extern "C" {
 }
 #endif                                  /* extern "C" */
 
-#endif 
+#endif //_PROJSETTINGS_H
