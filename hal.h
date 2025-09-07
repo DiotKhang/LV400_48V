@@ -27,7 +27,6 @@ extern "C" {
 #include "driverlib.h"
 #include "device.h"
 #include "settings.h"
-
 //
 // the function prototypes
 //
@@ -210,15 +209,15 @@ static inline void HAL_updatePWMDutyPeriodPhaseShift(
                                 uint32_t phaseShiftPrimSec_ticks)
 {
     EALLOW;
-    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_TBPRDHR) = period_ticks;
-    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_CMPA) = dutyAPrim_ticks;
-    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_CMPB) = dutyBPrim_ticks;
+    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_TBPRD) = period_ticks;
+    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_CMPA) = dutyAPrim_ticks;
+    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_CMPB) = dutyBPrim_ticks;
 
-    HWREG(SEC_LEG1_PWM_BASE + HRPWM_O_CMPA) = dutyASec_ticks;
-    HWREG(SEC_LEG1_PWM_BASE + HRPWM_O_CMPB) = dutyBSec_ticks;
+    HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_CMPA) = dutyASec_ticks;
+    HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_CMPB) = dutyBSec_ticks;
 
-    HWREG(SEC_LEG1_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
-    HWREG(SEC_LEG2_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
+    HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
+    HWREGH(SEC_LEG2_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
 
     EDIS;
 }
@@ -227,10 +226,10 @@ static inline void HAL_updatePWMDeadBandPrim(uint32_t dbRED_ticks,
                                 uint32_t dbFED_ticks)
 {
     EALLOW;
-    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_DBREDHR) = dbRED_ticks;
-    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_DBFEDHR) = dbFED_ticks;
-    HWREG(PRIM_LEG2_PWM_BASE + HRPWM_O_DBREDHR) = dbRED_ticks;
-    HWREG(PRIM_LEG2_PWM_BASE + HRPWM_O_DBFEDHR) = dbFED_ticks;
+    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_DBRED) = dbRED_ticks;
+    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_DBFED) = dbFED_ticks;
+    HWREGH(PRIM_LEG2_PWM_BASE + EPWM_O_DBRED) = dbRED_ticks;
+    HWREGH(PRIM_LEG2_PWM_BASE + EPWM_O_DBFED) = dbFED_ticks;
     EDIS;
 }
 

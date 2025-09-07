@@ -411,7 +411,6 @@ void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
 {
     uint32_t pwmPeriod_ticks;
     uint32_t dbFED_ticks, dbRED_ticks;
-
     pwmPeriod_ticks = (uint32_t)(pwmSysClkFreq_Hz / (float32_t)pwmFreq_Hz) >> 1;
     dbRED_ticks = ((uint32_t)(red_ns * ((float32_t)ONE_NANO_SEC) * pwmSysClkFreq_Hz * 2.0f));
     dbFED_ticks = ((uint32_t)(fed_ns * ((float32_t)ONE_NANO_SEC) * pwmSysClkFreq_Hz * 2.0f));
@@ -420,13 +419,12 @@ void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
     // Time Base SubModule Registers
     //
     EPWM_setPeriodLoadMode(base1, EPWM_PERIOD_SHADOW_LOAD);
+    EPWM_setClockPrescaler(base1, EPWM_CLOCK_DIVIDER_1, EPWM_HSCLOCK_DIVIDER_1);
     EPWM_setTimeBasePeriod(base1, pwmPeriod_ticks);
     EPWM_setTimeBaseCounter(base1, 0);
-    EPWM_disablePhaseShiftLoad(base1);	
-    EPWM_setPhaseShift(base1, 0);
     EPWM_setTimeBaseCounterMode(base1, EPWM_COUNTER_MODE_UP_DOWN);
-    EPWM_setClockPrescaler(base1, EPWM_CLOCK_DIVIDER_1, EPWM_HSCLOCK_DIVIDER_1);
-
+    // EPWM_disablePhaseShiftLoad(base1);
+    EPWM_setPhaseShift(base1, 0);
     // //
     // // Counter Compare Submodule Registers
     // // set duty 50% initially
@@ -445,8 +443,9 @@ void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
     EPWM_setCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_B,
                                     EPWM_COMP_LOAD_ON_CNTR_ZERO_PERIOD);
 
-    EPWM_disableCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_C);
-
+    // EPWM_disableCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_C);
+    // EPWM_setCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_C, 
+    //                                  EPWM_COMP_LOAD_ON_CNTR_PERIOD);
     EALLOW;
     //
     // Clear AQCTLA, B and Deadband settings settings
@@ -560,7 +559,10 @@ void HAL_setupEPWMinUpDownCount2ChAsymmetricMode(uint32_t base1,
     //
     EPWM_setActionQualifierAction(base1, EPWM_AQ_OUTPUT_B ,
        EPWM_AQ_OUTPUT_LOW, EPWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
-
+    //
+    // Enable TBPHSHR sync (required for updwn count HR control)
+    //
+    EPWM_enablePhaseShiftLoad(base1);
 }
 
 //

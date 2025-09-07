@@ -427,8 +427,9 @@
 //
 // ADC Related
 //
-#define ADC_PU_SCALE_FACTOR  ((float32_t)0.000244140625)
+#define ADC_PU_SCALE_FACTOR  ((float32_t)0.000244140625) // 1 / 2^12
 #define ADC_PU_PPB_SCALE_FACTOR ((float32_t)0.000488281250) //1/2^11
+
 
 #define CMPSS_HYSTERESIS 2
 #define CMPSSS_FILTER_PRESCALAR 2

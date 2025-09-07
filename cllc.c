@@ -22,7 +22,7 @@
 //
 #pragma SET_DATA_SECTION("controlVariables")
 
-// Lab_EnumType Lab;
+Lab_EnumType Lab;
 
 TripFlag_EnumType tripFlag;
 
@@ -60,7 +60,7 @@ float32_t pwmPeriodMin_pu;
 float32_t pwmPeriodMax_pu;
 float32_t pwmPeriodMax_ticks;
 uint32_t pwmPeriod_ticks;
-
+uint32_t countcheckISR2, countcheckISR1;
 //
 // 1- Primary Side (PFC-Inv/Bus)
 //
@@ -437,3 +437,124 @@ void updateBoardStatus(void)
         }
     }
 }
+
+void setBuildLevelIndicatorVariable(void)
+{
+    #if LAB == 1
+        #if CONTROL_RUNNING_ON == CLA_CORE
+           Lab.Lab_Enum =
+                    Lab1_CLA;
+        #else
+           Lab.Lab_Enum =
+                    Lab1;
+        #endif
+    #elif LAB == 2
+        #if CONTROL_RUNNING_ON == CLA_CORE
+           Lab.Lab_Enum =
+                    Lab2_CLA;
+        #else
+           Lab.Lab_Enum =
+                    Lab2;
+        #endif
+    #elif LAB == 3
+        #if CONTROL_RUNNING_ON == CLA_CORE
+           Lab.Lab_Enum =
+                    Lab3_CLA;
+        #else
+           Lab.Lab_Enum =
+                    Lab3;
+        #endif
+    #elif LAB == 4
+        #if CONTROL_RUNNING_ON == CLA_CORE
+           Lab.Lab_Enum =
+                    Lab4_CLA;
+        #else
+           Lab.Lab_Enum =
+                    Lab4;
+        #endif
+    #elif LAB == 5
+        #if CONTROL_RUNNING_ON == CLA_CORE
+           Lab.Lab_Enum =
+                    Lab5_CLA;
+        #else
+            Lab.Lab_Enum =
+                    Lab5;
+        #endif
+    #elif LAB == 6
+        #if CONTROL_RUNNING_ON == CLA_CORE
+           Lab.Lab_Enum =
+                    Lab6_CLA;
+        #else
+           Lab.Lab_Enum =
+                    Lab6;
+        #endif
+    #elif LAB == 7
+       #if CONTROL_RUNNING_ON == CLA_CORE
+          Lab.Lab_Enum =
+                   Lab7_CLA;
+       #else
+          Lab.Lab_Enum =
+                   Lab7;
+       #endif
+    #elif LAB == 8
+       #if CONTROL_RUNNING_ON == CLA_CORE
+          Lab.Lab_Enum =
+                  Lab8_CLA;
+       #else
+          Lab.Lab_Enum =
+                  Lab8;
+   #endif
+   #else
+
+           Lab.Lab_Enum = undefinedLab;
+    #endif
+
+//
+//    #if INCR_BUILD == 1
+//        #if SEC_CONNECTED_IN_BATTERY_EMULATION_MODE == 0
+//            #if CONTROL_RUNNING_ON == CLA_CORE
+//                buildLevel.BuildLevel_Enum = openLoopCheck_CLA;
+//            #else
+//                buildLevel.BuildLevel_Enum = openLoopCheck;
+//            #endif
+//        #else
+//                buildLevel..BuildLevel_Enum = undefinedState;
+//        #endif
+//    #elif INCR_BUILD == 2
+//        #if CONTROL_MODE == VOLTAGE_MODE
+//            #if SEC_CONNECTED_IN_BATTERY_EMULATION_MODE == 0
+//                #if CONTROL_RUNNING_ON == CLA_CORE
+//                    buildLevel.BuildLevel_Enum =
+//                            closedLoopCheck_Voltage_CLA;
+//                #else
+//                    buildLevel.BuildLevel_Enum =
+//                            closedLoopCheck_Voltage;
+//                #endif
+//            #else
+//                buildLevel.BuildLevel_Enum = undefinedState;
+//            #endif
+//
+//        #elif CONTROL_MODE == CURRENT_MODE
+//            #if SEC_CONNECTED_IN_BATTERY_EMULATION_MODE == 0
+//                #if CONTROL_RUNNING_ON == CLA_CORE
+//                    buildLevel.BuildLevel_Enum =
+//                            closedLoopCheck_Current_CLA;
+//                #else
+//                    buildLevel.BuildLevel_Enum =
+//                            closedLoopCheck_Current;
+//                #endif
+//            #else
+//                #if CONTROL_RUNNING_ON == CLA_CORE
+//                    buildLevel.BuildLevel_Enum =
+//                            closedLoopCheck_Current_BatteryMode_CLA;
+//                #else
+//                    buildLevel.BuildLevel_Enum =
+//                            closedLoopCheck_Current_BatteryMode;
+//                #endif
+//            #endif
+//        #endif
+//    #endif
+//
+
+}
+

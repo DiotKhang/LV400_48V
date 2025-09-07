@@ -145,12 +145,38 @@ void updateBoardStatus(void);
 //
 //
 //
-// void setBuildLevelIndicatorVariable(void);
+void setBuildLevelIndicatorVariable(void);
 // void changeSynchronousRectifierPwmBehavior(uint16_t powerFlow);
 
 //
 // typedefs
 //
+
+typedef union{
+    enum
+    {
+        Lab1 = 0,
+        Lab1_CLA = 1,
+        Lab2 = 2,
+        Lab2_CLA = 3,
+        Lab3 = 4,
+        Lab3_CLA = 5,
+        Lab4 = 6,
+        Lab4_CLA = 7,
+        Lab5 = 8,
+        Lab5_CLA = 9,
+        Lab6 = 10,
+        Lab6_CLA = 11,
+        Lab7 = 12,
+        Lab7_CLA = 13,
+        Lab8 = 14,
+        Lab8_CLA = 15,
+        undefinedLab = 12,
+    }Lab_Enum;
+    int32_t pad;
+}Lab_EnumType;
+
+extern  Lab_EnumType lab;
 
 typedef union{
     enum
@@ -224,7 +250,7 @@ extern float32_t pwmPeriodMin_pu;
 extern float32_t pwmPeriodMax_pu;
 extern float32_t pwmPeriodMax_ticks;
 extern uint32_t pwmPeriod_ticks;
-
+extern uint32_t countcheckISR2, countcheckISR1;
 //
 // 1- Primary Side (PFC-Inv/Bus)
 //
@@ -314,19 +340,15 @@ extern volatile uint32_t cla_task_counter;
 #pragma FUNC_ALWAYS_INLINE(readSensedSignalsPrimToSecPowerFlow)
 static inline void readSensedSignalsPrimToSecPowerFlow(void)
 {
-    iPrimSensed_pu = ((float32_t)IPRIM_ADCREAD *
-                                       ADC_PU_SCALE_FACTOR
-                   - iPrimSensedOffset_pu) * -2.0;
+    iPrimSensed_pu = (float32_t)IPRIM_ADCREAD *
+                                       ADC_PU_SCALE_FACTOR;
 
-    iSecSensed_pu =  ((float32_t)ISEC_OVERSAMPLE_ADCREAD *
-                                       ADC_PU_SCALE_FACTOR
-                   - iSecSensedOffset_pu) * 2.0;
-    vPrimSensed_pu = ((float32_t)VPRIM_OVERSAMPLE_ADCREAD *
-                                       ADC_PU_SCALE_FACTOR
-                   - vPrimSensedOffset_pu);
-    vSecSensed_pu =  ( (float32_t)VSEC_OVERSAMPLE_ADCREAD *
-                                        ADC_PU_SCALE_FACTOR
-                   - vSecSensedOffset_pu);
+    iSecSensed_pu =  (float32_t)ISEC_OVERSAMPLE_ADCREAD *
+                                       ADC_PU_SCALE_FACTOR;
+    vPrimSensed_pu = (float32_t)VPRIM_OVERSAMPLE_ADCREAD *
+                                       ADC_PU_SCALE_FACTOR;
+    vSecSensed_pu =  (float32_t)VSEC_OVERSAMPLE_ADCREAD *
+                                        ADC_PU_SCALE_FACTOR;
 
     vSecSensed_pu = vSecSensed_pu *
                   (VSEC_MAX_SENSE_VOLTS / VSEC_OPTIMAL_RANGE_VOLTS);
@@ -342,45 +364,45 @@ static inline void readSensedSignalsPrimToSecPowerFlow(void)
 #pragma FUNC_ALWAYS_INLINE(readSensedSignalsSecToPrimPowerFlow)
 static inline void readSensedSignalsSecToPrimPowerFlow(void)
 {
-    iPrimSensed_pu = ((float32_t)IPRIM_ADCREAD *
-                                       ADC_PU_SCALE_FACTOR
-                   - iPrimSensedOffset_pu) * -2.0;
+    // iPrimSensed_pu = ((float32_t)IPRIM_ADCREAD *
+    //                                    ADC_PU_SCALE_FACTOR
+    //                - iPrimSensedOffset_pu) * -2.0;
 
-    iSecSensed_pu =  ((float32_t)ISEC_ADCREAD *
-                                       ADC_PU_SCALE_FACTOR
-                   - iSecSensedOffset_pu) * 2.0;
-    vPrimSensed_pu = ((float32_t)VPRIM_OVERSAMPLE_ADCREAD *
-                                       ADC_PU_SCALE_FACTOR
-                   - vPrimSensedOffset_pu);
-    vSecSensed_pu =  ( (float32_t)VSEC_ADCREAD *
-                                        ADC_PU_SCALE_FACTOR
-                   - vSecSensedOffset_pu);
+    // iSecSensed_pu =  ((float32_t)ISEC_ADCREAD *
+    //                                    ADC_PU_SCALE_FACTOR
+    //                - iSecSensedOffset_pu) * 2.0;
+    // vPrimSensed_pu = ((float32_t)VPRIM_OVERSAMPLE_ADCREAD *
+    //                                    ADC_PU_SCALE_FACTOR
+    //                - vPrimSensedOffset_pu);
+    // vSecSensed_pu =  ( (float32_t)VSEC_ADCREAD *
+    //                                     ADC_PU_SCALE_FACTOR
+    //                - vSecSensedOffset_pu);
 
-    vSecSensed_pu = vSecSensed_pu *
-                  (VSEC_MAX_SENSE_VOLTS / VSEC_OPTIMAL_RANGE_VOLTS);
+    // vSecSensed_pu = vSecSensed_pu *
+    //               (VSEC_MAX_SENSE_VOLTS / VSEC_OPTIMAL_RANGE_VOLTS);
 
-    iSecSensed_pu = (iSecSensed_pu *
-                           iSecSensedCalXvariable_pu) +
-                           iSecSensedCalIntercept_pu;
-    iPrimSensed_pu = (iPrimSensed_pu *
-                            iPrimSensedCalXvariable_pu) +
-                            iPrimSensedCalIntercept_pu;
+    // iSecSensed_pu = (iSecSensed_pu *
+    //                        iSecSensedCalXvariable_pu) +
+    //                        iSecSensedCalIntercept_pu;
+    // iPrimSensed_pu = (iPrimSensed_pu *
+    //                         iPrimSensedCalXvariable_pu) +
+    //                         iPrimSensedCalIntercept_pu;
 }
 
 #pragma FUNC_ALWAYS_INLINE(calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow)
 static inline void calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow(void)
 {
-    uint32_t temp;
+    // uint32_t temp;
 
     //
     // First calculate the hi-res ticks for the PWM
     // for this multiply by 2^16 , and divide by 1 (using left shift)
     // as the PWM is up down count mode
     //
-    temp = ((uint32_t)(((float32_t)(pwmPeriodSlewed_pu *
-                                   pwmPeriodMax_ticks))))>> 1;
-
-    //
+    // pwmPeriod_ticks = ((uint32_t)(((float32_t)(pwmPeriodSlewed_pu *
+    //                                pwmPeriodMax_ticks))))>> 1;
+    pwmPeriod_ticks = (uint32_t)(PWMSYSCLOCK_FREQ_HZ / (float32_t)NOMINAL_PWM_SWITCHING_FREQUENCY_HZ) >> 1;
+    
     // for hi-res the duty needs to set around period hence calculate
     // duty ticks as (period *(1-duty))
     //
@@ -413,8 +435,7 @@ static inline void calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow(void
     pwmPhaseShiftPrimSec_ticks =
             ((int32_t)(pwmPeriod_ticks >> 1) -
              (int32_t)((float32_t)pwmPhaseShiftPrimSec_ns *
-                       PWMSYSCLOCK_FREQ_HZ * ONE_NANO_SEC) +
-             ((int32_t)2 << 16));
+                       PWMSYSCLOCK_FREQ_HZ * ONE_NANO_SEC));
 }
 
 #pragma FUNC_ALWAYS_INLINE(calculatePWMDutyPeriodPhaseShiftTicks_secToPrimPowerFlow)
@@ -494,8 +515,10 @@ static inline void calculatePWMDeadBandPrimTicks(void)
     //
     ticks = ((uint32_t)(pwmDeadBandREDPrimRef_ns *
                   ((float32_t)ONE_NANO_SEC) * PWMSYSCLOCK_FREQ_HZ * 2.0f));
+    pwmDeadBandREDPrim_ticks = (ticks);              
     ticks = ((uint32_t)(pwmDeadBandFEDPrimRef_ns *
                   ((float32_t)ONE_NANO_SEC) * PWMSYSCLOCK_FREQ_HZ * 2.0f));
+    pwmDeadBandFEDPrim_ticks = (ticks);
 }
 #pragma FUNC_ALWAYS_INLINE(EPWM_setCounterCompareValue)
 #pragma FUNC_ALWAYS_INLINE(EPWM_enablePhaseShiftLoad)
@@ -512,10 +535,10 @@ static inline void runISR1(void)
     EPWM_enablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
     EPWM_enablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
 
-    //
-    //  EPWM_setCounterCompareValue(ISR1_PERIPHERAL_TRIG_BASE,
+    
+    // EPWM_setCounterCompareValue(ISR1_PERIPHERAL_TRIG_BASE,
     //                          EPWM_COUNTER_COMPARE_C, pwmISRTrig_ticks);
-    //
+    
 
     //
     // write to COMPC or COMPD bits
@@ -524,7 +547,7 @@ static inline void runISR1(void)
     HWREGH(ISR1_PERIPHERAL_TRIG_BASE + EPWM_O_CMPC) =
                                         pwmISRTrig_ticks;
     #pragma diag_warning = 173
-
+    countcheckISR1+=1;
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
@@ -545,21 +568,21 @@ static inline void runISR2_primToSecPowerFlow(void)
     //
     // Read Current and Voltage Measurements
     //
-    readSensedSignalsPrimToSecPowerFlow();
+    // readSensedSignalsPrimToSecPowerFlow();
 
-//     if(clearTrip == 1)
-//     {
-//         HAL_clearPWMTripFlags(PRIM_LEG1_PWM_BASE);
-//         HAL_clearPWMTripFlags(PRIM_LEG2_PWM_BASE);
-//         HAL_clearPWMTripFlags(SEC_LEG1_PWM_BASE);
-//         HAL_clearPWMTripFlags(SEC_LEG2_PWM_BASE);
+    // if(clearTrip == 1)
+    // {
+    //     HAL_clearPWMTripFlags(PRIM_LEG1_PWM_BASE);
+    //     HAL_clearPWMTripFlags(PRIM_LEG2_PWM_BASE);
+    //     HAL_clearPWMTripFlags(SEC_LEG1_PWM_BASE);
+    //     HAL_clearPWMTripFlags(SEC_LEG2_PWM_BASE);
 
-//         #if TEST_SETUP == TEST_SETUP_EMULATED_BATTERY
-//             closeGiLoop = 1;
-//         #endif
+    //     #if TEST_SETUP == TEST_SETUP_EMULATED_BATTERY
+    //         closeGiLoop = 1;
+    //     #endif
 
-//         clearTrip = 0;
-//     }
+    //     clearTrip = 0;
+    // }
 
 //     if(closeGiLoop == 1)
 //     {
@@ -666,40 +689,40 @@ static inline void runISR2_primToSecPowerFlow(void)
 //                 pwmPeriod_pu = pwmPeriodRef_pu;
 //             #endif
 //         #else
-//             pwmPeriod_pu = pwmPeriodRef_pu;
+            pwmPeriod_pu = pwmPeriodRef_pu;
 //         #endif
 
-//         if(pwmPeriod_pu < pwmPeriodMin_pu)
-//         {
-//             pwmPeriod_pu = pwmPeriodMin_pu;
-//         }
-//         else if(pwmPeriod_pu > 1.0)
-//         {
-//             pwmPeriod_pu = 1.0;
-//         }
-//     }
+        if(pwmPeriod_pu < pwmPeriodMin_pu)
+        {
+            pwmPeriod_pu = pwmPeriodMin_pu;
+        }
+        else if(pwmPeriod_pu > 1.0)
+        {
+            pwmPeriod_pu = 1.0;
+        }
+    // }
 
-//     if(fabsf(pwmPeriod_pu - pwmPeriodSlewed_pu) >
-//                         MAX_PERIOD_STEP_PU)
-//     {
-//         if(pwmPeriod_pu > pwmPeriodSlewed_pu)
-//         {
-//             pwmPeriodSlewed_pu = pwmPeriodSlewed_pu +
-//                                         MAX_PERIOD_STEP_PU;
-//         }
-//         else
-//         {
-//             pwmPeriodSlewed_pu = pwmPeriodSlewed_pu -
-//                                         MAX_PERIOD_STEP_PU;
-//         }
-//     }
-//     else
-//     {
-//         pwmPeriodSlewed_pu = pwmPeriod_pu;
-//     }
-//    pwmFrequency_Hz = (PWMSYSCLOCK_FREQ_HZ /
-//                              (pwmPeriodSlewed_pu *
-//                               pwmPeriodMax_ticks));
+    if(fabsf(pwmPeriod_pu - pwmPeriodSlewed_pu) > 
+                        MAX_PERIOD_STEP_PU)
+    {
+        if(pwmPeriod_pu > pwmPeriodSlewed_pu)
+        {
+            pwmPeriodSlewed_pu = pwmPeriodSlewed_pu +
+                                        MAX_PERIOD_STEP_PU;
+        }
+        else
+        {
+            pwmPeriodSlewed_pu = pwmPeriodSlewed_pu -
+                                        MAX_PERIOD_STEP_PU;
+        }
+    }
+    else
+    {
+        pwmPeriodSlewed_pu = pwmPeriod_pu;
+    }
+   pwmFrequency_Hz = (PWMSYSCLOCK_FREQ_HZ /
+                             (pwmPeriodSlewed_pu *
+                              pwmPeriodMax_ticks));
 
 
     // #if SFRA_TYPE == SFRA_CURRENT
@@ -736,7 +759,7 @@ static inline void runISR2_primToSecPowerFlow(void)
        (pwmDutyPrim_pu != pwmDutyPrimRef_pu) ||
        (pwmDutySec_pu != pwmDutySecRef_pu))
     {
-
+        countcheckISR2+=1;
         pwmDutyPrim_pu = pwmDutyPrimRef_pu;
         pwmDutySec_pu = pwmDutySecRef_pu;
         pwmPhaseShiftPrimSec_ns = pwmPhaseShiftPrimSecRef_ns;

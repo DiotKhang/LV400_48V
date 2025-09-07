@@ -26,7 +26,6 @@ void main(void)
     // this routine will also initialize the CPU timers that are used in
     // the background 1, 2 & 3) task for this system (CPU time)
     //
-
     HAL_setupDevice();
 
     //
@@ -82,7 +81,14 @@ void main(void)
     // clear any spurious flags
     // setup protection and trips for the board
     //
-    HAL_setupBoardProtection();
+    // HAL_setupBoardProtection();
+
+    //
+    // set's a global variable that indicates which build level is running
+    // This variable can be viewed in the expressions view.
+    // Changes to this variable through the expressions view has no effect
+    //
+    setBuildLevelIndicatorVariable();
 
     //
     // setup trigger for the ADC conversions
@@ -128,14 +134,14 @@ void main(void)
 #if ISR1_RUNNING_ON == C28x_CORE
 interrupt void ISR1(void)
 {
-   //
-   // HAL_setProfilingGPIO1();
-   //
-    runISR1();
+    //   
+    HAL_setProfilingGPIO1();   
+    //   
+    runISR1();   
     HAL_clearISR1InterruputFlag();
-   //
-   // HAL_resetProfilingGPIO1();
-   //
+    //
+    HAL_resetProfilingGPIO1();
+    //
     Interrupt_register(ISR1_TRIG, &ISR1_second);
 }
 #endif
@@ -143,14 +149,14 @@ interrupt void ISR1(void)
 #if ISR1_RUNNING_ON == C28x_CORE
 interrupt void ISR1_second(void)
 {
-  //
-  //  HAL_setProfilingGPIO1();
-  //
+    //
+    HAL_setProfilingGPIO1();
+    //
     runISR1_secondTime();
     HAL_clearISR1InterruputFlag();
-  //
-  //  HAL_resetProfilingGPIO1();
-  //
+    //
+    HAL_resetProfilingGPIO1();
+    //
     Interrupt_register(ISR1_TRIG, &ISR1);
 }
 #endif
