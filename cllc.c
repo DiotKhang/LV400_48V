@@ -60,7 +60,7 @@ float32_t pwmPeriodMin_pu;
 float32_t pwmPeriodMax_pu;
 float32_t pwmPeriodMax_ticks;
 uint32_t pwmPeriod_ticks;
-uint32_t countcheckISR2, countcheckISR1;
+uint32_t countcheckISR3, countcheckISR2, countcheckISR1;
 //
 // 1- Primary Side (PFC-Inv/Bus)
 //

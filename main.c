@@ -197,7 +197,9 @@ interrupt void ISR3(void)
 {
     EINT;
     HAL_setProfilingGPIO3();
+    countcheckISR3+=1;
     runISR3();
+    countcheckISR3+=1;
     HAL_resetProfilingGPIO3();
     DINT;
     HAL_clearISR3InterruputFlag();

@@ -171,13 +171,13 @@ void HAL_setupPWM(uint16_t powerFlowDir)
         //
         //setup the prim PWM
         //
-        HAL_setupEPWMinUpDownCountModeWithDeadBand(
+        HAL_setupHRPWMinUpDownCountModeWithDeadBand(
                                    PRIM_LEG1_PWM_BASE,
                                    NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                    PWMSYSCLOCK_FREQ_HZ,
                                    PRIM_PWM_DEADBAND_RED_NS,
                                    PRIM_PWM_DEADBAND_FED_NS);
-        HAL_setupEPWMinUpDownCountModeWithDeadBand(
+        HAL_setupHRPWMinUpDownCountModeWithDeadBand(
                                    PRIM_LEG2_PWM_BASE,
                                    NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                    PWMSYSCLOCK_FREQ_HZ,
@@ -187,11 +187,11 @@ void HAL_setupPWM(uint16_t powerFlowDir)
         //
         //setup the sec PWM
         //
-        HAL_setupEPWMinUpDownCount2ChAsymmetricMode(
+        HAL_setupHRPWMinUpDownCount2ChAsymmetricMode(
                                   SEC_LEG1_PWM_BASE,
                                   NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                   PWMSYSCLOCK_FREQ_HZ);
-        HAL_setupEPWMinUpDownCount2ChAsymmetricMode(
+        HAL_setupHRPWMinUpDownCount2ChAsymmetricMode(
                                   SEC_LEG2_PWM_BASE,
                                   NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                   PWMSYSCLOCK_FREQ_HZ);
@@ -278,11 +278,11 @@ void HAL_setupPWM(uint16_t powerFlowDir)
         //
         //setup the prim PWM
         //
-        HAL_setupEPWMinUpDownCount2ChAsymmetricMode(
+        HAL_setupHRPWMinUpDownCount2ChAsymmetricMode(
                                    PRIM_LEG1_PWM_BASE,
                                    NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                    PWMSYSCLOCK_FREQ_HZ);
-        HAL_setupEPWMinUpDownCount2ChAsymmetricMode(
+        HAL_setupHRPWMinUpDownCount2ChAsymmetricMode(
                                    PRIM_LEG2_PWM_BASE,
                                    NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                    PWMSYSCLOCK_FREQ_HZ);
@@ -291,13 +291,13 @@ void HAL_setupPWM(uint16_t powerFlowDir)
         //
         //setup the sec PWM
         //
-        HAL_setupEPWMinUpDownCountModeWithDeadBand(
+        HAL_setupHRPWMinUpDownCountModeWithDeadBand(
                                    SEC_LEG1_PWM_BASE,
                                    NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                    PWMSYSCLOCK_FREQ_HZ,
                                    PRIM_PWM_DEADBAND_RED_NS,
                                    PRIM_PWM_DEADBAND_FED_NS);
-        HAL_setupEPWMinUpDownCountModeWithDeadBand(
+        HAL_setupHRPWMinUpDownCountModeWithDeadBand(
                                    SEC_LEG2_PWM_BASE,
                                    NOMINAL_PWM_SWITCHING_FREQUENCY_HZ,
                                    PWMSYSCLOCK_FREQ_HZ,
@@ -403,7 +403,7 @@ void HAL_setupECAPinPWMMode(uint32_t base1,
 
 }
 
-void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
+void HAL_setupHRPWMinUpDownCountModeWithDeadBand(uint32_t base1,
                                 float32_t pwmFreq_Hz,
                                 float32_t pwmSysClkFreq_Hz,
                                 float32_t red_ns,
@@ -411,26 +411,39 @@ void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
 {
     uint32_t pwmPeriod_ticks;
     uint32_t dbFED_ticks, dbRED_ticks;
-    pwmPeriod_ticks = (uint32_t)(pwmSysClkFreq_Hz / (float32_t)pwmFreq_Hz) >> 1;
-    dbRED_ticks = ((uint32_t)(red_ns * ((float32_t)ONE_NANO_SEC) * pwmSysClkFreq_Hz * 2.0f));
-    dbFED_ticks = ((uint32_t)(fed_ns * ((float32_t)ONE_NANO_SEC) * pwmSysClkFreq_Hz * 2.0f));
+
+    pwmPeriod_ticks = (uint32_t)((pwmSysClkFreq_Hz *
+                                (float32_t)TWO_RAISED_TO_THE_POWER_SIXTEEN) /
+                                (float32_t)pwmFreq_Hz) >> 1;
+    pwmPeriod_ticks = (pwmPeriod_ticks & 0xFFFFFF00);
+
+    dbRED_ticks = ((uint32_t)(red_ns *
+                             (float32_t)TWO_RAISED_TO_THE_POWER_SIXTEEN *
+                           ((float32_t)ONE_NANO_SEC) * pwmSysClkFreq_Hz * 2.0f));
+    dbRED_ticks = ( dbRED_ticks & 0xFFFFFE00);
+
+    dbFED_ticks = ((uint32_t)(red_ns *
+                             (float32_t)TWO_RAISED_TO_THE_POWER_SIXTEEN *
+                           ((float32_t)ONE_NANO_SEC) * pwmSysClkFreq_Hz * 2.0f));
+    dbFED_ticks = ( dbFED_ticks & 0xFFFFFE00);
 
     //
     // Time Base SubModule Registers
     //
     EPWM_setPeriodLoadMode(base1, EPWM_PERIOD_SHADOW_LOAD);
-    EPWM_setClockPrescaler(base1, EPWM_CLOCK_DIVIDER_1, EPWM_HSCLOCK_DIVIDER_1);
-    EPWM_setTimeBasePeriod(base1, pwmPeriod_ticks);
+    HWREG(base1 + HRPWM_O_TBPRDHR) = pwmPeriod_ticks;
+
     EPWM_setTimeBaseCounter(base1, 0);
-    EPWM_setTimeBaseCounterMode(base1, EPWM_COUNTER_MODE_UP_DOWN);
-    // EPWM_disablePhaseShiftLoad(base1);
     EPWM_setPhaseShift(base1, 0);
-    // //
-    // // Counter Compare Submodule Registers
-    // // set duty 50% initially
-    // //
-    EPWM_setCounterCompareValue(base1, EPWM_COUNTER_COMPARE_A, pwmPeriod_ticks >> 1);	        
-    EPWM_setCounterCompareValue(base1, EPWM_COUNTER_COMPARE_B, pwmPeriod_ticks >> 1);
+    EPWM_setTimeBaseCounterMode(base1, EPWM_COUNTER_MODE_UP_DOWN);
+    EPWM_setClockPrescaler(base1, EPWM_CLOCK_DIVIDER_1, EPWM_HSCLOCK_DIVIDER_1);
+
+    //
+    // Counter Compare Submodule Registers
+    // set duty 50% initially
+    //
+    HWREG(base1 + HRPWM_O_CMPA) = pwmPeriod_ticks >> 1;
+
     //
     // set as shadow mode
     //
@@ -443,9 +456,10 @@ void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
     EPWM_setCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_B,
                                     EPWM_COMP_LOAD_ON_CNTR_ZERO_PERIOD);
 
-    // EPWM_disableCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_C);
-    // EPWM_setCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_C, 
-    //                                  EPWM_COMP_LOAD_ON_CNTR_PERIOD);
+    HWREG(base1 + HRPWM_O_CMPB) = pwmPeriod_ticks >> 1;
+
+    EPWM_disableCounterCompareShadowLoadMode(base1, EPWM_COUNTER_COMPARE_C);
+
     EALLOW;
     //
     // Clear AQCTLA, B and Deadband settings settings
@@ -488,12 +502,41 @@ void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
     EPWM_setDeadBandDelayPolarity(base1, EPWM_DB_RED,
                                  EPWM_DB_POLARITY_ACTIVE_HIGH);
 
-    EPWM_setRisingEdgeDelayCount(base1, dbRED_ticks);
-    EPWM_setFallingEdgeDelayCount(base1, dbFED_ticks);	
+    HWREG(base1 + HRPWM_O_DBFEDHR) = dbFED_ticks;
+    HWREG(base1 + HRPWM_O_DBREDHR) = dbRED_ticks;
+
+    //
+    // Hi-res PWM
+    // MEP control on both edges.
+    //
+    HRPWM_setMEPEdgeSelect(base1, HRPWM_CHANNEL_A,
+                           HRPWM_MEP_CTRL_RISING_AND_FALLING_EDGE);
+    HRPWM_setCounterCompareShadowLoadEvent(base1, HRPWM_CHANNEL_A,
+                                           HRPWM_LOAD_ON_CNTR_ZERO_PERIOD);
+    HRPWM_setMEPEdgeSelect(base1, HRPWM_CHANNEL_B,
+                           HRPWM_MEP_CTRL_RISING_AND_FALLING_EDGE);
+    HRPWM_setCounterCompareShadowLoadEvent(base1, HRPWM_CHANNEL_B,
+                                           HRPWM_LOAD_ON_CNTR_ZERO_PERIOD);
+
+    HRPWM_setMEPControlMode(base1, HRPWM_CHANNEL_A, HRPWM_MEP_DUTY_PERIOD_CTRL);
+    HRPWM_setMEPControlMode(base1, HRPWM_CHANNEL_B, HRPWM_MEP_DUTY_PERIOD_CTRL);
+
+    HRPWM_setDeadbandMEPEdgeSelect(base1, HRPWM_DB_MEP_CTRL_RED_FED);
+
+    //
+    // Enable autoconversion
+    //
+    HRPWM_enableAutoConversion(base1);
+
+    //
+    // Turn on high-resolution period control.
+    //
+    HRPWM_enablePeriodControl(base1);
+
 
 }
 
-void HAL_setupEPWMinUpDownCount2ChAsymmetricMode(uint32_t base1,
+void HAL_setupHRPWMinUpDownCount2ChAsymmetricMode(uint32_t base1,
                             float32_t pwmFreq_Hz,
                             float32_t pwmSysClkFreq_Hz)
 {
@@ -559,10 +602,40 @@ void HAL_setupEPWMinUpDownCount2ChAsymmetricMode(uint32_t base1,
     //
     EPWM_setActionQualifierAction(base1, EPWM_AQ_OUTPUT_B ,
        EPWM_AQ_OUTPUT_LOW, EPWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
-    //
-    // Enable TBPHSHR sync (required for updwn count HR control)
-    //
-    EPWM_enablePhaseShiftLoad(base1);
+
+
+
+   //
+   // Hi-res PWM
+   // MEP control on both edges.
+   //
+   HRPWM_setMEPEdgeSelect(base1, HRPWM_CHANNEL_A,
+                          HRPWM_MEP_CTRL_RISING_AND_FALLING_EDGE);
+   HRPWM_setCounterCompareShadowLoadEvent(base1, HRPWM_CHANNEL_A,
+                                          HRPWM_LOAD_ON_CNTR_ZERO_PERIOD);
+   HRPWM_setMEPEdgeSelect(base1, HRPWM_CHANNEL_B,
+                          HRPWM_MEP_CTRL_RISING_AND_FALLING_EDGE);
+   HRPWM_setCounterCompareShadowLoadEvent(base1, HRPWM_CHANNEL_B,
+                                          HRPWM_LOAD_ON_CNTR_ZERO_PERIOD);
+
+   HRPWM_setMEPControlMode(base1, HRPWM_CHANNEL_A, HRPWM_MEP_DUTY_PERIOD_CTRL);
+   HRPWM_setMEPControlMode(base1, HRPWM_CHANNEL_B, HRPWM_MEP_DUTY_PERIOD_CTRL);
+
+   //
+   // Enable autoconversion
+   //
+   HRPWM_enableAutoConversion(base1);
+
+   //
+   // Enable TBPHSHR sync (required for updwn count HR control)
+   //
+   HRPWM_enablePhaseShiftLoad(base1);
+
+   //
+   // Turn on high-resolution period control.
+   //
+   HRPWM_enablePeriodControl(base1);
+
 }
 
 //

@@ -34,12 +34,12 @@ void HAL_setupDevice(void);
 void HAL_disablePWMClkCounting(void);
 void HAL_enablePWMClkCounting(void);
 void HAL_setupPWM(uint16_t powerFlowDir);
-void HAL_setupEPWMinUpDownCountModeWithDeadBand(uint32_t base1,
+void HAL_setupHRPWMinUpDownCountModeWithDeadBand(uint32_t base1,
                                 float32_t pwmFreq_Hz,
                                 float32_t pwmSysClkFreq_Hz,
                                 float32_t red_ns,
                                 float32_t fed_ns);
-void HAL_setupEPWMinUpDownCount2ChAsymmetricMode(uint32_t base1,
+void HAL_setupHRPWMinUpDownCount2ChAsymmetricMode(uint32_t base1,
                             float32_t pwmFreq_Hz,
                             float32_t pwmSysClkFreq_Hz);
 void HAL_setupPWMinUpDownCountMode(uint32_t base1,
@@ -209,15 +209,15 @@ static inline void HAL_updatePWMDutyPeriodPhaseShift(
                                 uint32_t phaseShiftPrimSec_ticks)
 {
     EALLOW;
-    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_TBPRD) = period_ticks;
-    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_CMPA) = dutyAPrim_ticks;
-    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_CMPB) = dutyBPrim_ticks;
+    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_TBPRDHR) = period_ticks;
+    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_CMPA) = dutyAPrim_ticks;
+    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_CMPB) = dutyBPrim_ticks;
 
-    HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_CMPA) = dutyASec_ticks;
-    HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_CMPB) = dutyBSec_ticks;
+    HWREG(SEC_LEG1_PWM_BASE + HRPWM_O_CMPA) = dutyASec_ticks;
+    HWREG(SEC_LEG1_PWM_BASE + HRPWM_O_CMPB) = dutyBSec_ticks;
 
-    HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
-    HWREGH(SEC_LEG2_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
+    HWREG(SEC_LEG1_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
+    HWREG(SEC_LEG2_PWM_BASE + EPWM_O_TBPHS) = phaseShiftPrimSec_ticks;
 
     EDIS;
 }
@@ -226,10 +226,10 @@ static inline void HAL_updatePWMDeadBandPrim(uint32_t dbRED_ticks,
                                 uint32_t dbFED_ticks)
 {
     EALLOW;
-    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_DBRED) = dbRED_ticks;
-    HWREGH(PRIM_LEG1_PWM_BASE + EPWM_O_DBFED) = dbFED_ticks;
-    HWREGH(PRIM_LEG2_PWM_BASE + EPWM_O_DBRED) = dbRED_ticks;
-    HWREGH(PRIM_LEG2_PWM_BASE + EPWM_O_DBFED) = dbFED_ticks;
+    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_DBREDHR) = dbRED_ticks;
+    HWREG(PRIM_LEG1_PWM_BASE + HRPWM_O_DBFEDHR) = dbFED_ticks;
+    HWREG(PRIM_LEG2_PWM_BASE + HRPWM_O_DBREDHR) = dbRED_ticks;
+    HWREG(PRIM_LEG2_PWM_BASE + HRPWM_O_DBFEDHR) = dbFED_ticks;
     EDIS;
 }
 
@@ -371,13 +371,13 @@ static inline void HAL_setupInterrupt(uint16_t powerFlow)
     ECAP_enableInterrupt(ISR2_ECAP_BASE, ECAP_ISR_SOURCE_COUNTER_PERIOD);
 
 
-    CPUTimer_enableInterrupt(ISR3_TIMEBASE);
-    CPUTimer_clearOverflowFlag(ISR3_TIMEBASE);
-    ADC_setInterruptSource(ISR3_PERIPHERAL_TRIG_BASE,
-                           ADC_INT_NUMBER2, VPRIM_ADC_SOC_NO_13);
-    ADC_enableInterrupt(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
-    ADC_enableContinuousMode(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
-    ADC_clearInterruptStatus(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
+    // CPUTimer_enableInterrupt(ISR3_TIMEBASE);
+    // CPUTimer_clearOverflowFlag(ISR3_TIMEBASE);
+    // ADC_setInterruptSource(ISR3_PERIPHERAL_TRIG_BASE,
+    //                        ADC_INT_NUMBER2, VPRIM_ADC_SOC_NO_13);
+    // ADC_enableInterrupt(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
+    // ADC_enableContinuousMode(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
+    // ADC_clearInterruptStatus(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
 
     //
     //Note the ISR1 is enabled in the PIE, though the peripheral interrupt is

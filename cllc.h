@@ -250,7 +250,7 @@ extern float32_t pwmPeriodMin_pu;
 extern float32_t pwmPeriodMax_pu;
 extern float32_t pwmPeriodMax_ticks;
 extern uint32_t pwmPeriod_ticks;
-extern uint32_t countcheckISR2, countcheckISR1;
+extern uint32_t countcheckISR3, countcheckISR2, countcheckISR1;
 //
 // 1- Primary Side (PFC-Inv/Bus)
 //
@@ -389,20 +389,25 @@ static inline void readSensedSignalsSecToPrimPowerFlow(void)
     //                         iPrimSensedCalIntercept_pu;
 }
 
-#pragma FUNC_ALWAYS_INLINE(calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow)
 static inline void calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow(void)
 {
-    // uint32_t temp;
+    uint32_t temp;
 
     //
     // First calculate the hi-res ticks for the PWM
     // for this multiply by 2^16 , and divide by 1 (using left shift)
     // as the PWM is up down count mode
     //
-    // pwmPeriod_ticks = ((uint32_t)(((float32_t)(pwmPeriodSlewed_pu *
-    //                                pwmPeriodMax_ticks))))>> 1;
-    pwmPeriod_ticks = (uint32_t)(PWMSYSCLOCK_FREQ_HZ / (float32_t)NOMINAL_PWM_SWITCHING_FREQUENCY_HZ) >> 1;
-    
+    temp = ((uint32_t)(((float32_t)(pwmPeriodSlewed_pu *
+                                   pwmPeriodMax_ticks) *
+                       (float32_t)TWO_RAISED_TO_THE_POWER_SIXTEEN)))>> 1;
+
+    //
+    // next zero the lower 8 bits, as they are not part of TBPRDHR register
+    //
+    pwmPeriod_ticks = temp & 0xFFFFFF00;
+
+    //
     // for hi-res the duty needs to set around period hence calculate
     // duty ticks as (period *(1-duty))
     //
@@ -411,6 +416,14 @@ static inline void calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow(void
                                          (1 - fabsf(pwmDutyPrim_pu)));
 
     pwmDutyBPrim_ticks = pwmDutyAPrim_ticks;
+
+    //
+    // the below is to get around the errata in HRPWM
+    //
+    if((pwmDutyAPrim_ticks & 0x00FF00) == 0)
+    {
+        pwmDutyAPrim_ticks = pwmDutyAPrim_ticks | 0x000100;
+    }
 
     //
     // For secondary side the PWM is not centered around zero or period
@@ -435,7 +448,16 @@ static inline void calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow(void
     pwmPhaseShiftPrimSec_ticks =
             ((int32_t)(pwmPeriod_ticks >> 1) -
              (int32_t)((float32_t)pwmPhaseShiftPrimSec_ns *
-                       PWMSYSCLOCK_FREQ_HZ * ONE_NANO_SEC));
+                       PWMSYSCLOCK_FREQ_HZ * ONE_NANO_SEC *
+                       TWO_RAISED_TO_THE_POWER_SIXTEEN) +
+             ((int32_t)2 << 16));
+
+    //
+    // remove the hi-res part for the prim-sec shift
+    //
+    pwmPhaseShiftPrimSec_ticks = pwmPhaseShiftPrimSec_ticks &
+                                        0xFFFF0000;
+
 }
 
 #pragma FUNC_ALWAYS_INLINE(calculatePWMDutyPeriodPhaseShiftTicks_secToPrimPowerFlow)
@@ -514,12 +536,17 @@ static inline void calculatePWMDeadBandPrimTicks(void)
     // 2^16 multiply is (because of high res)
     //
     ticks = ((uint32_t)(pwmDeadBandREDPrimRef_ns *
+                        (float32_t)TWO_RAISED_TO_THE_POWER_SIXTEEN *
                   ((float32_t)ONE_NANO_SEC) * PWMSYSCLOCK_FREQ_HZ * 2.0f));
-    pwmDeadBandREDPrim_ticks = (ticks);              
+    pwmDeadBandREDPrim_ticks = ( ticks & 0xFFFFFE00);
+
     ticks = ((uint32_t)(pwmDeadBandFEDPrimRef_ns *
+                        (float32_t)TWO_RAISED_TO_THE_POWER_SIXTEEN *
                   ((float32_t)ONE_NANO_SEC) * PWMSYSCLOCK_FREQ_HZ * 2.0f));
-    pwmDeadBandFEDPrim_ticks = (ticks);
+    pwmDeadBandFEDPrim_ticks = ( ticks & 0xFFFFFE00);
+
 }
+
 #pragma FUNC_ALWAYS_INLINE(EPWM_setCounterCompareValue)
 #pragma FUNC_ALWAYS_INLINE(EPWM_enablePhaseShiftLoad)
 #pragma FUNC_ALWAYS_INLINE(runISR1)
@@ -557,7 +584,8 @@ static inline void runISR1_secondTime(void)
 {
     EPWM_disablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
     EPWM_disablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
-    HAL_setupISR1Trigger(MIN_PWM_SWITCHING_FREQUENCY_HZ * 0.3);
+    // HAL_setupISR1Trigger(MIN_PWM_SWITCHING_FREQUENCY_HZ * 0.3);
+    EPWM_disableInterrupt(ISR1_PERIPHERAL_TRIG_BASE);
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
