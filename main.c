@@ -142,6 +142,7 @@ interrupt void ISR1(void)
     //
     HAL_resetProfilingGPIO1();
     //
+    countcheckISR1+=1;
     Interrupt_register(ISR1_TRIG, &ISR1_second);
 }
 #endif
@@ -157,6 +158,7 @@ interrupt void ISR1_second(void)
     //
     HAL_resetProfilingGPIO1();
     //
+    countcheckISR1+=1;
     Interrupt_register(ISR1_TRIG, &ISR1);
 }
 #endif
@@ -174,6 +176,7 @@ interrupt void ISR2_primToSecPowerFlow(void)
     runISR2_primToSecPowerFlow();
     HAL_resetProfilingGPIO2();
     DINT;
+    countcheckISR2+=1;
     HAL_clearISR2InterruputFlag();
 }
 

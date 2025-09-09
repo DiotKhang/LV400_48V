@@ -371,13 +371,13 @@ static inline void HAL_setupInterrupt(uint16_t powerFlow)
     ECAP_enableInterrupt(ISR2_ECAP_BASE, ECAP_ISR_SOURCE_COUNTER_PERIOD);
 
 
-    // CPUTimer_enableInterrupt(ISR3_TIMEBASE);
-    // CPUTimer_clearOverflowFlag(ISR3_TIMEBASE);
-    // ADC_setInterruptSource(ISR3_PERIPHERAL_TRIG_BASE,
-    //                        ADC_INT_NUMBER2, VPRIM_ADC_SOC_NO_13);
-    // ADC_enableInterrupt(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
-    // ADC_enableContinuousMode(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
-    // ADC_clearInterruptStatus(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
+    CPUTimer_enableInterrupt(ISR3_TIMEBASE);
+    CPUTimer_clearOverflowFlag(ISR3_TIMEBASE);
+    ADC_setInterruptSource(ISR3_PERIPHERAL_TRIG_BASE,
+                           ADC_INT_NUMBER2, VPRIM_ADC_SOC_NO_13);
+    ADC_enableInterrupt(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
+    ADC_enableContinuousMode(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
+    ADC_clearInterruptStatus(ISR3_PERIPHERAL_TRIG_BASE, ADC_INT_NUMBER2);
 
     //
     //Note the ISR1 is enabled in the PIE, though the peripheral interrupt is

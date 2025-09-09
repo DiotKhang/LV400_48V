@@ -574,7 +574,6 @@ static inline void runISR1(void)
     HWREGH(ISR1_PERIPHERAL_TRIG_BASE + EPWM_O_CMPC) =
                                         pwmISRTrig_ticks;
     #pragma diag_warning = 173
-    countcheckISR1+=1;
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
@@ -584,8 +583,8 @@ static inline void runISR1_secondTime(void)
 {
     EPWM_disablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
     EPWM_disablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
-    // HAL_setupISR1Trigger(MIN_PWM_SWITCHING_FREQUENCY_HZ * 0.3);
-    EPWM_disableInterrupt(ISR1_PERIPHERAL_TRIG_BASE);
+    HAL_setupISR1Trigger(MIN_PWM_SWITCHING_FREQUENCY_HZ * 0.3);
+    // EPWM_disableInterrupt(ISR1_PERIPHERAL_TRIG_BASE);
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
@@ -787,7 +786,6 @@ static inline void runISR2_primToSecPowerFlow(void)
        (pwmDutyPrim_pu != pwmDutyPrimRef_pu) ||
        (pwmDutySec_pu != pwmDutySecRef_pu))
     {
-        countcheckISR2+=1;
         pwmDutyPrim_pu = pwmDutyPrimRef_pu;
         pwmDutySec_pu = pwmDutySecRef_pu;
         pwmPhaseShiftPrimSec_ns = pwmPhaseShiftPrimSecRef_ns;
