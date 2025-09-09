@@ -5,14 +5,7 @@
 // TITLE:  C28x Driverlib Header File
 //
 //#############################################################################
-// $TI Release: TIDM_02002 v2.00.05.00 $
-// $Release Date: Tue May  6 00:20:53 CDT 2025 $
-// $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
-//
-// ALL RIGHTS RESERVED
-// $
-//#############################################################################
+
 #ifndef DRIVERLIB_H
 #define DRIVERLIB_H
 

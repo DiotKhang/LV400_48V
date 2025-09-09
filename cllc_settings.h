@@ -313,7 +313,7 @@ extern "C" {
 //=============================================================================
 // User code settings file
 //=============================================================================
-#include "user_settings.h"
+#include "cllc_user_settings.h"
 
 #ifdef __cplusplus
 }

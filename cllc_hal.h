@@ -26,7 +26,7 @@ extern "C" {
 #include "inc/hw_types.h"
 #include "driverlib.h"
 #include "device.h"
-#include "settings.h"
+#include "cllc_settings.h"
 //
 // the function prototypes
 //
