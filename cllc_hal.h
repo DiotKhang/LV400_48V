@@ -34,6 +34,13 @@ void HAL_setupDevice(void);
 void HAL_disablePWMClkCounting(void);
 void HAL_enablePWMClkCounting(void);
 void HAL_setupPWM(uint16_t powerFlowDir);
+void HAL_setupCMPSSHighLowLimit(uint32_t base1,
+                                 float32_t currentLimit,
+                                 float32_t currentMaxSense,
+                                 uint16_t hysteresis,
+                                 uint16_t filterClkPrescalar,
+                                 uint16_t filterSampleWindow,
+                                 uint16_t filterThreshold);
 void HAL_setupHRPWMinUpDownCountModeWithDeadBand(uint32_t base1,
                                 float32_t pwmFreq_Hz,
                                 float32_t pwmSysClkFreq_Hz,
@@ -51,11 +58,12 @@ void HAL_setupProfilingGPIO(void);
 void HAL_setupSynchronousRectificationAction(uint16_t powerFlow);
 void HAL_setupSynchronousRectificationActionDebug(uint16_t powerFlow);
 void HAL_setupBoardProtection(void);
+void HAL_setupIprimSensedSignalChain(void);
 void HAL_setupTrigForADC(void);
 void HAL_setupECAPinPWMMode(uint32_t base1,
                             float32_t pwmFreq_Hz,
                             float32_t pwmSysClkFreq_Hz);
-
+void HAL_setupCLA(void);
 //
 // ISR related
 //

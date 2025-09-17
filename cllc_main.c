@@ -15,7 +15,44 @@
 #include "cllc.h"
 
 //
-//---  State Machine Related --- (SKIPPED)
+//---  State Machine Related ---
+//
+int16_t vTimer0[4];         // Virtual Timers slaved off CPU Timers (A events)
+int16_t vTimer1[4];         // Virtual Timers slaved off CPU Timers (B events)
+
+//
+// Variable declarations for state machine
+//
+void (*Alpha_State_Ptr)(void);  // Base States pointer
+void (*A_Task_Ptr)(void);       // State pointer A branch
+void (*B_Task_Ptr)(void);       // State pointer B branch
+void (*C_Task_Ptr)(void);       // State pointer C branch
+
+//
+// State Machine function prototypes
+//------------------------------------
+// Alpha states
+//
+void A0(void);  //state A0
+void B0(void);  //state B0
+
+//
+// A branch states
+//
+void A1(void);  //state A1
+
+//
+// B branch states
+//
+void B1(void);  //state B1
+void B2(void);  //state B2
+void B3(void);  //state B3
+
+//
+// Note that the watchdog is disabled in codestartbranch.asm
+// for this project. This is to prevent it from expiring while
+// c_init routine initializes the global variables before
+// reaching the main()
 //
 
 void main(void)
@@ -61,6 +98,11 @@ void main(void)
     HAL_setupADC();
 
     //
+    // Iprim is sensed by PGA, setup the peripherals
+    //
+    // HAL_setupIprimSensedSignalChain();
+
+    //
     // Profiling GPIO
     //
     HAL_setupProfilingGPIO();
@@ -81,7 +123,7 @@ void main(void)
     // clear any spurious flags
     // setup protection and trips for the board
     //
-    // HAL_setupBoardProtection();
+    HAL_setupBoardProtection();
 
     //
     // set's a global variable that indicates which build level is running
@@ -207,3 +249,116 @@ interrupt void ISR3(void)
     DINT;
     HAL_clearISR3InterruputFlag();
 }
+
+//
+//=============================================================================
+//  STATE-MACHINE SEQUENCING AND SYNCRONIZATION FOR SLOW BACKGROUND TASKS
+//=============================================================================
+//
+//
+//--------------------------------- FRAME WORK --------------------------------
+//
+void A0(void)
+{
+    //
+    // loop rate synchronizer for A-tasks
+    //
+    if(GET_TASKA_TIMER_OVERFLOW_STATUS == 1)
+    {
+        CLEAR_TASKA_TIMER_OVERFLOW_FLAG;    // clear flag
+
+        //
+        // jump to an A Task (A1,A2,A3,...)
+        //
+        (*A_Task_Ptr)();
+
+        vTimer0[0]++;           // virtual timer 0, instance 0 (spare)
+    }
+    Alpha_State_Ptr = &B0;      // Comment out to allow only A tasks
+}
+
+void B0(void)
+{
+    //
+    // loop rate synchronizer for B-tasks
+    //
+    if(GET_TASKB_TIMER_OVERFLOW_STATUS  == 1)
+    {
+        CLEAR_TASKB_TIMER_OVERFLOW_FLAG;                // clear flag
+
+        //
+        // jump to a B Task (B1,B2,B3,...)
+        //
+        (*B_Task_Ptr)();
+
+        vTimer1[0]++;           // virtual timer 1, instance 0 (spare)
+    }
+
+    //
+    // Allow A state tasks
+    //
+    Alpha_State_Ptr = &A0;
+}
+
+//
+//=============================================================================
+//  A - TASKS (executed in every 1 msec)
+//=============================================================================
+//
+
+void A1(void)
+{
+#if SFRA_TYPE != SFRA_DISABLED
+    runSFRABackGroundTasks();
+#endif
+
+    // changeSynchronousRectifierPwmBehavior(POWER_FLOW);
+
+    //
+    //the next time CpuTimer0 'counter' reaches Period value go to A2
+    //
+    A_Task_Ptr = &A1;
+
+}
+
+//
+//=============================================================================
+//  B - TASKS (executed in every 5 msec)
+//=============================================================================
+//
+
+void B1(void)
+{
+
+    // updateBoardStatus();
+
+    //
+    //the next time CpuTimer1 'counter' reaches Period value go to B2
+    //
+    B_Task_Ptr = &B2;
+}
+
+void B2(void)
+{
+
+    //
+    //the next time CpuTimer1 'counter' reaches Period value go to B3
+    //
+    B_Task_Ptr = &B3;
+
+}
+
+void B3(void)
+{
+    // HAL_toggleLED1();
+
+    //
+    //the next time CpuTimer1 'counter' reaches Period value go to B1
+    //
+    B_Task_Ptr = &B1;
+
+}
+
+// //
+// // No more.
+// //

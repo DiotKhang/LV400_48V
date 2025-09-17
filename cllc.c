@@ -558,3 +558,56 @@ void setBuildLevelIndicatorVariable(void)
 
 }
 
+void changeSynchronousRectifierPwmBehavior(uint16_t powerFlow)
+{
+    if(pwmSwState.PwmSwState_Enum !=
+            pwmSwStateActive.PwmSwState_Enum)
+    {
+
+        if(pwmSwState.PwmSwState_Enum ==
+                pwmSwState_synchronousRectification_fixedDuty)
+        {
+            HAL_resetSynchronousRectifierTripAction(powerFlow);
+
+            pwmSwStateActive.PwmSwState_Enum =
+                    pwmSwState_synchronousRectification_fixedDuty;
+
+            //
+            // the below is emperical value for this design
+            // accounting for delay in digital isolators
+            //
+
+            pwmPhaseShiftPrimSecRef_ns = 81;
+        }
+        else if(pwmSwState.PwmSwState_Enum ==
+                pwmSwState_synchronousRectification_active)
+        {
+            HAL_setupSynchronousRectifierTripAction(powerFlow);
+
+            pwmSwStateActive.PwmSwState_Enum =
+                    pwmSwState_synchronousRectification_active;
+
+            //
+            // CMPSS trip is cleared on PWM period and zero,
+            // however this causes some delay in PWM coming out of trip
+            // this is compensated by reducing the phase shift as needed
+            // the below is emperical value for this design
+            //
+            pwmPhaseShiftPrimSecRef_ns = 81;
+        }
+        else
+        {
+
+            pwmSwStateActive.PwmSwState_Enum =
+                    pwmSwState.PwmSwState_Enum;
+
+           //
+           // do nothing, simply change the IOs which is done in the
+            // routine outside this if statement
+           //
+        }
+
+        HAL_setupPWMpins(pwmSwStateActive.PwmSwState_Enum);
+    }
+
+}

@@ -119,7 +119,7 @@
 //
 // 0 is disabled, 1 is enabled
 //
-#define OVERSAMPLING_ENABLED 1
+#define OVERSAMPLING_ENABLED 0
 //
 // enabled is 1, if 0 then 4x oversampling is used
 //
@@ -138,6 +138,10 @@
 #define IPRIM_ADC_ACQPS_SYS_CLKS 30
 #define IPRIM_ADCRESULTREGBASE ADCARESULT_BASE
 #define IPRIM_ADCREAD ADC_readResult(IPRIM_ADCRESULTREGBASE, IPRIM_ADC_SOC_NO)
+
+#define IPRIM_PGA_REF_DAC_MODULE DACA_BASE
+#define IPRIM_PGA_MODULE PGA1_BASE
+#define IPRIM_PGA_GAIN PGA_GAIN_24
 
 #define ISEC_ADC_MODULE  ADCA_BASE
 #define ISEC_ADC_PIN     ADC_CH_ADCIN9

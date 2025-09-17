@@ -125,7 +125,7 @@ extern "C" {
 #define SFRA_INJECTION_AMPLITUDE_LEVEL3 0.015
 
 //
-// CLLLC LAB
+// CLLC LAB
 // Power Flow Prim -> Sec
 // 1 -> Open loop check for PWM drivers,
 // 2 -> Open loop check for PWM drivers with protection,
@@ -138,7 +138,7 @@ extern "C" {
 // 8 -> Closed loop voltage with resistive load
 //
 
-#define LAB 1
+#define LAB 2
 
 #if LAB == 1
 #define CONTROL_RUNNING_ON 1
@@ -237,7 +237,7 @@ extern "C" {
 //
 // Power Stage Related Values
 //
-#define NOMINAL_PWM_SWITCHING_FREQUENCY_HZ ((float32_t)500.8*1000)
+#define NOMINAL_PWM_SWITCHING_FREQUENCY_HZ  ((float32_t)500.8*1000)
 #define MAX_PWM_SWITCHING_FREQUENCY_HZ ((float32_t)700*1000)
 #define MIN_PWM_SWITCHING_FREQUENCY_HZ ((float32_t)300*1000)
 

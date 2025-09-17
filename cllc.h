@@ -146,7 +146,7 @@ void updateBoardStatus(void);
 //
 //
 void setBuildLevelIndicatorVariable(void);
-// void changeSynchronousRectifierPwmBehavior(uint16_t powerFlow);
+void changeSynchronousRectifierPwmBehavior(uint16_t powerFlow);
 
 //
 // typedefs
@@ -342,23 +342,12 @@ static inline void readSensedSignalsPrimToSecPowerFlow(void)
 {
     iPrimSensed_pu = (float32_t)IPRIM_ADCREAD *
                                        ADC_PU_SCALE_FACTOR;
-
-    iSecSensed_pu =  (float32_t)ISEC_OVERSAMPLE_ADCREAD *
+    iSecSensed_pu =  (float32_t)ISEC_ADCREAD_1 *
                                        ADC_PU_SCALE_FACTOR;
-    vPrimSensed_pu = (float32_t)VPRIM_OVERSAMPLE_ADCREAD *
+    vPrimSensed_pu = (float32_t)VPRIM_ADCREAD_1 *
                                        ADC_PU_SCALE_FACTOR;
-    vSecSensed_pu =  (float32_t)VSEC_OVERSAMPLE_ADCREAD *
+    vSecSensed_pu =  (float32_t)VSEC_ADCREAD_1 *
                                         ADC_PU_SCALE_FACTOR;
-
-    vSecSensed_pu = vSecSensed_pu *
-                  (VSEC_MAX_SENSE_VOLTS / VSEC_OPTIMAL_RANGE_VOLTS);
-
-    iSecSensed_pu = (iSecSensed_pu *
-                           iSecSensedCalXvariable_pu) +
-                           iSecSensedCalIntercept_pu;
-    iPrimSensed_pu = (iPrimSensed_pu *
-                            iPrimSensedCalXvariable_pu) +
-                            iPrimSensedCalIntercept_pu;
 }
 
 #pragma FUNC_ALWAYS_INLINE(readSensedSignalsSecToPrimPowerFlow)
@@ -595,21 +584,21 @@ static inline void runISR2_primToSecPowerFlow(void)
     //
     // Read Current and Voltage Measurements
     //
-    // readSensedSignalsPrimToSecPowerFlow();
+    readSensedSignalsPrimToSecPowerFlow();
+    updateBoardStatus();
+    if(clearTrip == 1)
+    {
+        HAL_clearPWMTripFlags(PRIM_LEG1_PWM_BASE);
+        HAL_clearPWMTripFlags(PRIM_LEG2_PWM_BASE);
+        HAL_clearPWMTripFlags(SEC_LEG1_PWM_BASE);
+        HAL_clearPWMTripFlags(SEC_LEG2_PWM_BASE);
 
-    // if(clearTrip == 1)
-    // {
-    //     HAL_clearPWMTripFlags(PRIM_LEG1_PWM_BASE);
-    //     HAL_clearPWMTripFlags(PRIM_LEG2_PWM_BASE);
-    //     HAL_clearPWMTripFlags(SEC_LEG1_PWM_BASE);
-    //     HAL_clearPWMTripFlags(SEC_LEG2_PWM_BASE);
+        #if TEST_SETUP == TEST_SETUP_EMULATED_BATTERY
+            closeGiLoop = 1;
+        #endif
 
-    //     #if TEST_SETUP == TEST_SETUP_EMULATED_BATTERY
-    //         closeGiLoop = 1;
-    //     #endif
-
-    //     clearTrip = 0;
-    // }
+        clearTrip = 0;
+    }
 
 //     if(closeGiLoop == 1)
 //     {

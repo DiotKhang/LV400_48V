@@ -1123,6 +1123,51 @@ void HAL_setupSynchronousRectificationActionDebug(uint16_t powerFlow)
     GPIO_setPinConfig(GPIO_XBAR2_PIN_CONFIG);
 }
 
+void HAL_setupIprimSensedSignalChain(void)
+{
+    //
+    // Set VDAC as the DAC reference voltage.
+    // Edit here to use ADC VREF as the reference voltage.
+    //
+    DAC_setReferenceVoltage(IPRIM_PGA_REF_DAC_MODULE, DAC_REF_ADC_VREFHI);
+    DAC_setGainMode(IPRIM_PGA_REF_DAC_MODULE, DAC_GAIN_TWO);
+
+    //
+    // Enable the DAC output
+    //
+    DAC_enableOutput(IPRIM_PGA_REF_DAC_MODULE);
+
+    //
+    // Set the DAC shadow output to 0
+    //
+    DAC_setShadowValue(IPRIM_PGA_REF_DAC_MODULE, 0);
+
+    //
+    // Delay for buffered DAC to power up
+    //
+    DEVICE_DELAY_US(10);
+
+    //
+    // Load shadow value into DAC
+    //
+    DAC_setShadowValue(IPRIM_PGA_REF_DAC_MODULE, 2048);
+
+    //
+    // Set PGA gain
+    //
+    PGA_setGain(IPRIM_PGA_MODULE, IPRIM_PGA_GAIN);
+
+    //
+    // No filter resistor for output
+    //
+    PGA_setFilterResistor(IPRIM_PGA_MODULE, PGA_LOW_PASS_FILTER_DISABLED);
+
+    //
+    // Enable PGA1
+    //
+    PGA_enable(IPRIM_PGA_MODULE);
+}
+
 void HAL_setupBoardProtection()
 {
     //
@@ -1748,6 +1793,102 @@ void HAL_setupSynchronousRectificationAction(uint16_t powerFlow)
         // not a valid option, do nothing
         //
 
+    }
+
+}
+
+void HAL_setupCMPSSHighLowLimit(uint32_t base1,
+                                 float32_t currentLimit,
+                                 float32_t currentMaxSense,
+                                 uint16_t hysteresis,
+                                 uint16_t filterClkPrescalar,
+                                 uint16_t filterSampleWindow,
+                                 uint16_t filterThreshold)
+{
+    //
+    //Enable CMPSS1
+    //
+    CMPSS_enableModule(base1);
+
+    //
+    //Use VDDA as the reference for comparator DACs
+    //
+    CMPSS_configDAC(base1,
+                 CMPSS_DACVAL_SYSCLK | CMPSS_DACREF_VDDA | CMPSS_DACSRC_SHDW);
+
+    //
+    //Set DAC to H~75% and L ~25% values
+    //
+    CMPSS_setDACValueHigh(base1,
+                          2048 +
+                          (int16_t)((float)currentLimit * (float)2048.0 /
+                                  (float)currentMaxSense));
+    CMPSS_setDACValueLow(base1,
+                         2048 -
+                         (int16_t)((float)currentLimit * (float)2048.0 /
+                                 (float)currentMaxSense));
+    //
+    // Make sure the asynchronous path compare high and low event
+    // does not go to the OR gate with latched digital filter output
+    // hence no additional parameter CMPSS_OR_ASYNC_OUT_W_FILT  is passed
+    // comparator oputput is "not" inverted for high compare event
+    //
+    CMPSS_configHighComparator(base1, CMPSS_INSRC_DAC );
+    //
+    // Comparator output is inverted for for low compare event
+    //
+    CMPSS_configLowComparator(base1, CMPSS_INSRC_DAC | CMPSS_INV_INVERTED);
+
+    //
+    // The following sets the digital filter for the trip flag for high and low
+    // the below configuration will buffer last 10 samples and flag a trip if
+    // 7 of them are high
+    //
+    CMPSS_configFilterHigh(base1,
+                           filterClkPrescalar,
+                           filterSampleWindow,
+                           filterThreshold);
+    CMPSS_configFilterLow(base1,
+                          filterClkPrescalar,
+                          filterSampleWindow,
+                          filterThreshold);
+
+    //
+    //Reset filter logic & start filtering
+    //
+    CMPSS_initFilterHigh(base1);
+    CMPSS_initFilterLow(base1);
+
+    //
+    // Configure CTRIPOUT path
+    //
+    CMPSS_configOutputsHigh(base1, CMPSS_TRIP_FILTER | CMPSS_TRIP_FILTER);
+    CMPSS_configOutputsLow(base1, CMPSS_TRIP_FILTER | CMPSS_TRIP_FILTER);
+
+    //
+    //Comparator hysteresis control , set to 2x typical value
+    //
+    CMPSS_setHysteresis(base1, hysteresis);
+
+    //
+    // Clear the latched comparator events
+    //
+    CMPSS_clearFilterLatchHigh(base1);
+    CMPSS_clearFilterLatchLow(base1);
+}
+
+void HAL_toggleLED1(void)
+{
+    static uint16_t ledCnt1 = 0;
+
+    if(ledCnt1 == 0)
+    {
+        GPIO_togglePin(GPIO_LED1);
+        ledCnt1 = 5;
+    }
+    else
+    {
+        ledCnt1--;
     }
 
 }
