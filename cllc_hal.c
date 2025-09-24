@@ -164,6 +164,63 @@ void HAL_setupPWMinUpDownCountMode(uint32_t base1,
 
 }
 
+void HAL_setupCLA(void)
+{
+    //
+    // setup CLA to register an interrupt
+    //
+#if ISR1_RUNNING_ON == CLA_CORE
+
+    memcpy((uint32_t *)&Cla1ProgRunStart, (uint32_t *)&Cla1ProgLoadStart,
+            (uint32_t)&Cla1ProgLoadSize );
+
+    //
+    // first assign memory to CLA
+    //
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS0, MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS1, MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS2, MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS3, MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS4, MEMCFG_LSRAMMASTER_CPU_CLA1);
+    MemCfg_setLSRAMMasterSel(MEMCFG_SECT_LS5, MEMCFG_LSRAMMASTER_CPU_CLA1);
+
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS0, MEMCFG_CLA_MEM_DATA);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS1, MEMCFG_CLA_MEM_DATA);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS2, MEMCFG_CLA_MEM_PROGRAM);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS3, MEMCFG_CLA_MEM_PROGRAM);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS4, MEMCFG_CLA_MEM_PROGRAM);
+    MemCfg_setCLAMemType(MEMCFG_SECT_LS5, MEMCFG_CLA_MEM_PROGRAM);
+
+    //
+    // Suppressing #770-D conversion from pointer to smaller integer
+    // The CLA address range is 16 bits so the addresses passed to the MVECT
+    // registers will be in the lower 64KW address space. Turn the warning
+    // back on after the MVECTs are assigned addresses
+    //
+    #pragma diag_suppress = 770
+
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_1, (uint16_t)&Cla1Task1);
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_2, (uint16_t)&Cla1Task2);
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_3, (uint16_t)&Cla1Task3);
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_4, (uint16_t)&Cla1Task4);
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_5, (uint16_t)&Cla1Task5);
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_6, (uint16_t)&Cla1Task6);
+    CLA_mapTaskVector(CLA1_BASE , CLA_MVECT_7, (uint16_t)&Cla1Task7);
+    CLA_mapBackgroundTaskVector(CLA1_BASE, (uint16_t)&Cla1BackgroundTask);
+
+    #pragma diag_warning = 770
+
+    CLA_enableIACK(CLA1_BASE);
+    CLA_enableTasks(CLA1_BASE, CLA_TASKFLAG_ALL);
+
+    CLA_enableHardwareTrigger(CLA1_BASE);
+    CLA_setTriggerSource(CLA_TASK_8, ISR2_TRIG_CLA);
+    CLA_enableBackgroundTask(CLA1_BASE);
+
+    CLA_setTriggerSource(CLA_TASK_1, ISR1_TRIG_CLA);
+#endif
+}
+
 void HAL_setupPWM(uint16_t powerFlowDir)
 {
     if(powerFlowDir == POWER_FLOW_PRIM_SEC)
@@ -1030,6 +1087,13 @@ void HAL_setupProfilingGPIO(void)
     GPIO_setPinConfig(GPIO_PROFILING1_PIN_CONFIG);
     GPIO_setPinConfig(GPIO_PROFILING2_PIN_CONFIG);
     GPIO_setPinConfig(GPIO_PROFILING3_PIN_CONFIG);
+
+#if ISR1_RUNNING_ON == CLA_CORE
+    GPIO_setMasterCore(GPIO_PROFILING1, GPIO_CORE_CPU1_CLA1);
+#endif
+#if ISR2_RUNNING_ON == CLA_CORE
+    GPIO_setMasterCore(GPIO_PROFILING2, GPIO_CORE_CPU1_CLA1);
+#endif
 }
 
 void HAL_setupTrigForADC()

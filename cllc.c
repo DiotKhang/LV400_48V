@@ -30,6 +30,8 @@ PwmSwState_EnumType pwmSwStateActive, pwmSwState;
 
 PowerFlowState_EnumType powerFlowStateActive, powerFlowState;
 
+PrechargeState_EnumType PrechargeState;
+
 // CommandSentTo_AC_DC_EnumType commandSentTo_AC_DC;
 
 GI gi;
@@ -141,6 +143,8 @@ int16_t pwmPhaseShiftPrimSec_countDirection;
 volatile uint16_t pwmISRTrig_ticks;
 
 volatile uint32_t cla_task_counter;
+
+volatile uint32_t precharge_count;
 
 void runISR3(void)
 {

@@ -1,0 +1,118 @@
+//#############################################################################
+//
+// FILE:   clatasks.cla
+//
+// TITLE: CLA Task file
+//
+//#############################################################################
+
+#include "cllc.h"
+
+//
+// Task 1
+//
+__attribute__((interrupt))  void Cla1Task1 ( void )
+{
+
+    #if(CLA_DEBUG == 1)
+        __mdebugstop();
+    #endif
+
+    #if ISR1_RUNNING_ON == CLA_CORE
+        HAL_setProfilingGPIO1();
+        // similar to the C28x core, when there is a change to the PWM registers
+        // a one time sync is enabled after updating the PWM registers
+        // the sync is disabled in the next ISR occurrence to enable Hi-Res
+        // on CLA this is handled by keeping count of the first execution
+        // of the ISR and the second using cla_task_counter
+        // global variable.
+        if(cla_task_counter == 0)
+        {
+            runISR1();
+            cla_task_counter++;
+        }
+        else
+        {
+            runISR1_secondTime();
+            cla_task_counter = 0;
+        }
+        HAL_resetProfilingGPIO1();
+    #endif
+
+    #if(CLA_DEBUG == 1)
+        __mdebugstop();
+    #endif
+
+}
+
+//
+// Task 2 - Title Here
+//
+__attribute__((interrupt))  void Cla1Task2 ( void )
+{
+
+}
+
+//
+// Task 3 - Title Here
+//
+__attribute__((interrupt))  void Cla1Task3 ( void )
+{
+
+}
+
+//
+// Task 4 - Title Here
+//
+__attribute__((interrupt))  void Cla1Task4 ( void )
+{
+
+}
+
+//
+// Task 5 - Title Here
+//
+__attribute__((interrupt))  void Cla1Task5 ( void )
+{
+
+}
+
+//
+// Task 6 - Title Here
+//
+__attribute__((interrupt))  void Cla1Task6 ( void )
+{
+
+}
+
+//
+// Task 7 - One Time Initialization Task
+//
+__attribute__((interrupt))  void Cla1Task7 ( void )
+{
+
+}
+
+//
+// Background Task
+//
+__attribute__((interrupt("background")))  void Cla1BackgroundTask ( void )
+{
+    #if(CLA_DEBUG == 1)
+        __mdebugstop();
+    #endif
+    #if ISR2_RUNNING_ON == CLA_CORE
+        #if POWER_FLOW == POWER_FLOW_PRIM_SEC
+            runISR2_primToSecPowerFlow();
+        #else
+            runISR2_secToPrimPowerFlow();
+        #endif
+    #endif
+    #if(CLA_DEBUG == 1)
+        __mdebugstop();
+    #endif
+}
+
+//
+// End of File
+//

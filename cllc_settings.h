@@ -138,10 +138,10 @@ extern "C" {
 // 8 -> Closed loop voltage with resistive load
 //
 
-#define LAB 2
+#define LAB 1
 
 #if LAB == 1
-#define CONTROL_RUNNING_ON 1
+#define CONTROL_RUNNING_ON C28x_CORE
 #define POWER_FLOW POWER_FLOW_PRIM_SEC
 #define INCR_BUILD OPEN_LOOP_BUILD
 #define TEST_SETUP TEST_SETUP_RES_LOAD
@@ -261,6 +261,10 @@ extern "C" {
 #define ISEC_TRIP_LIMIT_AMPS  ((float32_t)40)
 #define IPRIM_TANK_TRIP_LIMIT_AMPS ((float32_t)30)
 #define ISEC_TANK_TRIP_LIMIT_AMPS  ((float32_t)40)
+
+#define CONTROL_PRECHARGE_TIME 2    // 2 seconds
+#define CONTROL_PRECHARGE_COUNT (CONTROL_PRECHARGE_TIME * ISR2_FREQUENCY_HZ)
+#define CONTROL_PRECHARGE_PWM_DEADBAND_MAX (PWMSYSCLOCK_FREQ_HZ / NOMINAL_PWM_SWITCHING_FREQUENCY_HZ / 2.0f)
 
 //
 // Control Loop Design

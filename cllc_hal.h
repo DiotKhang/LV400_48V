@@ -64,6 +64,26 @@ void HAL_setupECAPinPWMMode(uint32_t base1,
                             float32_t pwmFreq_Hz,
                             float32_t pwmSysClkFreq_Hz);
 void HAL_setupCLA(void);
+
+//
+//CLA C Tasks defined in Cla1Tasks_C.cla
+//
+__attribute__((interrupt))  void Cla1Task1();
+__attribute__((interrupt))  void Cla1Task2();
+__attribute__((interrupt))  void Cla1Task3();
+__attribute__((interrupt))  void Cla1Task4();
+__attribute__((interrupt))  void Cla1Task5();
+__attribute__((interrupt))  void Cla1Task6();
+__attribute__((interrupt))  void Cla1Task7();
+__attribute__((interrupt))  void Cla1BackgroundTask();
+
+extern uint16_t Cla1ProgLoadStart;
+extern uint16_t Cla1ProgLoadEnd;
+extern uint16_t Cla1ProgLoadSize;
+extern uint16_t Cla1ProgRunStart;
+extern uint16_t Cla1ProgRunEnd;
+extern uint16_t Cla1ProgRunSize;
+
 //
 // ISR related
 //

@@ -58,7 +58,7 @@ extern "C" {
 #define GV_PRECOMPUTE_RUN DCL_runDF13_C6
 
 #else
-#include "DCLCLA.h"
+#include "DCL/DCLCLA.h"
 #define GI DCL_DF13_CLA
 #define GV DCL_DF13_CLA
 
@@ -218,6 +218,18 @@ typedef union{
 
 extern  PowerFlowState_EnumType powerFlowStateActive, powerFlowState;
 
+typedef union{
+    enum
+    {
+        precharge_none = 0,
+        precharge_inprogress = 1,
+        precharge_finished = 2
+    }PrechargeState_Enum;
+    int32_t pad;
+}PrechargeState_EnumType;
+
+extern PrechargeState_EnumType PrechargeState;
+extern volatile uint32_t precharge_count;
 //
 // globals
 //
@@ -577,6 +589,37 @@ static inline void runISR1_secondTime(void)
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
+#pragma FUNC_ALWAYS_INLINE(precharge)
+static inline void precharge(void)
+{
+    if (PrechargeState.PrechargeState_Enum == precharge_none)
+    {
+        pwmDeadBandFEDPrimRef_ns = CONTROL_PRECHARGE_PWM_DEADBAND_MAX;
+        pwmDeadBandFEDPrim_ticks = CONTROL_PRECHARGE_PWM_DEADBAND_MAX;
+        calculatePWMDeadBandPrimTicks();
+        HAL_updatePWMDeadBandPrim(pwmDeadBandREDPrim_ticks,
+                            pwmDeadBandFEDPrim_ticks);
+        precharge_count=0;
+        PrechargeState.PrechargeState_Enum == precharge_inprogress;
+    }
+    if (PrechargeState.PrechargeState_Enum == precharge_inprogress)
+    {
+        if (precharge_count < CONTROL_PRECHARGE_COUNT)
+        {
+            precharge_count++;
+            pwmDeadBandREDPrimRef_ns = (CONTROL_PRECHARGE_COUNT-precharge_count)*CONTROL_PRECHARGE_PWM_DEADBAND_MAX;
+            if (pwmDeadBandREDPrimRef_ns<PRIM_PWM_DEADBAND_RED_NS) pwmDeadBandREDPrimRef_ns=PRIM_PWM_DEADBAND_RED_NS;
+            pwmDeadBandFEDPrimRef_ns = pwmDeadBandREDPrimRef_ns;
+            calculatePWMDeadBandPrimTicks();
+            HAL_updatePWMDeadBandPrim(pwmDeadBandREDPrim_ticks,
+                                pwmDeadBandFEDPrim_ticks);
+        }
+        else
+        {
+            PrechargeState.PrechargeState_Enum = precharge_finished;
+        }
+    }
+}
 
 #pragma FUNC_ALWAYS_INLINE(runISR2_primToSecPowerFlow)
 static inline void runISR2_primToSecPowerFlow(void)
@@ -585,7 +628,11 @@ static inline void runISR2_primToSecPowerFlow(void)
     // Read Current and Voltage Measurements
     //
     readSensedSignalsPrimToSecPowerFlow();
-    updateBoardStatus();
+    // updateBoardStatus();
+    HAL_setProfilingGPIO2();
+    if (PrechargeState.PrechargeState_Enum == precharge_finished){}
+    else precharge();
+
     if(clearTrip == 1)
     {
         HAL_clearPWMTripFlags(PRIM_LEG1_PWM_BASE);
@@ -764,7 +811,7 @@ static inline void runISR2_primToSecPowerFlow(void)
     // #endif
 
 
-
+    HAL_resetProfilingGPIO2();
     HAL_clearISR2PeripheralInterruptFlag();
 
     //

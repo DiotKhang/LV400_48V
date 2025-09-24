@@ -70,7 +70,7 @@ void main(void)
     //
     initGlobalVariables();
 
-    //
+    //  
     // Stop all PWM mode clock
     //
     HAL_disablePWMClkCounting();
@@ -184,7 +184,6 @@ interrupt void ISR1(void)
     //
     HAL_resetProfilingGPIO1();
     //
-    countcheckISR1+=1;
     Interrupt_register(ISR1_TRIG, &ISR1_second);
 }
 #endif
@@ -200,7 +199,6 @@ interrupt void ISR1_second(void)
     //
     HAL_resetProfilingGPIO1();
     //
-    countcheckISR1+=1;
     Interrupt_register(ISR1_TRIG, &ISR1);
 }
 #endif
@@ -216,9 +214,8 @@ interrupt void ISR2_primToSecPowerFlow(void)
     EINT;
     HAL_setProfilingGPIO2();
     runISR2_primToSecPowerFlow();
-    HAL_resetProfilingGPIO2();
     DINT;
-    countcheckISR2+=1;
+    HAL_resetProfilingGPIO2();
     HAL_clearISR2InterruputFlag();
 }
 
@@ -230,9 +227,9 @@ interrupt void ISR2_secToPrimPowerFlow(void)
     IER |= 0x4;
     IER &= 0x4;
     EINT;
-    HAL_setProfilingGPIO2();
+    // HAL_setProfilingGPIO2();
     runISR2_secToPrimPowerFlow();
-    HAL_resetProfilingGPIO2();
+    // HAL_resetProfilingGPIO2();
     DINT;
     HAL_clearISR2InterruputFlag();
 }
@@ -242,9 +239,7 @@ interrupt void ISR3(void)
 {
     EINT;
     HAL_setProfilingGPIO3();
-    countcheckISR3+=1;
     runISR3();
-    countcheckISR3+=1;
     HAL_resetProfilingGPIO3();
     DINT;
     HAL_clearISR3InterruputFlag();
