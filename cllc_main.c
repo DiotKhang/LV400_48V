@@ -212,10 +212,8 @@ interrupt void ISR2_primToSecPowerFlow(void)
     IER |= 0x4;
     IER &= 0x4;
     EINT;
-    HAL_setProfilingGPIO2();
     runISR2_primToSecPowerFlow();
     DINT;
-    HAL_resetProfilingGPIO2();
     HAL_clearISR2InterruputFlag();
 }
 

@@ -222,7 +222,7 @@ typedef union{
     enum
     {
         precharge_none = 0,
-        precharge_inprogress = 1,
+        precharge_starting = 1,
         precharge_finished = 2
     }PrechargeState_Enum;
     int32_t pad;
@@ -548,6 +548,52 @@ static inline void calculatePWMDeadBandPrimTicks(void)
 
 }
 
+#pragma FUNC_ALWAYS_INLINE(precharge)
+static inline void precharge(void)
+{
+    if (PrechargeState.PrechargeState_Enum == precharge_none)
+    {
+        // Set default variables
+        pwmDutyPrim_pu = pwmDutyPrimRef_pu;
+        pwmDutySec_pu = pwmDutySecRef_pu;
+        pwmPhaseShiftPrimSec_ns = pwmPhaseShiftPrimSecRef_ns;
+        precharge_count = CONTROL_PRECHARGE_COUNT;
+
+        // Set default phase-shift for secondary side
+        calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow();
+        EALLOW;
+        HWREG(SEC_LEG1_PWM_BASE + EPWM_O_TBPHS) = pwmPhaseShiftPrimSec_ticks;
+        HWREG(SEC_LEG2_PWM_BASE + EPWM_O_TBPHS) = pwmPhaseShiftPrimSec_ticks;
+        EDIS;
+        EPWM_enablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
+        EPWM_enablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
+    }
+    if (PrechargeState.PrechargeState_Enum == precharge_starting)
+    {
+        if (precharge_count > 0)
+        {
+            // Ramp-up phase-shift values
+            precharge_count--;
+            pwmPhaseShiftPrimSec_ticks = (int32_t)((float32_t)(CONTROL_PRECHARGE_TPBRD_MAX * 
+            precharge_count / CONTROL_PRECHARGE_COUNT) * TWO_RAISED_TO_THE_POWER_SIXTEEN);
+            // Update phase-shift values
+            EPWM_enablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
+            EALLOW;
+            HWREG(PRIM_LEG2_PWM_BASE + EPWM_O_TBPHS) = pwmPhaseShiftPrimSec_ticks;
+            EDIS;
+        }
+        else
+        {
+            // End pre-charge mode
+            PrechargeState.PrechargeState_Enum = precharge_finished;
+            EPWM_setPhaseShift(PRIM_LEG2_PWM_BASE, 0);
+            EPWM_disablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
+            EPWM_disablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
+            EPWM_disablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
+        }
+    }
+}
+
 #pragma FUNC_ALWAYS_INLINE(EPWM_setCounterCompareValue)
 #pragma FUNC_ALWAYS_INLINE(EPWM_enablePhaseShiftLoad)
 #pragma FUNC_ALWAYS_INLINE(runISR1)
@@ -578,7 +624,6 @@ static inline void runISR1(void)
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
-
 #pragma FUNC_ALWAYS_INLINE(runISR1_secondTime)
 static inline void runISR1_secondTime(void)
 {
@@ -589,50 +634,17 @@ static inline void runISR1_secondTime(void)
     HAL_clearISR1PeripheralInterruptFlag();
 }
 
-#pragma FUNC_ALWAYS_INLINE(precharge)
-static inline void precharge(void)
-{
-    if (PrechargeState.PrechargeState_Enum == precharge_none)
-    {
-        pwmDeadBandFEDPrimRef_ns = CONTROL_PRECHARGE_PWM_DEADBAND_MAX;
-        pwmDeadBandFEDPrim_ticks = CONTROL_PRECHARGE_PWM_DEADBAND_MAX;
-        calculatePWMDeadBandPrimTicks();
-        HAL_updatePWMDeadBandPrim(pwmDeadBandREDPrim_ticks,
-                            pwmDeadBandFEDPrim_ticks);
-        precharge_count=0;
-        PrechargeState.PrechargeState_Enum == precharge_inprogress;
-    }
-    if (PrechargeState.PrechargeState_Enum == precharge_inprogress)
-    {
-        if (precharge_count < CONTROL_PRECHARGE_COUNT)
-        {
-            precharge_count++;
-            pwmDeadBandREDPrimRef_ns = (CONTROL_PRECHARGE_COUNT-precharge_count)*CONTROL_PRECHARGE_PWM_DEADBAND_MAX;
-            if (pwmDeadBandREDPrimRef_ns<PRIM_PWM_DEADBAND_RED_NS) pwmDeadBandREDPrimRef_ns=PRIM_PWM_DEADBAND_RED_NS;
-            pwmDeadBandFEDPrimRef_ns = pwmDeadBandREDPrimRef_ns;
-            calculatePWMDeadBandPrimTicks();
-            HAL_updatePWMDeadBandPrim(pwmDeadBandREDPrim_ticks,
-                                pwmDeadBandFEDPrim_ticks);
-        }
-        else
-        {
-            PrechargeState.PrechargeState_Enum = precharge_finished;
-        }
-    }
-}
-
 #pragma FUNC_ALWAYS_INLINE(runISR2_primToSecPowerFlow)
 static inline void runISR2_primToSecPowerFlow(void)
 {
+    HAL_setProfilingGPIO2();
     //
     // Read Current and Voltage Measurements
     //
     readSensedSignalsPrimToSecPowerFlow();
     // updateBoardStatus();
-    HAL_setProfilingGPIO2();
-    if (PrechargeState.PrechargeState_Enum == precharge_finished){}
-    else precharge();
 
+    // Let start by clearTrip = 1
     if(clearTrip == 1)
     {
         HAL_clearPWMTripFlags(PRIM_LEG1_PWM_BASE);
@@ -640,209 +652,25 @@ static inline void runISR2_primToSecPowerFlow(void)
         HAL_clearPWMTripFlags(SEC_LEG1_PWM_BASE);
         HAL_clearPWMTripFlags(SEC_LEG2_PWM_BASE);
 
-        #if TEST_SETUP == TEST_SETUP_EMULATED_BATTERY
-            closeGiLoop = 1;
-        #endif
-
         clearTrip = 0;
+
+        // Ready to go to mode pre-charge
+        PrechargeState.PrechargeState_Enum = precharge_none;
+        EPWM_enablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
+        EALLOW;
+        HWREG(PRIM_LEG2_PWM_BASE + EPWM_O_TBPHS) = (int32_t)((float32_t)(CONTROL_PRECHARGE_TPBRD_MAX) 
+                                    * TWO_RAISED_TO_THE_POWER_SIXTEEN);
+        EDIS;
     }
 
-//     if(closeGiLoop == 1)
-//     {
-//         #if SFRA_TYPE == SFRA_CURRENT
-//             giError = (SFRA_INJECT(iSecRefSlewed_pu) -
-//                                              iSecSensed_pu);
-//         #else
-//             giError = (iSecRefSlewed_pu - iSecSensed_pu);
-//         #endif
-
-//         giOut = GI_IMMEDIATE_RUN(&gi,
-//                                        giError,
-//                                        giPartialComputedValue);
-
-//         if(giOut > GI_OUT_MAX)
-//         {
-//             giOut = GI_OUT_MAX;
-//         }
-//         if(giOut < GI_OUT_MIN)
-//         {
-//             giOut = GI_OUT_MIN;
-//         }
-
-//         giPartialComputedValue = GI_PRECOMPUTE_RUN(&gi,
-//                                                         giError,
-//                                                         giOut);
-
-//         if(giOut < pwmPeriodMin_pu)
-//         {
-//             giOut = pwmPeriodMin_pu;
-//         }
-
-//         pwmPeriod_pu = giOut;
-//     }
-//     else if(closeGvLoop == 1)
-//     {
-
-//         #if SFRA_TYPE == SFRA_VOLTAGE
-//             gvError = (SFRA_INJECT(vSecRefSlewed_pu) -
-//                                               vSecSensed_pu);
-//         #else
-//             gvError = (vSecRefSlewed_pu - vSecSensed_pu);
-//         #endif
-
-//         gvOut = GV_IMMEDIATE_RUN(&gv,
-//                                        gvError,
-//                                        gvPartialComputedValue);
-
-//         if(gvOut > GV_OUT_MAX)
-//         {
-//             gvOut = GV_OUT_MAX;
-//         }
-//         if(gvOut < GV_OUT_MIN)
-//         {
-//             gvOut = GV_OUT_MIN;
-//         }
-
-//         gvPartialComputedValue = GV_PRECOMPUTE_RUN(&gv,
-//                                                                 gvError,
-//                                                                 gvOut);
-
-//         if(gvOut < pwmPeriodMin_pu)
-//         {
-//             gvOut = pwmPeriodMin_pu;
-//         }
-
-//         pwmPeriod_pu = gvOut;
-//     }
-//     else
-//     {
-
-//         gi.d4 = pwmPeriod_pu;
-//         gi.d5 = pwmPeriod_pu;
-//         gi.d6 = pwmPeriod_pu;
-//         gi.d7 = pwmPeriod_pu;
-
-//         gv.d4 = pwmPeriod_pu;
-//         gv.d5 = pwmPeriod_pu;
-//         gv.d6 = pwmPeriod_pu;
-//         gv.d7 = pwmPeriod_pu;
-
-//         giError = (iSecRefSlewed_pu - iSecSensed_pu);
-//         gi.d0 = giError;
-//         gi.d1 = giError;
-//         gi.d2 = giError;
-//         gi.d3 = giError;
-
-//         giPartialComputedValue = pwmPeriod_pu;
-
-//         gvError = (vSecRefSlewed_pu - vSecSensed_pu);
-//         gv.d0 = gvError;
-//         gv.d1 = gvError;
-//         gv.d2 = gvError;
-//         gv.d3 = gvError;
-
-//         gvPartialComputedValue = pwmPeriod_pu;
-
-//         #if INCR_BUILD == OPEN_LOOP_BUILD
-//             #if SFRA_TYPE != SFRA_DISABLED
-//                 pwmPeriod_pu =
-//                                 SFRA_INJECT(pwmPeriodRef_pu);
-
-//             #else
-//                 pwmPeriod_pu = pwmPeriodRef_pu;
-//             #endif
-//         #else
-            pwmPeriod_pu = pwmPeriodRef_pu;
-//         #endif
-
-        if(pwmPeriod_pu < pwmPeriodMin_pu)
-        {
-            pwmPeriod_pu = pwmPeriodMin_pu;
-        }
-        else if(pwmPeriod_pu > 1.0)
-        {
-            pwmPeriod_pu = 1.0;
-        }
-    // }
-
-    if(fabsf(pwmPeriod_pu - pwmPeriodSlewed_pu) > 
-                        MAX_PERIOD_STEP_PU)
-    {
-        if(pwmPeriod_pu > pwmPeriodSlewed_pu)
-        {
-            pwmPeriodSlewed_pu = pwmPeriodSlewed_pu +
-                                        MAX_PERIOD_STEP_PU;
-        }
-        else
-        {
-            pwmPeriodSlewed_pu = pwmPeriodSlewed_pu -
-                                        MAX_PERIOD_STEP_PU;
-        }
-    }
+    if (PrechargeState.PrechargeState_Enum != precharge_finished) precharge();
     else
     {
-        pwmPeriodSlewed_pu = pwmPeriod_pu;
+        // Calculate control values in here
     }
-   pwmFrequency_Hz = (PWMSYSCLOCK_FREQ_HZ /
-                             (pwmPeriodSlewed_pu *
-                              pwmPeriodMax_ticks));
-
-
-    // #if SFRA_TYPE == SFRA_CURRENT
-    //     SFRA_COLLECT((float32_t *)& pwmPeriodSlewed_pu,
-    //                  (float32_t *)&iSecSensed_pu);
-    // #elif SFRA_TYPE == SFRA_VOLTAGE
-    //     SFRA_COLLECT((float32_t *)& pwmPeriodSlewed_pu,
-    //                  (float32_t *)&vSecSensed_pu);
-    // #else
-    //     //
-    //     //this is the default condition, and also when SFRA is disabled
-    //     //
-    //     #ifndef __TMS320C28XX_CLA__
-    //     slewSCIcommand++;
-    //     if(slewSCIcommand > 20)
-    //     {
-    //         slewSCIcommand = 0;
-    //         HAL_sendCommandOverSCI(
-    //                    commandSentTo_AC_DC.CommandSentTo_AC_DC_Enum,
-    //                            vPrimRef_Volts);
-    //     }
-    //     #endif
-    // #endif
-
-
+    
     HAL_resetProfilingGPIO2();
     HAL_clearISR2PeripheralInterruptFlag();
-
-    //
-    // Only issue ISR1 if there is a change in the PWM
-    //
-    if((pwmFrequencyPrev_Hz != pwmFrequency_Hz) ||
-       (pwmPhaseShiftPrimSec_ns != pwmPhaseShiftPrimSecRef_ns) ||
-       (pwmDutyPrim_pu != pwmDutyPrimRef_pu) ||
-       (pwmDutySec_pu != pwmDutySecRef_pu))
-    {
-        pwmDutyPrim_pu = pwmDutyPrimRef_pu;
-        pwmDutySec_pu = pwmDutySecRef_pu;
-        pwmPhaseShiftPrimSec_ns = pwmPhaseShiftPrimSecRef_ns;
-
-        calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow();
-
-        HAL_setupISR1Trigger(pwmFrequencyPrev_Hz);
-
-        pwmFrequencyPrev_Hz = pwmFrequency_Hz;
-
-        #if ISR1_RUNNING_ON == CLA_CORE
-              pwmISRTrig_ticks =
-                     ((TICKS_IN_PWM_FREQUENCY(pwmFrequency_Hz,
-                                          PWMSYSCLOCK_FREQ_HZ)>> 1) - 20);
-        #else
-              pwmISRTrig_ticks =
-                     ((TICKS_IN_PWM_FREQUENCY(pwmFrequency_Hz,
-                                          PWMSYSCLOCK_FREQ_HZ)>> 1) - 27);
-        #endif
-
-    }
 }
 
 #pragma FUNC_ALWAYS_INLINE(runISR2_secToPrimPowerFlow)

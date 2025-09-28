@@ -298,7 +298,6 @@ void HAL_setupPWM(uint16_t powerFlowDir)
         HWREGH(PRIM_LEG2_PWM_BASE + EPWM_O_DBCTL) =
                 (HWREGH(PRIM_LEG2_PWM_BASE + EPWM_O_DBCTL) | 0x3000);
 
-
         HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_DBCTL) =
                 (HWREGH(SEC_LEG1_PWM_BASE + EPWM_O_DBCTL) | 0x3000);
 
