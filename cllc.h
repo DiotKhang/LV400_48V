@@ -553,43 +553,31 @@ static inline void precharge(void)
 {
     if (PrechargeState.PrechargeState_Enum == precharge_none)
     {
-        // Set default variables
-        pwmDutyPrim_pu = pwmDutyPrimRef_pu;
-        pwmDutySec_pu = pwmDutySecRef_pu;
-        pwmPhaseShiftPrimSec_ns = pwmPhaseShiftPrimSecRef_ns;
-        precharge_count = CONTROL_PRECHARGE_COUNT;
-
-        // Set default phase-shift for secondary side
-        calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow();
+        // Set same phase between PWM1A & PWM2A
+        EPWM_enablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
         EALLOW;
-        HWREG(SEC_LEG1_PWM_BASE + EPWM_O_TBPHS) = pwmPhaseShiftPrimSec_ticks;
-        HWREG(SEC_LEG2_PWM_BASE + EPWM_O_TBPHS) = pwmPhaseShiftPrimSec_ticks;
+        HWREG(PRIM_LEG2_PWM_BASE + EPWM_O_TBPHS) = (int32_t)((float32_t)(CONTROL_PRECHARGE_TPBRD_MAX) 
+                                    * TWO_RAISED_TO_THE_POWER_SIXTEEN);
         EDIS;
-        EPWM_enablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
-        EPWM_enablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
+        // Reset count
+        precharge_count = CONTROL_PRECHARGE_COUNT;
     }
     if (PrechargeState.PrechargeState_Enum == precharge_starting)
     {
-        if (precharge_count > 0)
+        if (precharge_count >= 1)
         {
-            // Ramp-up phase-shift values
+            // Calculate Ramp-up phase-shift values
             precharge_count--;
-            pwmPhaseShiftPrimSec_ticks = (int32_t)((float32_t)(CONTROL_PRECHARGE_TPBRD_MAX * 
-            precharge_count / CONTROL_PRECHARGE_COUNT) * TWO_RAISED_TO_THE_POWER_SIXTEEN);
-            // Update phase-shift values
-            EPWM_enablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
             EALLOW;
-            HWREG(PRIM_LEG2_PWM_BASE + EPWM_O_TBPHS) = pwmPhaseShiftPrimSec_ticks;
+            HWREG(PRIM_LEG2_PWM_BASE + EPWM_O_TBPHS) = (int32_t)((float32_t)(CONTROL_PRECHARGE_TPBRD_MAX * 
+            precharge_count / CONTROL_PRECHARGE_COUNT) * TWO_RAISED_TO_THE_POWER_SIXTEEN);
             EDIS;
         }
         else
         {
             // End pre-charge mode
             PrechargeState.PrechargeState_Enum = precharge_finished;
-            EPWM_setPhaseShift(PRIM_LEG2_PWM_BASE, 0);
             EPWM_disablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
-            EPWM_disablePhaseShiftLoad(SEC_LEG1_PWM_BASE);
-            EPWM_disablePhaseShiftLoad(SEC_LEG2_PWM_BASE);
         }
     }
 }
@@ -656,11 +644,6 @@ static inline void runISR2_primToSecPowerFlow(void)
 
         // Ready to go to mode pre-charge
         PrechargeState.PrechargeState_Enum = precharge_none;
-        EPWM_enablePhaseShiftLoad(PRIM_LEG2_PWM_BASE);
-        EALLOW;
-        HWREG(PRIM_LEG2_PWM_BASE + EPWM_O_TBPHS) = (int32_t)((float32_t)(CONTROL_PRECHARGE_TPBRD_MAX) 
-                                    * TWO_RAISED_TO_THE_POWER_SIXTEEN);
-        EDIS;
     }
 
     if (PrechargeState.PrechargeState_Enum != precharge_finished) precharge();
@@ -668,9 +651,43 @@ static inline void runISR2_primToSecPowerFlow(void)
     {
         // Calculate control values in here
     }
-    
+
+    pwmFrequency_Hz = (PWMSYSCLOCK_FREQ_HZ /
+                             (pwmPeriodSlewed_pu *
+                              pwmPeriodMax_ticks));
+
     HAL_resetProfilingGPIO2();
     HAL_clearISR2PeripheralInterruptFlag();
+
+    //
+    // Only issue ISR1 if there is a change in the PWM
+    //
+    if((pwmFrequencyPrev_Hz != pwmFrequency_Hz) ||
+       (pwmPhaseShiftPrimSec_ns != pwmPhaseShiftPrimSecRef_ns) ||
+       (pwmDutyPrim_pu != pwmDutyPrimRef_pu) ||
+       (pwmDutySec_pu != pwmDutySecRef_pu))
+    {
+
+        pwmDutyPrim_pu = pwmDutyPrimRef_pu;
+        pwmDutySec_pu = pwmDutySecRef_pu;
+        pwmPhaseShiftPrimSec_ns = pwmPhaseShiftPrimSecRef_ns;
+
+        calculatePWMDutyPeriodPhaseShiftTicks_primToSecPowerFlow();
+
+        HAL_setupISR1Trigger(pwmFrequencyPrev_Hz);
+
+        pwmFrequencyPrev_Hz = pwmFrequency_Hz;
+
+        #if ISR1_RUNNING_ON == CLA_CORE
+              pwmISRTrig_ticks =
+                     ((TICKS_IN_PWM_FREQUENCY(pwmFrequency_Hz,
+                                          PWMSYSCLOCK_FREQ_HZ)>> 1) - 20);
+        #else
+              pwmISRTrig_ticks =
+                     ((TICKS_IN_PWM_FREQUENCY(pwmFrequency_Hz,
+                                          PWMSYSCLOCK_FREQ_HZ)>> 1) - 27);
+        #endif
+    }
 }
 
 #pragma FUNC_ALWAYS_INLINE(runISR2_secToPrimPowerFlow)
