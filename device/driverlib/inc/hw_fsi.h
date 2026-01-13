@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,7 +46,7 @@
 // The following are defines for the FSI register offsets
 //
 //*************************************************************************************************
-#define FSI_O_TX_MASTER_CTRL       0x0U            // Transmit master control register
+#define FSI_O_TX_MASTER_CTRL       0x0U            // Transmit main control register
 #define FSI_O_TX_CLK_CTRL          0x2U            // Transmit clock control register
 #define FSI_O_TX_OPER_CTRL_LO      0x4U            // Transmit operation control register low
 #define FSI_O_TX_OPER_CTRL_HI      0x5U            // Transmit operation control register high
@@ -68,10 +68,11 @@
 #define FSI_O_TX_USER_CRC          0x18U           // Transmit user-defined CRC register
 #define FSI_O_TX_ECC_DATA          0x20U           // Transmit ECC data register
 #define FSI_O_TX_ECC_VAL           0x22U           // Transmit ECC value register
+#define FSI_O_TX_DLYLINE_CTRL      0x24U           // Transmit delay Line control register
 #define FSI_O_TX_BUF_BASE(i)       (0x40U + (i))   // (0 <= i < 16) Base address for transmit
                                                    // buffer
 
-#define FSI_O_RX_MASTER_CTRL       0x0U            // Receive master control register
+#define FSI_O_RX_MASTER_CTRL       0x0U            // Receive main control register
 #define FSI_O_RX_OPER_CTRL         0x4U            // Receive operation control register
 #define FSI_O_RX_FRAME_INFO        0x6U            // Receive frame control register
 #define FSI_O_RX_FRAME_TAG_UDATA   0x7U            // Receive frame tag and user data register
@@ -98,8 +99,16 @@
 #define FSI_O_RX_ECC_VAL           0x22U           // Receive ECC value register
 #define FSI_O_RX_ECC_SEC_DATA      0x24U           // Receive ECC corrected data register
 #define FSI_O_RX_ECC_LOG           0x26U           // Receive ECC log and status register
+#define FSI_O_RX_FRAME_TAG_CMP     0x28U           // Receive frame tag compare register
+#define FSI_O_RX_PING_TAG_CMP      0x29U           // Receive ping tag compare register
+#define FSI_O_RX_TRIG_CTRL_0       0x2CU           // Receive Trigger Control register 0
+#define FSI_O_RX_TRIG_WIDTH_0      0x2EU           // Receive Trigger Wdith register 0
 #define FSI_O_RX_DLYLINE_CTRL      0x30U           // Receive delay line control register
+#define FSI_O_RX_TRIG_CTRL_1       0x32U           // Receive Trigger Control register 1
+#define FSI_O_RX_TRIG_CTRL_2       0x34U           // Receive Trigger Control register 2
+#define FSI_O_RX_TRIG_CTRL_3       0x36U           // Receive Trigger Control register 3
 #define FSI_O_RX_VIS_1             0x38U           // Receive debug visibility register 1
+#define FSI_O_RX_UDATA_FILTER      0x3AU           // Receive User Data Filter Control register
 #define FSI_O_RX_BUF_BASE(i)       (0x40U + (i))   // (0 <= i < 16) Base address for receive data
                                                    // buffer
 
@@ -137,16 +146,18 @@
 #define FSI_TX_OPER_CTRL_LO_SW_CRC         0x40U    // CRC Source Select
 #define FSI_TX_OPER_CTRL_LO_PING_TO_MODE   0x80U    // Ping Counter Reset Mode Select
 #define FSI_TX_OPER_CTRL_LO_SEL_PLLCLK     0x100U   // Input Clock Select
+#define FSI_TX_OPER_CTRL_LO_TDM_ENABLE     0x200U   // Transmit TDM Mode Enable
+#define FSI_TX_OPER_CTRL_LO_SEL_TDM_IN     0x400U   // Input TDM Port Select
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the TX_OPER_CTRL_HI register
 //
 //*************************************************************************************************
-#define FSI_TX_OPER_CTRL_HI_EXT_TRIG_SEL_S   0U
-#define FSI_TX_OPER_CTRL_HI_EXT_TRIG_SEL_M   0x1FU   // External Trigger Select
-#define FSI_TX_OPER_CTRL_HI_FORCE_ERR        0x20U   // Error Frame Force
-#define FSI_TX_OPER_CTRL_HI_ECC_SEL          0x40U   // ECC Data Width Select
+#define FSI_TX_OPER_CTRL_HI_FORCE_ERR        0x20U     // Error Frame Force
+#define FSI_TX_OPER_CTRL_HI_ECC_SEL          0x40U     // ECC Data Width Select
+#define FSI_TX_OPER_CTRL_HI_EXT_TRIG_SEL_S   7U
+#define FSI_TX_OPER_CTRL_HI_EXT_TRIG_SEL_M   0x1F80U   // External Trigger Select
 
 //*************************************************************************************************
 //
@@ -192,11 +203,11 @@
 // The following are defines for the bit fields in the TX_PING_CTRL register
 //
 //*************************************************************************************************
-#define FSI_TX_PING_CTRL_CNT_RST          0x1U    // Ping Counter Reset
-#define FSI_TX_PING_CTRL_TIMER_EN         0x2U    // Ping Counter Enable
-#define FSI_TX_PING_CTRL_EXT_TRIG_EN      0x4U    // External Trigger Enable
+#define FSI_TX_PING_CTRL_CNT_RST          0x1U     // Ping Counter Reset
+#define FSI_TX_PING_CTRL_TIMER_EN         0x2U     // Ping Counter Enable
+#define FSI_TX_PING_CTRL_EXT_TRIG_EN      0x4U     // External Trigger Enable
 #define FSI_TX_PING_CTRL_EXT_TRIG_SEL_S   3U
-#define FSI_TX_PING_CTRL_EXT_TRIG_SEL_M   0xF8U   // External Trigger Select
+#define FSI_TX_PING_CTRL_EXT_TRIG_SEL_M   0x1F8U   // External Trigger Select
 
 //*************************************************************************************************
 //
@@ -292,17 +303,31 @@
 #define FSI_TX_ECC_VAL_ECC_VAL_S   0U
 #define FSI_TX_ECC_VAL_ECC_VAL_M   0x7FU   // Computed ECC Value
 
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the TX_DLYLINE_CTRL register
+//
+//*************************************************************************************************
+#define FSI_TX_DLYLINE_CTRL_TXCLK_DLY_S   0U
+#define FSI_TX_DLYLINE_CTRL_TXCLK_DLY_M   0x1FU     // Delay Line Tap Select for TXCLK
+#define FSI_TX_DLYLINE_CTRL_TXD0_DLY_S    5U
+#define FSI_TX_DLYLINE_CTRL_TXD0_DLY_M    0x3E0U    // Delay Line Tap Select for TXD0
+#define FSI_TX_DLYLINE_CTRL_TXD1_DLY_S    10U
+#define FSI_TX_DLYLINE_CTRL_TXD1_DLY_M    0x7C00U   // Delay Line Tap Select for TXD1
+
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the RX_MASTER_CTRL register
 //
 //*************************************************************************************************
-#define FSI_RX_MASTER_CTRL_CORE_RST       0x1U      // Receiver Main Core Reset
-#define FSI_RX_MASTER_CTRL_INT_LOOPBACK   0x2U      // Internal Loopback Enable
-#define FSI_RX_MASTER_CTRL_SPI_PAIRING    0x4U      // Clock Pairing for SPI-like Behaviour
-#define FSI_RX_MASTER_CTRL_KEY_S          8U
-#define FSI_RX_MASTER_CTRL_KEY_M          0xFF00U   // Write Key
+#define FSI_RX_MASTER_CTRL_CORE_RST         0x1U      // Receiver Main Core Reset
+#define FSI_RX_MASTER_CTRL_INT_LOOPBACK     0x2U      // Internal Loopback Enable
+#define FSI_RX_MASTER_CTRL_SPI_PAIRING      0x4U      // Clock Pairing for SPI-like Behaviour
+#define FSI_RX_MASTER_CTRL_INPUT_ISOLATE    0x8U      // ISOLATE Input signals
+#define FSI_RX_MASTER_CTRL_DATA_FILTER_EN   0x10U     // Data Filter Enable
+#define FSI_RX_MASTER_CTRL_KEY_S            8U
+#define FSI_RX_MASTER_CTRL_KEY_M            0xFF00U   // Write Key
 
 //*************************************************************************************************
 //
@@ -347,18 +372,21 @@
 // The following are defines for the bit fields in the RX_EVT_STS register
 //
 //*************************************************************************************************
-#define FSI_RX_EVT_STS_PING_WD_TO      0x1U     // Ping Watchdog Timeout Flag
-#define FSI_RX_EVT_STS_FRAME_WD_TO     0x2U     // Frame Watchdog Timeout Flag.
-#define FSI_RX_EVT_STS_CRC_ERR         0x4U     // CRC Error Flag
-#define FSI_RX_EVT_STS_TYPE_ERR        0x8U     // Frame Type Error Flag
-#define FSI_RX_EVT_STS_EOF_ERR         0x10U    // End-of-Frame Error Flag
-#define FSI_RX_EVT_STS_BUF_OVERRUN     0x20U    // Receive Buffer Overrun Flag
-#define FSI_RX_EVT_STS_FRAME_DONE      0x40U    // Frame Done Flag
-#define FSI_RX_EVT_STS_BUF_UNDERRUN    0x80U    // Receive Buffer Underrun Flag
-#define FSI_RX_EVT_STS_ERR_FRAME       0x100U   // Error Frame Received Flag
-#define FSI_RX_EVT_STS_PING_FRAME      0x200U   // Ping Frame Received Flag
-#define FSI_RX_EVT_STS_FRAME_OVERRUN   0x400U   // Frame Overrun Flag
-#define FSI_RX_EVT_STS_DATA_FRAME      0x800U   // Data Frame Received Flag
+#define FSI_RX_EVT_STS_PING_WD_TO        0x1U      // Ping Watchdog Timeout Flag
+#define FSI_RX_EVT_STS_FRAME_WD_TO       0x2U      // Frame Watchdog Timeout Flag.
+#define FSI_RX_EVT_STS_CRC_ERR           0x4U      // CRC Error Flag
+#define FSI_RX_EVT_STS_TYPE_ERR          0x8U      // Frame Type Error Flag
+#define FSI_RX_EVT_STS_EOF_ERR           0x10U     // End-of-Frame Error Flag
+#define FSI_RX_EVT_STS_BUF_OVERRUN       0x20U     // Receive Buffer Overrun Flag
+#define FSI_RX_EVT_STS_FRAME_DONE        0x40U     // Frame Done Flag
+#define FSI_RX_EVT_STS_BUF_UNDERRUN      0x80U     // Receive Buffer Underrun Flag
+#define FSI_RX_EVT_STS_ERR_FRAME         0x100U    // Error Frame Received Flag
+#define FSI_RX_EVT_STS_PING_FRAME        0x200U    // Ping Frame Received Flag
+#define FSI_RX_EVT_STS_FRAME_OVERRUN     0x400U    // Frame Overrun Flag
+#define FSI_RX_EVT_STS_DATA_FRAME        0x800U    // Data Frame Received Flag
+#define FSI_RX_EVT_STS_PING_TAG_MATCH    0x1000U   // Ping Tag Match Flag
+#define FSI_RX_EVT_STS_DATA_TAG_MATCH    0x2000U   // Data Tag Match Flag
+#define FSI_RX_EVT_STS_ERROR_TAG_MATCH   0x4000U   // Error Tag Match Flag
 
 //*************************************************************************************************
 //
@@ -375,36 +403,42 @@
 // The following are defines for the bit fields in the RX_EVT_CLR register
 //
 //*************************************************************************************************
-#define FSI_RX_EVT_CLR_PING_WD_TO      0x1U     // Ping Watchdog Timeout Flag Clear
-#define FSI_RX_EVT_CLR_FRAME_WD_TO     0x2U     // Frame Watchdog Timeout Flag Clear
-#define FSI_RX_EVT_CLR_CRC_ERR         0x4U     // CRC Error Flag Clear
-#define FSI_RX_EVT_CLR_TYPE_ERR        0x8U     // Frame Type Error Flag Clear
-#define FSI_RX_EVT_CLR_EOF_ERR         0x10U    // End-of-Frame Error Flag Clear
-#define FSI_RX_EVT_CLR_BUF_OVERRUN     0x20U    // Receive Buffer Overrun Flag Clear
-#define FSI_RX_EVT_CLR_FRAME_DONE      0x40U    // Frame Done Flag Clear
-#define FSI_RX_EVT_CLR_BUF_UNDERRUN    0x80U    // Receive Buffer Underrun Flag Clear
-#define FSI_RX_EVT_CLR_ERR_FRAME       0x100U   // Error Frame Received Flag Clear
-#define FSI_RX_EVT_CLR_PING_FRAME      0x200U   // PING Frame Received Flag Clear
-#define FSI_RX_EVT_CLR_FRAME_OVERRUN   0x400U   // Frame Overrun Flag Clear
-#define FSI_RX_EVT_CLR_DATA_FRAME      0x800U   // Data Frame Received Flag Clear
+#define FSI_RX_EVT_CLR_PING_WD_TO        0x1U      // Ping Watchdog Timeout Flag Clear
+#define FSI_RX_EVT_CLR_FRAME_WD_TO       0x2U      // Frame Watchdog Timeout Flag Clear
+#define FSI_RX_EVT_CLR_CRC_ERR           0x4U      // CRC Error Flag Clear
+#define FSI_RX_EVT_CLR_TYPE_ERR          0x8U      // Frame Type Error Flag Clear
+#define FSI_RX_EVT_CLR_EOF_ERR           0x10U     // End-of-Frame Error Flag Clear
+#define FSI_RX_EVT_CLR_BUF_OVERRUN       0x20U     // Receive Buffer Overrun Flag Clear
+#define FSI_RX_EVT_CLR_FRAME_DONE        0x40U     // Frame Done Flag Clear
+#define FSI_RX_EVT_CLR_BUF_UNDERRUN      0x80U     // Receive Buffer Underrun Flag Clear
+#define FSI_RX_EVT_CLR_ERR_FRAME         0x100U    // Error Frame Received Flag Clear
+#define FSI_RX_EVT_CLR_PING_FRAME        0x200U    // PING Frame Received Flag Clear
+#define FSI_RX_EVT_CLR_FRAME_OVERRUN     0x400U    // Frame Overrun Flag Clear
+#define FSI_RX_EVT_CLR_DATA_FRAME        0x800U    // Data Frame Received Flag Clear
+#define FSI_RX_EVT_CLR_PING_TAG_MATCH    0x1000U   // Ping Tag Match Flag Clear
+#define FSI_RX_EVT_CLR_DATA_TAG_MATCH    0x2000U   // Data Tag Match Flag Clear
+#define FSI_RX_EVT_CLR_ERROR_TAG_MATCH   0x4000U   // Error Tag Match Flag Clear
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the RX_EVT_FRC register
 //
 //*************************************************************************************************
-#define FSI_RX_EVT_FRC_PING_WD_TO      0x1U     // Ping Watchdog Timeout Flag Force
-#define FSI_RX_EVT_FRC_FRAME_WD_TO     0x2U     // Frame Watchdog Timeout Flag Force
-#define FSI_RX_EVT_FRC_CRC_ERR         0x4U     // CRC Error Flag Force
-#define FSI_RX_EVT_FRC_TYPE_ERR        0x8U     // Frame Type Error Flag Force
-#define FSI_RX_EVT_FRC_EOF_ERR         0x10U    // End-of-Frame Error Flag Force
-#define FSI_RX_EVT_FRC_BUF_OVERRUN     0x20U    // Receive Buffer Overrun Flag Force
-#define FSI_RX_EVT_FRC_FRAME_DONE      0x40U    // Frame Done Flag Force
-#define FSI_RX_EVT_FRC_BUF_UNDERRUN    0x80U    // Receive Buffer Underrun Flag Force
-#define FSI_RX_EVT_FRC_ERR_FRAME       0x100U   // Error Frame Received Flag Force
-#define FSI_RX_EVT_FRC_PING_FRAME      0x200U   // Ping Frame Received Flag Force
-#define FSI_RX_EVT_FRC_FRAME_OVERRUN   0x400U   // Frame Overrun Flag Force
-#define FSI_RX_EVT_FRC_DATA_FRAME      0x800U   // Data Frame Received Flag Force
+#define FSI_RX_EVT_FRC_PING_WD_TO        0x1U      // Ping Watchdog Timeout Flag Force
+#define FSI_RX_EVT_FRC_FRAME_WD_TO       0x2U      // Frame Watchdog Timeout Flag Force
+#define FSI_RX_EVT_FRC_CRC_ERR           0x4U      // CRC Error Flag Force
+#define FSI_RX_EVT_FRC_TYPE_ERR          0x8U      // Frame Type Error Flag Force
+#define FSI_RX_EVT_FRC_EOF_ERR           0x10U     // End-of-Frame Error Flag Force
+#define FSI_RX_EVT_FRC_BUF_OVERRUN       0x20U     // Receive Buffer Overrun Flag Force
+#define FSI_RX_EVT_FRC_FRAME_DONE        0x40U     // Frame Done Flag Force
+#define FSI_RX_EVT_FRC_BUF_UNDERRUN      0x80U     // Receive Buffer Underrun Flag Force
+#define FSI_RX_EVT_FRC_ERR_FRAME         0x100U    // Error Frame Received Flag Force
+#define FSI_RX_EVT_FRC_PING_FRAME        0x200U    // Ping Frame Received Flag Force
+#define FSI_RX_EVT_FRC_FRAME_OVERRUN     0x400U    // Frame Overrun Flag Force
+#define FSI_RX_EVT_FRC_DATA_FRAME        0x800U    // Data Frame Received Flag Force
+#define FSI_RX_EVT_FRC_PING_TAG_MATCH    0x1000U   // Ping Tag Match Flag Force
+#define FSI_RX_EVT_FRC_DATA_TAG_MATCH    0x2000U   // Data Tag Match Flag Force
+#define FSI_RX_EVT_FRC_ERROR_TAG_MATCH   0x4000U   // Error Tag Match Flag Force
 
 //*************************************************************************************************
 //
@@ -453,54 +487,68 @@
 // The following are defines for the bit fields in the RX_INT1_CTRL register
 //
 //*************************************************************************************************
-#define FSI_RX_INT1_CTRL_INT1_EN_PING_WD_TO      0x1U     // Enable Ping Watchdog Timeout Interrupt
-                                                          // to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_FRAME_WD_TO     0x2U     // Enable Frame Watchdog Timeout
-                                                          // Interrupt to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_CRC_ERR         0x4U     // Enable CRC Error Interrupt to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_TYPE_ERR        0x8U     // Enable Frame Type Error Interrupt to
-                                                          // INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_EOF_ERR         0x10U    // Enable End-of-Frame Error Interrupt to
-                                                          // INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_OVERRUN         0x20U    // Enable Receive Buffer Overrun
-                                                          // Interrupt to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_FRAME_DONE      0x40U    // Enable Frame Done Interrupt to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_UNDERRUN        0x80U    // Enable Buffer Underrun Interrupt to
-                                                          // INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_ERR_FRAME       0x100U   // Enable Error Frame Received Interrupt
-                                                          // to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_PING_FRAME      0x200U   // Enable Ping Frame Received Interrupt
-                                                          // to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_FRAME_OVERRUN   0x400U   // Enable Frame Overrun Interrupt to INT1
-#define FSI_RX_INT1_CTRL_INT1_EN_DATA_FRAME      0x800U   // Enable Data Frame Received Interrupt
-                                                          // to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_PING_WD_TO        0x1U      // Enable Ping Watchdog Timeout
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_FRAME_WD_TO       0x2U      // Enable Frame Watchdog Timeout
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_CRC_ERR           0x4U      // Enable CRC Error Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_TYPE_ERR          0x8U      // Enable Frame Type Error Interrupt
+                                                             // to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_EOF_ERR           0x10U     // Enable End-of-Frame Error Interrupt
+                                                             // to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_OVERRUN           0x20U     // Enable Receive Buffer Overrun
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_FRAME_DONE        0x40U     // Enable Frame Done Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_UNDERRUN          0x80U     // Enable Buffer Underrun Interrupt to
+                                                             // INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_ERR_FRAME         0x100U    // Enable Error Frame Received
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_PING_FRAME        0x200U    // Enable Ping Frame Received
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_FRAME_OVERRUN     0x400U    // Enable Frame Overrun Interrupt to
+                                                             // INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_DATA_FRAME        0x800U    // Enable Data Frame Received
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_PING_TAG_MATCH    0x1000U   // Enable Ping Frame Tag Matched
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_DATA_TAG_MATCH    0x2000U   // Enable Data Frame Tag Matched
+                                                             // Interrupt to INT1
+#define FSI_RX_INT1_CTRL_INT1_EN_ERROR_TAG_MATCH   0x4000U   // Enable Error Frame Tag Matched
+                                                             // Interrupt to INT1
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the RX_INT2_CTRL register
 //
 //*************************************************************************************************
-#define FSI_RX_INT2_CTRL_INT2_EN_PING_WD_TO      0x1U     // Enable Ping Watchdog Timeout Interrupt
-                                                          // to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_FRAME_WD_TO     0x2U     // Enable Frame Watchdog Timeout
-                                                          // Interrupt to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_CRC_ERR         0x4U     // Enable CRC Errror Interrupt to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_TYPE_ERR        0x8U     // Enable Frame Type Error Interrupt to
-                                                          // INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_EOF_ERR         0x10U    // Enable End-of-Frame Error Interrupt to
-                                                          // INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_OVERRUN         0x20U    // Enable Buffer Overrun Interrupt to
-                                                          // INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_FRAME_DONE      0x40U    // Enable Frame Done Interrupt to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_UNDERRUN        0x80U    // Enable Buffer Underrun Interrupt to
-                                                          // INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_ERR_FRAME       0x100U   // Enable Error Frame Received Interrupt
-                                                          // to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_PING_FRAME      0x200U   // Enable Ping Frame Received Interrupt
-                                                          // to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_FRAME_OVERRUN   0x400U   // Enable Frame Overrun Interrupt to INT2
-#define FSI_RX_INT2_CTRL_INT2_EN_DATA_FRAME      0x800U   // Enable Data Frame Received Interrupt
-                                                          // to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_PING_WD_TO        0x1U      // Enable Ping Watchdog Timeout
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_FRAME_WD_TO       0x2U      // Enable Frame Watchdog Timeout
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_CRC_ERR           0x4U      // Enable CRC Errror Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_TYPE_ERR          0x8U      // Enable Frame Type Error Interrupt
+                                                             // to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_EOF_ERR           0x10U     // Enable End-of-Frame Error Interrupt
+                                                             // to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_OVERRUN           0x20U     // Enable Buffer Overrun Interrupt to
+                                                             // INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_FRAME_DONE        0x40U     // Enable Frame Done Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_UNDERRUN          0x80U     // Enable Buffer Underrun Interrupt to
+                                                             // INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_ERR_FRAME         0x100U    // Enable Error Frame Received
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_PING_FRAME        0x200U    // Enable Ping Frame Received
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_FRAME_OVERRUN     0x400U    // Enable Frame Overrun Interrupt to
+                                                             // INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_DATA_FRAME        0x800U    // Enable Data Frame Received
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_PING_TAG_MATCH    0x1000U   // Enable Ping Frame Tag Matched
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_DATA_TAG_MATCH    0x2000U   // Enable Data Frame Tag Matched
+                                                             // Interrupt to INT2
+#define FSI_RX_INT2_CTRL_INT2_EN_ERROR_TAG_MATCH   0x4000U   // Enable Error Frame Tag Matched
+                                                             // Interrupt to INT2
 
 //*************************************************************************************************
 //
@@ -539,6 +587,49 @@
 
 //*************************************************************************************************
 //
+// The following are defines for the bit fields in the RX_FRAME_TAG_CMP register
+//
+//*************************************************************************************************
+#define FSI_RX_FRAME_TAG_CMP_TAG_REF_S      0U
+#define FSI_RX_FRAME_TAG_CMP_TAG_REF_M      0xFU     // Frame Tag Reference
+#define FSI_RX_FRAME_TAG_CMP_TAG_MASK_S     4U
+#define FSI_RX_FRAME_TAG_CMP_TAG_MASK_M     0xF0U    // Frame Tag Mask
+#define FSI_RX_FRAME_TAG_CMP_CMP_EN         0x100U   // Frame Tag Compare Enable
+#define FSI_RX_FRAME_TAG_CMP_BROADCAST_EN   0x200U   // Broadcast Enable
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the RX_PING_TAG_CMP register
+//
+//*************************************************************************************************
+#define FSI_RX_PING_TAG_CMP_TAG_REF_S      0U
+#define FSI_RX_PING_TAG_CMP_TAG_REF_M      0xFU     // Ping Tag Reference
+#define FSI_RX_PING_TAG_CMP_TAG_MASK_S     4U
+#define FSI_RX_PING_TAG_CMP_TAG_MASK_M     0xF0U    // Ping Tag Mask
+#define FSI_RX_PING_TAG_CMP_CMP_EN         0x100U   // Ping Tag Compare Enable
+#define FSI_RX_PING_TAG_CMP_BROADCAST_EN   0x200U   // Broadcast Enable
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the RX_TRIG_CTRL_0 register
+//
+//*************************************************************************************************
+#define FSI_RX_TRIG_CTRL_0_TRIG_EN         0x1U          // Enable Trigger Function
+#define FSI_RX_TRIG_CTRL_0_TRIG_SEL_S      1U
+#define FSI_RX_TRIG_CTRL_0_TRIG_SEL_M      0x1EU         // Input Select for Trigger
+#define FSI_RX_TRIG_CTRL_0_RX_TRIG_DLY_S   8U
+#define FSI_RX_TRIG_CTRL_0_RX_TRIG_DLY_M   0xFFFFFF00U   // Delay for Trigger generation
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the RX_TRIG_WIDTH_0 register
+//
+//*************************************************************************************************
+#define FSI_RX_TRIG_WIDTH_0_RX_TRIG_WIDTH_S   0U
+#define FSI_RX_TRIG_WIDTH_0_RX_TRIG_WIDTH_M   0xFFFFU   // Output Pulse Width
+
+//*************************************************************************************************
+//
 // The following are defines for the bit fields in the RX_DLYLINE_CTRL register
 //
 //*************************************************************************************************
@@ -551,10 +642,53 @@
 
 //*************************************************************************************************
 //
+// The following are defines for the bit fields in the RX_TRIG_CTRL_1 register
+//
+//*************************************************************************************************
+#define FSI_RX_TRIG_CTRL_1_TRIG_EN         0x1U          // Enable Trigger Function
+#define FSI_RX_TRIG_CTRL_1_TRIG_SEL_S      1U
+#define FSI_RX_TRIG_CTRL_1_TRIG_SEL_M      0x1EU         // Input Select for Trigger
+#define FSI_RX_TRIG_CTRL_1_RX_TRIG_DLY_S   8U
+#define FSI_RX_TRIG_CTRL_1_RX_TRIG_DLY_M   0xFFFFFF00U   // Delay for Trigger generation
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the RX_TRIG_CTRL_2 register
+//
+//*************************************************************************************************
+#define FSI_RX_TRIG_CTRL_2_TRIG_EN         0x1U          // Enable Trigger Function
+#define FSI_RX_TRIG_CTRL_2_TRIG_SEL_S      1U
+#define FSI_RX_TRIG_CTRL_2_TRIG_SEL_M      0x1EU         // Input Select for Trigger
+#define FSI_RX_TRIG_CTRL_2_RX_TRIG_DLY_S   8U
+#define FSI_RX_TRIG_CTRL_2_RX_TRIG_DLY_M   0xFFFFFF00U   // Delay for Trigger generation
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the RX_TRIG_CTRL_3 register
+//
+//*************************************************************************************************
+#define FSI_RX_TRIG_CTRL_3_TRIG_EN         0x1U          // Enable Trigger Function
+#define FSI_RX_TRIG_CTRL_3_TRIG_SEL_S      1U
+#define FSI_RX_TRIG_CTRL_3_TRIG_SEL_M      0x1EU         // Input Select for Trigger
+#define FSI_RX_TRIG_CTRL_3_RX_TRIG_DLY_S   8U
+#define FSI_RX_TRIG_CTRL_3_RX_TRIG_DLY_M   0xFFFFFF00U   // Delay for Trigger generation
+
+//*************************************************************************************************
+//
 // The following are defines for the bit fields in the RX_VIS_1 register
 //
 //*************************************************************************************************
 #define FSI_RX_VIS_1_RX_CORE_STS   0x8U   // Receiver Core Status
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the RX_UDATA_FILTER register
+//
+//*************************************************************************************************
+#define FSI_RX_UDATA_FILTER_UDATA_REF_S    0U
+#define FSI_RX_UDATA_FILTER_UDATA_REF_M    0xFFU     // UserData reference value
+#define FSI_RX_UDATA_FILTER_UDATA_MASK_S   8U
+#define FSI_RX_UDATA_FILTER_UDATA_MASK_M   0xFF00U   // UserData mask  value
 
 
 

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -268,6 +268,7 @@ MemCfg_setProtection(uint32_t memSection, uint32_t protectMode)
     // Check the arguments.
     //
     ASSERT(((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_LS)   ||
+           ((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_D)    ||
            ((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_GS));
 
     //
@@ -299,6 +300,11 @@ MemCfg_setProtection(uint32_t memSection, uint32_t protectMode)
 
     switch(memSection & MEMCFG_SECT_TYPE_MASK)
     {
+        case MEMCFG_SECT_TYPE_D:
+            HWREG(MEMCFG_BASE + MEMCFG_O_DXACCPROT0 + regOffset) &= ~maskVal;
+            HWREG(MEMCFG_BASE + MEMCFG_O_DXACCPROT0 + regOffset) |= regVal;
+            break;
+
         case MEMCFG_SECT_TYPE_LS:
             HWREG(MEMCFG_BASE + MEMCFG_O_LSXACCPROT0 + regOffset) &= ~maskVal;
             HWREG(MEMCFG_BASE + MEMCFG_O_LSXACCPROT0 + regOffset) |= regVal;
@@ -366,6 +372,177 @@ MemCfg_setLSRAMControllerSel(uint32_t ramSection,
 
 //*****************************************************************************
 //
+// MemCfg_lockTestConfig
+//
+//*****************************************************************************
+void
+MemCfg_lockTestConfig(uint32_t memSections)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_D)   ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_LS)  ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_GS)  ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_MSG) ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_ROM) ||
+           (memSections == MEMCFG_SECT_ALL));
+
+    //
+    // Set the bit that blocks writes to the sections' configuration registers.
+    //
+    EALLOW;
+
+    switch(memSections & MEMCFG_SECT_TYPE_MASK)
+    {
+        case MEMCFG_SECT_TYPE_D:
+             HWREG(MEMCFG_BASE + MEMCFG_O_DXRAMTEST_LOCK)   |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_LS:
+             HWREG(MEMCFG_BASE + MEMCFG_O_LSXRAMTEST_LOCK)   |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_GS:
+             HWREG(MEMCFG_BASE + MEMCFG_O_GSXRAMTEST_LOCK)   |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_MSG:
+             HWREG(MEMCFG_BASE + MEMCFG_O_MSGXRAMTEST_LOCK)  |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_ROM:
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_LOCK)           |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+
+        case MEMCFG_SECT_TYPE_MASK:
+            //
+            // Lock configuration for all sections.
+            //
+            HWREG(MEMCFG_BASE + MEMCFG_O_DXRAMTEST_LOCK)     |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_LSXRAMTEST_LOCK)    |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_GSXRAMTEST_LOCK)    |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_MSGXRAMTEST_LOCK)   |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_LOCK)           |=
+                  (MEMCFG_TESTLOCK_KEY | (MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        default:
+            //
+            // Do nothing. Invalid ramSections. Make sure you aren't OR-ing
+            // values for two different types of memory sections.
+            //
+            break;
+    }
+
+    EDIS;
+}
+//*****************************************************************************
+//
+// MemCfg_unlockTestConfig
+//
+//*****************************************************************************
+void
+MemCfg_unlockTestConfig(uint32_t memSections)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_D)   ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_LS)  ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_GS)  ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_MSG) ||
+           ((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_ROM) ||
+           (memSections == MEMCFG_SECT_ALL));
+
+
+    //
+    // Clear the bit that blocks writes to the sections' configuration
+    // registers.
+    //
+    EALLOW;
+
+    switch(memSections & MEMCFG_SECT_TYPE_MASK)
+    {
+        case MEMCFG_SECT_TYPE_D:
+            HWREG(MEMCFG_BASE + MEMCFG_O_DXRAMTEST_LOCK) =
+                               MEMCFG_TESTLOCK_KEY |
+                               (HWREG(MEMCFG_BASE + MEMCFG_O_DXRAMTEST_LOCK) &
+                                ~(MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_LS:
+            HWREG(MEMCFG_BASE + MEMCFG_O_LSXRAMTEST_LOCK) =
+                               MEMCFG_TESTLOCK_KEY |
+                               (HWREG(MEMCFG_BASE + MEMCFG_O_LSXRAMTEST_LOCK) &
+                                ~(MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_GS:
+            HWREG(MEMCFG_BASE + MEMCFG_O_GSXRAMTEST_LOCK) =
+                               MEMCFG_TESTLOCK_KEY |
+                               (HWREG(MEMCFG_BASE + MEMCFG_O_GSXRAMTEST_LOCK) &
+                                ~(MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_MSG:
+            HWREG(MEMCFG_BASE + MEMCFG_O_MSGXRAMTEST_LOCK) =
+                              MEMCFG_TESTLOCK_KEY |
+                              (HWREG(MEMCFG_BASE + MEMCFG_O_MSGXRAMTEST_LOCK) &
+                               ~(MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        case MEMCFG_SECT_TYPE_ROM:
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_LOCK) = (MEMCFG_TESTLOCK_KEY |
+                                  (HWREG(MEMCFG_BASE + MEMCFG_O_ROM_LOCK) &
+                                   ~(MEMCFG_SECT_NUM_MASK & memSections)));
+            break;
+
+
+        case MEMCFG_SECT_TYPE_MASK:
+            //
+            // Unlock configuration for all sections.
+            //
+            HWREG(MEMCFG_BASE + MEMCFG_O_DXRAMTEST_LOCK)   =
+                 HWREG(MEMCFG_BASE + MEMCFG_O_DXRAMTEST_LOCK)   |
+                 (MEMCFG_TESTLOCK_KEY | ~(MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_LSXRAMTEST_LOCK)  =
+                 HWREG(MEMCFG_BASE + MEMCFG_O_LSXRAMTEST_LOCK)  |
+                 (MEMCFG_TESTLOCK_KEY | ~(MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_GSXRAMTEST_LOCK)  =
+                 HWREG(MEMCFG_BASE + MEMCFG_O_GSXRAMTEST_LOCK)  |
+                 (MEMCFG_TESTLOCK_KEY | ~(MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_MSGXRAMTEST_LOCK) =
+                 HWREG(MEMCFG_BASE + MEMCFG_O_MSGXRAMTEST_LOCK) |
+                 (MEMCFG_TESTLOCK_KEY | ~(MEMCFG_SECT_NUM_MASK & memSections));
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_LOCK)   =
+                 HWREG(MEMCFG_BASE + MEMCFG_O_ROM_LOCK)   |
+                 (MEMCFG_TESTLOCK_KEY | ~(MEMCFG_SECT_NUM_MASK & memSections));
+            break;
+
+        default:
+            //
+            // Do nothing. Invalid memSections. Make sure you aren't OR-ing
+            // values for two different types of RAM.
+            //
+            break;
+    }
+
+    EDIS;
+
+}
+//*****************************************************************************
+//
 // MemCfg_setTestMode
 //
 //*****************************************************************************
@@ -383,6 +560,7 @@ MemCfg_setTestMode(uint32_t memSection, MemCfg_TestMode testMode)
     ASSERT(((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_D)    ||
            ((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_LS)   ||
            ((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_GS)   ||
+           ((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_ROM)  ||
            ((memSection & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_MSG));
 
     //
@@ -426,6 +604,11 @@ MemCfg_setTestMode(uint32_t memSection, MemCfg_TestMode testMode)
         case MEMCFG_SECT_TYPE_MSG:
             HWREG(MEMCFG_BASE + MEMCFG_O_MSGXTEST) &= ~maskVal;
             HWREG(MEMCFG_BASE + MEMCFG_O_MSGXTEST) |= regVal;
+            break;
+
+        case MEMCFG_SECT_TYPE_ROM:
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_TEST) &= ~maskVal;
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_TEST) |= regVal;
             break;
 
         default:
@@ -626,24 +809,26 @@ MemCfg_getViolationAddress(uint32_t intFlag)
 uint32_t
 MemCfg_getCorrErrorAddress(uint32_t stsFlag)
 {
+    uint32_t address, temp;
+
     //
-    // Check the arguments.
+    // Calculate the the address of the desired error address register.
     //
-    if(stsFlag != MEMCFG_CERR_CPUREAD)
+    address = MEMORYERROR_BASE + MEMCFG_O_CCPUREADDR;
+
+    temp = stsFlag;
+
+    while(temp > 1U)
     {
-        //
-        // Currently, the only correctable error address that can be read
-        // from a register is one for a CPU read error (MEMCFG_CERR_CPUREAD).
-        // For the sake of keeping this function portable to possible future
-        // devices with other error types, it still takes a stsFlag parameter.
-        //
-        ASSERT((bool)false);
+        temp = temp >> 1U;
+        address += (uint32_t)(MEMCFG_O_CERRCLR - MEMCFG_O_CERRSET);
     }
 
     //
-    // Read and return the error address.
+    // Read and return the error address at the calculated location.
     //
-    return(HWREG(MEMORYERROR_BASE + MEMCFG_O_CCPUREADDR));
+    return(HWREG(address));
+
 }
 
 //*****************************************************************************
@@ -676,4 +861,40 @@ MemCfg_getUncorrErrorAddress(uint32_t stsFlag)
     return(HWREG(address));
 }
 
+//*****************************************************************************
+//
+// MemCfg_forceMemError
+//
+//*****************************************************************************
+void
+MemCfg_forceMemError(uint32_t memSections)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(((memSections & MEMCFG_SECT_TYPE_MASK) == MEMCFG_SECT_TYPE_ROM) ||
+           (memSections == MEMCFG_SECT_ALL));
+
+    //
+    // Forces error in the selected memory.
+    //
+    switch(memSections & MEMCFG_SECT_TYPE_MASK)
+    {
+        case MEMCFG_SECT_TYPE_ROM:
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_FORCE_ERROR)       |=
+                                          (MEMCFG_SECT_NUM_MASK & memSections);
+            break;
+
+        case MEMCFG_SECT_TYPE_MASK:
+            HWREG(MEMCFG_BASE + MEMCFG_O_ROM_FORCE_ERROR)       |=
+                                          (MEMCFG_SECT_NUM_MASK & memSections);
+            break;
+
+        default:
+            //
+            // Do nothing. Invalid memory.
+            //
+            break;
+    }
+}
 

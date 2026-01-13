@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -300,6 +300,41 @@ typedef enum
     EQEP_QMA_MODE_2                     //!< QMA mode-2 operation
 } EQEP_QMAMode;
 
+
+
+//*****************************************************************************
+//
+//! Possible values of sources for QEPA,QEPB and Index signal which are passed
+//! as a structure to EQEP_selectSource() as \e sourceConfig
+//
+//*****************************************************************************
+typedef enum
+{
+    EQEP_SOURCE_DEVICE_PIN      = 0x0000U,  //!< Device Pin
+    EQEP_SOURCE_CMPSS1          = 0x0001U,  //!< CMPSS1
+    EQEP_SOURCE_CMPSS2          = 0x0002U,  //!< CMPSS2
+    EQEP_SOURCE_CMPSS3          = 0x0003U,  //!< CMPSS3
+    EQEP_SOURCE_CMPSS4          = 0x0004U,  //!< CMPSS4
+    EQEP_SOURCE_ZERO            = 0x0008U,        //!< Tie to zero
+    EQEP_SOURCE_PWMXBAR1        = 0x0009U,  //!< PWMXBAR1
+    EQEP_SOURCE_PWMXBAR2        = 0x000AU,  //!< PWMXBAR2
+    EQEP_SOURCE_PWMXBAR3        = 0x000BU,  //!< PWMXBAR3
+    EQEP_SOURCE_PWMXBAR4        = 0x000CU,  //!< PWMXBAR4
+    EQEP_SOURCE_PWMXBAR5        = 0x000DU,  //!< PWMXBAR5
+    EQEP_SOURCE_PWMXBAR6        = 0x000EU,  //!< PWMXBAR6
+    EQEP_SOURCE_PWMXBAR7        = 0x000FU,  //!< PWMXBAR7
+} EQEP_Source;
+
+//*****************************************************************************
+//
+//! Structure to be passed to EQEP_selectSource() as \e sourceConfig
+//
+//*****************************************************************************
+typedef struct {
+    EQEP_Source sourceA;
+    EQEP_Source sourceB;
+    EQEP_Source sourceIndex;
+}EQEP_SourceSelect;
 
 //*****************************************************************************
 //
@@ -1672,6 +1707,93 @@ EQEP_setStrobeSource(uint32_t base, EQEP_StrobeSource strobeSrc)
     HWREGH(base + EQEP_O_QEPSTROBESEL) =
         (HWREGH(base + EQEP_O_QEPSTROBESEL) & ~EQEP_QEPSTROBESEL_STROBESEL_M) |
         (uint16_t)strobeSrc;
+}
+
+//*****************************************************************************
+//
+//! Enables the index direction enhancement mode of the eQEP module
+//!
+//! \param base is the base address of the eQEP module.
+//!
+//! This function enables the enhancement mode for direction change
+//! during Index event
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+EQEP_enableDirectionChangeDuringIndex(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(EQEP_isBaseValid(base));
+
+    //
+    //Sets the index direction enhancement bit
+    //
+    HWREGH(base + EQEP_O_QDECCTL) |= EQEP_QDECCTL_QIDIRE;
+}
+
+//*****************************************************************************
+//
+//! Disables the index direction enhancement mode of the eQEP module
+//!
+//! \param base is the base address of the eQEP module.
+//!
+//! This function disables the enhancement mode for direction change
+//! during Index event
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+EQEP_disableDirectionChangeDuringIndex(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(EQEP_isBaseValid(base));
+
+    //
+    //Clears the index direction enhancement bit
+    //
+    HWREGH(base + EQEP_O_QDECCTL) &= ~(EQEP_QDECCTL_QIDIRE);
+}
+
+//*****************************************************************************
+//
+//! Selects the source for eQEPA/B/I signals
+//!
+//! \param base is the base address of the enhanced quadrature encoder pulse
+//! (eQEP) module
+//! \param sourceConfig is the structure that contains source configuration
+//!
+//! This function configures the sources for QEPA,QEPB and Index of eQEP module
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+EQEP_selectSource(uint32_t base, EQEP_SourceSelect sourceConfig )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(EQEP_isBaseValid(base));
+
+    //
+    // Selecting sources for eQEP signals
+    //
+    HWREG(base + EQEP_O_QEPSRCSEL) =
+           (HWREG(base + EQEP_O_QEPSRCSEL) & ~(EQEP_QEPSRCSEL_QEPASEL_M |
+             EQEP_QEPSRCSEL_QEPBSEL_M | EQEP_QEPSRCSEL_QEPISEL_M)) |
+           ((uint32_t)((uint32_t)(sourceConfig.sourceA) <<
+                                   EQEP_QEPSRCSEL_QEPASEL_S) |
+            (uint32_t)((uint32_t)(sourceConfig.sourceB) <<
+                                   EQEP_QEPSRCSEL_QEPBSEL_S) |
+            (uint32_t)((uint32_t)(sourceConfig.sourceIndex) <<
+                                    EQEP_QEPSRCSEL_QEPISEL_S));
 }
 
 //*****************************************************************************

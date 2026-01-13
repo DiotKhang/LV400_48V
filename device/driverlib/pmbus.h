@@ -6,7 +6,7 @@
 //
 //#############################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -214,7 +214,7 @@ extern "C"
 //! Min SYSCLK input to PMBus module
 #define PMBUS_SYS_FREQ_MIN      10000000UL
 //! Max SYSCLK input to PMBus module
-#define PMBUS_SYS_FREQ_MAX      100000000UL
+#define PMBUS_SYS_FREQ_MAX      120000000UL
 //! Max module frequency of 20 MHz
 #define PMBUS_MODULE_FREQ_MAX   20000000UL
 //! Min module frequency = min_sys_freq / 32

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -193,6 +193,9 @@ typedef enum
     CLA_TRIGGER_EPWM7INT    = 42U,  //!< CLA Task Trigger Source is EPWM7INT
     CLA_TRIGGER_EPWM8INT    = 43U,  //!< CLA Task Trigger Source is EPWM8INT
 
+    CLA_TRIGGER_MCANA_FEVT0 = 52U,  //!< CLA Task Trigger Source is MCANAFEVT0
+    CLA_TRIGGER_MCANA_FEVT1 = 53U,  //!< CLA Task Trigger Source is MCANAFEVT1
+    CLA_TRIGGER_MCANA_FEVT2 = 54U,  //!< CLA Task Trigger Source is MCANAFEVT2
 
     CLA_TRIGGER_TINT0       = 68U,  //!< CLA Task Trigger Source is TINT0
     CLA_TRIGGER_TINT1       = 69U,  //!< CLA Task Trigger Source is TINT1
@@ -202,22 +205,22 @@ typedef enum
     CLA_TRIGGER_ECAP1INT    = 75U,  //!< CLA Task Trigger Source is ECAP1INT
     CLA_TRIGGER_ECAP2INT    = 76U,  //!< CLA Task Trigger Source is ECAP2INT
     CLA_TRIGGER_ECAP3INT    = 77U,  //!< CLA Task Trigger Source is ECAP3INT
-    CLA_TRIGGER_ECAP4INT    = 78U,  //!< CLA Task Trigger Source is ECAP4INT
-    CLA_TRIGGER_ECAP5INT    = 79U,  //!< CLA Task Trigger Source is ECAP5INT
-    CLA_TRIGGER_ECAP6INT    = 80U,  //!< CLA Task Trigger Source is ECAP6INT
-    CLA_TRIGGER_ECAP7INT    = 81U,  //!< CLA Task Trigger Source is ECAP7INT
 
     CLA_TRIGGER_EQEP1INT    = 83U,  //!< CLA Task Trigger Source is EQEP1INT
     CLA_TRIGGER_EQEP2INT    = 84U,  //!< CLA Task Trigger Source is EQEP2INT
 
-    CLA_TRIGGER_ECAP6INT2   = 92U,  //!< CLA Task Trigger Source is ECAP6INT2
-    CLA_TRIGGER_ECAP7INT2   = 93U,  //!< CLA Task Trigger Source is ECAP7INT2
+    CLA_TRIGGER_ECAP3INT2   = 89U,  //!< CLA Task Trigger Source is ECAP3INT2
 
     CLA_TRIGGER_SDFM1INT    = 95U,  //!< CLA Task Trigger Source is SDFM1INT
     CLA_TRIGGER_SDFM1DRINT1 = 96U,  //!< CLA Task Trigger Srce is SDFM1DRINT1
     CLA_TRIGGER_SDFM1DRINT2 = 97U,  //!< CLA Task Trigger Srce is SDFM1DRINT2
     CLA_TRIGGER_SDFM1DRINT3 = 98U,  //!< CLA Task Trigger Srce is SDFM1DRINT3
     CLA_TRIGGER_SDFM1DRINT4 = 99U,  //!< CLA Task Trigger Srce is SDFM1DRINT4
+    CLA_TRIGGER_SDFM2INT    = 100U,  //!< CLA Task Trigger Source is SDFM2INT
+    CLA_TRIGGER_SDFM2DRINT1 = 101U,  //!< CLA Task Trigger Srce is SDFM2DRINT1
+    CLA_TRIGGER_SDFM2DRINT2 = 102U,  //!< CLA Task Trigger Srce is SDFM2DRINT2
+    CLA_TRIGGER_SDFM2DRINT3 = 103U,  //!< CLA Task Trigger Srce is SDFM2DRINT3
+    CLA_TRIGGER_SDFM2DRINT4 = 104U,  //!< CLA Task Trigger Srce is SDFM2DRINT4
 
 
     CLA_TRIGGER_PMBUSAINT   = 105U, //!< CLA Task Trigger Source is PMBUSAINT
@@ -230,9 +233,11 @@ typedef enum
 
     CLA_TRIGGER_LINAINT1    = 117U, //!< CLA Task Trigger Source is LINAINT1
     CLA_TRIGGER_LINAINT0    = 118U, //!< CLA Task Trigger Source is LINAINT0
+    CLA_TRIGGER_LINBINT1    = 119U, //!< CLA Task Trigger Source is LINAINT1
+    CLA_TRIGGER_LINBINT0    = 120U, //!< CLA Task Trigger Source is LINAINT0
 
 
-    CLA_TRIGGER_CLA1PROMCRC = 121U, //!< CLA Task Trigger Srce is CLA1PROMCRC
+    CLA_TRIGGER_CLA1CRCINT  = 121U, //!< CLA Task Trigger Srce is CLA1CRCINT
 
     CLA_TRIGGER_FSITXAINT1  = 123U, //!< CLA Task Trigger Source is FSITXAINT1
     CLA_TRIGGER_FSITXAINT2  = 124U, //!< CLA Task Trigger Source is FSITXAINT2
@@ -244,6 +249,14 @@ typedef enum
     CLA_TRIGGER_CLB3INT      = 129, //!< CLA Task Trigger Source is CLB3INT
     CLA_TRIGGER_CLB4INT      = 130, //!< CLA Task Trigger Source is CLB4INT
 
+    CLA_TRIGGER_HICAINT    = 179U,  //!< CLA Task Trigger Source is HICA_INT
+
+    CLA_TRIGGER_DMACH1INT  = 184U,  //!< CLA Task Trigger Source is DMA_CH1INT
+    CLA_TRIGGER_DMACH2INT  = 185U,  //!< CLA Task Trigger Source is DMA_CH2INT
+    CLA_TRIGGER_DMACH3INT  = 186U,  //!< CLA Task Trigger Source is DMA_CH3INT
+    CLA_TRIGGER_DMACH4INT  = 187U,  //!< CLA Task Trigger Source is DMA_CH4INT
+    CLA_TRIGGER_DMACH5INT  = 188U,  //!< CLA Task Trigger Source is DMA_CH5INT
+    CLA_TRIGGER_DMACH6INT  = 189U,  //!< CLA Task Trigger Source is DMA_CH6INT
 } CLA_Trigger;
 #endif // __TMS320C28XX__
 

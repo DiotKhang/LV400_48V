@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -90,10 +90,10 @@ extern "C"
 
 #define ADC_PPBTRIP_MASK            ((uint32_t)ADC_PPB1TRIPHI_LIMITHI_M      |\
                                      (uint32_t)ADC_PPB1TRIPHI_HSIGN)
-#define ADC_INT_REF_TSSLOPE         (*(int16_t *)((uintptr_t)0x705BD))
-#define ADC_INT_REF_TSOFFSET        (*(int16_t *)((uintptr_t)0x705BE))
-#define ADC_EXT_REF_TSSLOPE         (*(int16_t *)((uintptr_t)0x705BF))
-#define ADC_EXT_REF_TSOFFSET        (*(int16_t *)((uintptr_t)0x705C0))
+#define ADC_INT_REF_TSSLOPE         (*(int16_t *)((uintptr_t)0x701CA))
+#define ADC_INT_REF_TSOFFSET        (*(int16_t *)((uintptr_t)0x701CB))
+#define ADC_EXT_REF_TSSLOPE         (*(int16_t *)((uintptr_t)0x701C8))
+#define ADC_EXT_REF_TSOFFSET        (*(int16_t *)((uintptr_t)0x701C9))
 
 #ifndef DOXYGEN_PDF_IGNORE
 //*****************************************************************************
@@ -1947,6 +1947,8 @@ ADC_disableContinuousMode(uint32_t base, ADC_IntNumber adcIntNum)
 //!
 //! \param tempResult is the raw ADC A conversion result from the temp sensor.
 //! \param vref is the reference voltage being used (for example 3.3 for 3.3V).
+//! \param refMode is the reference mode being used (\b ADC_REFERENCE_INTERNAL
+//!        or \b ADC_REFERENCE_EXTERNAL).
 //!
 //! This function converts temperature from temp sensor reading to degrees C.
 //! Temp sensor values in production test are derived with 2.5V reference.
@@ -1954,15 +1956,12 @@ ADC_disableContinuousMode(uint32_t base, ADC_IntNumber adcIntNum)
 //! reading accordingly if temp sensor value is read at a different VREF
 //! setting.
 //!
-//! \note Only external reference mode is supported for the temperature sensor.
-//! This function does not set the reference mode. Reference mode can be set
-//! using ADC_setVREF().
-//!
 //! \return Returns the temperature sensor reading converted to degrees C.
 //
 //*****************************************************************************
 static inline int16_t
-ADC_getTemperatureC(uint16_t tempResult, float32_t vref)
+ADC_getTemperatureC(uint16_t tempResult, ADC_ReferenceMode refMode,
+                        float32_t vref)
 {
     float32_t temp;
 
@@ -1970,8 +1969,16 @@ ADC_getTemperatureC(uint16_t tempResult, float32_t vref)
     // Read temp sensor slope and offset locations from OTP and convert
     //
     temp = (float32_t)tempResult * (vref / 2.5F);
-    return((int16_t)((((int32_t)temp - ADC_EXT_REF_TSOFFSET) * 4096) /
-                     ADC_EXT_REF_TSSLOPE));
+    if(refMode == ADC_REFERENCE_INTERNAL)
+    {
+        return((int16_t)((((int32_t)temp - ADC_INT_REF_TSOFFSET) * 4096) /
+                         ADC_INT_REF_TSSLOPE));
+    }
+    else
+    {
+        return((int16_t)((((int32_t)temp - ADC_EXT_REF_TSOFFSET) * 4096) /
+                         ADC_EXT_REF_TSSLOPE));
+    }
 }
 
 //*****************************************************************************
@@ -1980,6 +1987,8 @@ ADC_getTemperatureC(uint16_t tempResult, float32_t vref)
 //!
 //! \param tempResult is the raw ADC A conversion result from the temp sensor.
 //! \param vref is the reference voltage being used (for example 3.3 for 3.3V).
+//! \param refMode is the reference mode being used (\b ADC_REFERENCE_INTERNAL
+//!        or \b ADC_REFERENCE_EXTERNAL).
 //!
 //! This function converts temperature from temp sensor reading to degrees K.
 //! Temp sensor values in production test are derived with 2.5V reference.
@@ -1987,15 +1996,12 @@ ADC_getTemperatureC(uint16_t tempResult, float32_t vref)
 //! reading accordingly if temp sensor value is read at a different VREF
 //! setting.
 //!
-//! \note Only external reference mode is supported for the temperature sensor.
-//! This function does not set the reference mode. Reference mode can be set
-//! using ADC_setVREF().
-//!
 //! \return Returns the temperature sensor reading converted to degrees K.
 //
 //*****************************************************************************
 static inline int16_t
-ADC_getTemperatureK(uint16_t tempResult, float32_t vref)
+ADC_getTemperatureK(uint16_t tempResult, ADC_ReferenceMode refMode,
+                        float32_t vref)
 {
     float32_t temp;
 
@@ -2003,10 +2009,17 @@ ADC_getTemperatureK(uint16_t tempResult, float32_t vref)
     // Read temp sensor slope and offset locations from OTP and convert
     //
     temp = (float32_t)tempResult * (vref / 2.5F);
-    return((int16_t)(((((int32_t)temp - ADC_EXT_REF_TSOFFSET) * 4096) /
-                      ADC_EXT_REF_TSSLOPE) + 273));
+    if(refMode == ADC_REFERENCE_INTERNAL)
+    {
+        return((int16_t)(((((int32_t)temp - ADC_INT_REF_TSOFFSET) * 4096) /
+                         ADC_INT_REF_TSSLOPE) + 273));
+    }
+    else
+    {
+        return((int16_t)(((((int32_t)temp - ADC_EXT_REF_TSOFFSET) * 4096) /
+                         ADC_EXT_REF_TSSLOPE) + 273));
+    }
 }
-
 
 //*****************************************************************************
 //
@@ -2021,6 +2034,11 @@ ADC_getTemperatureK(uint16_t tempResult, float32_t vref)
 //!
 //! This function configures the ADC module's reference mode and loads the
 //! corresponding offset trims.
+//!
+//! \note In this device, the bandgaps are common for all the ADC instances,
+//! hence common Vref configuration needs to be done for all the ADCs. This
+//! API configures same Vref configuration for all the supported ADCs in the
+//! device.
 //!
 //! \note When the \e refMode parameter is \b ADC_REFERENCE_EXTERNAL, the value
 //! of the \e refVoltage parameter has no effect on the operation of the ADC.

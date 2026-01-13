@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -80,6 +80,19 @@ extern "C"
 //!
 #define SDFM_GET_HIGH_THRESHOLD(C)   ((uint16_t)((uint32_t)(C) >> 16U))
 
+//! Macro to get the high threshold 1 & 2 to be passed as lowThreshold
+//! parameter to SDFM_setCompFilterLowThreshold().
+//!
+#define SDFM_GET_LOW_THRESHOLD_BOTH(C1, C2)                                    \
+                        ((((uint32_t)(SDFM_GET_LOW_THRESHOLD(C2))) << 16U) |   \
+                         ((uint32_t)(SDFM_GET_LOW_THRESHOLD(C1))))
+
+//! Macro to get the high threshold 1 & 2 to be passed as highThreshold
+//! parameter to SDFM_setCompFilterHighThreshold().
+//!
+#define SDFM_GET_HIGH_THRESHOLD_BOTH(C1, C2)                                   \
+                        ((((uint32_t)(SDFM_GET_HIGH_THRESHOLD(C2))) << 16U) |  \
+                         ((uint32_t)(SDFM_GET_HIGH_THRESHOLD(C1))))
 
 //! Macro to convert comparator over sampling ratio to acceptable bit location
 //!
@@ -104,6 +117,55 @@ extern "C"
 //!
 #define SDFM_FILTER_DISABLE     0x0U
 #define SDFM_FILTER_ENABLE      0x2U
+
+//*****************************************************************************
+//
+// Defines for SDFM register offsets. Added for internal use. Not to be used by
+// application.
+//
+//*****************************************************************************
+//!< SD filter offset
+#define SDFM_SDFIL_OFFSET       (SDFM_O_SDCTLPARM2 - SDFM_O_SDCTLPARM1)
+
+//!< Event Digital filter offset
+#define SDFM_DIGFIL_OFFSET      (SDFM_O_SDCOMP2CTL - SDFM_O_SDCOMP1CTL)
+
+//!< Offset between high threshold 1 & 2 registers
+#define SDFM_SDFLT1CMPHx_OFFSET    (SDFM_O_SDFLT1CMPH2 - SDFM_O_SDFLT1CMPH1)
+
+//!< Offset between low threshold 1 & 2 registers
+#define SDFM_SDFLT1CMPLx_OFFSET    (SDFM_O_SDFLT1CMPL2 - SDFM_O_SDFLT1CMPL1)
+
+//*****************************************************************************
+//
+// Define to mask out the bits in the SDCOMPHFILCTL register that aren't
+// associated with comparator event filter configurations. Added for internal
+// use, not to be used in application code.
+//
+//*****************************************************************************
+#define SDFM_COMPEVT_FILTER_CONFIG_M  (SDFM_SDCOMP1EVT1FLTCTL_SAMPWIN_M  |     \
+                                       SDFM_SDCOMP1EVT1FLTCTL_THRESH_M)
+
+//*****************************************************************************
+//
+// Define to mask out the bits in the SDCOMPLOCK register that aren't
+// associated with lock configuration.  Added for internal use, not to be used
+// in application code.
+//
+//*****************************************************************************
+#define SDFM_COMPEVT_FILTER_LOCK_M  (SDFM_SDCOMPLOCK_SDCOMPCTL |               \
+                                     SDFM_SDCOMPLOCK_COMP)
+
+//*****************************************************************************
+//
+// Values that can be passed to SDFM_enableSynchronizer() or
+// SDFM_disableSynchronizer() as syncConfig parameter.
+//
+//*****************************************************************************
+//! Define for Clock synchronizer Configuration
+#define SDFM_CLOCK_SYNCHRONIZER    SDFM_SDCTLPARM1_SDCLKSYNC
+//! Define for Data Synchronizer Configuration
+#define SDFM_DATA_SYNCHRONIZER     SDFM_SDCTLPARM1_SDDATASYNC
 
 //*****************************************************************************
 //
@@ -159,12 +221,6 @@ typedef enum
 {
    //! Modulator clock is identical to the data rate
    SDFM_MODULATOR_CLK_EQUAL_DATA_RATE  = 0,
-   //! Modulator clock is half the data rate
-   SDFM_MODULATOR_CLK_HALF_DATA_RATE   = 1,
-   //! Modulator clock is off. Data is Manchester coded.
-   SDFM_MODULATOR_CLK_OFF              = 2,
-   //! Modulator clock is double the data rate.
-   SDFM_MODULATOR_CLK_DOUBLE_DATA_RATE = 3
 } SDFM_ModulatorClockMode;
 
 //*****************************************************************************
@@ -248,6 +304,91 @@ typedef enum
    //! Wait for sync cleared automatically
    SDFM_AUTO_CLEAR_WAIT_FOR_SYNC   = 1
 } SDFM_WaitForSyncClearMode;
+
+//*****************************************************************************
+//
+//! Values that can be passed to SDFM_selectCompEventSource() as the
+//! \e compEventNum parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    SDFM_COMP_EVENT_1 = SDFM_SDCPARM1_CEVT1SEL_S, //!< Selects CEVT1
+    SDFM_COMP_EVENT_2 = SDFM_SDCPARM1_CEVT2SEL_S  //!< Selects CEVT2
+} SDFM_CompEventNumber;
+
+//*****************************************************************************
+//
+//! Values that can be passed to SDFM_selectCompEventSource() as the
+//! \e compEventSource parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    SDFM_COMP_EVENT_SRC_COMPH1    = 0, //!< COMPH1 event is the source
+    SDFM_COMP_EVENT_SRC_COMPH1_L1 = 1, //!< Either of COMPH1 or COMPL1 event
+                                       //!< can be the source
+    SDFM_COMP_EVENT_SRC_COMPH2    = 2, //!< COMPH2 event is the source
+    SDFM_COMP_EVENT_SRC_COMPH2_L2 = 3, //!< Either of COMPH2 or COMPL2 event
+                                       //!< can be the source
+    SDFM_COMP_EVENT_SRC_COMPL1    = 0, //!< COMPL1 event is the source
+    SDFM_COMP_EVENT_SRC_COMPL2    = 2  //!< COMPL2 event is the source
+} SDFM_CompEventSource;
+
+//*****************************************************************************
+//
+//! Values that can be passed to SDFM_selectClockSource() as the \e clkSource
+//! parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    //! Source is respective channel clock
+    SDFM_CLK_SOURCE_CHANNEL_CLK = 0x0,
+    //! Source is SD1 channel clock is the source
+    SDFM_CLK_SOURCE_SD1_CLK = SDFM_SDCTLPARM1_SDCLKSEL
+} SDFM_ClockSource;
+
+//*****************************************************************************
+//
+//! Values that can be passed to SDFM_selectCompEventHighSource() as the
+//! \e source parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    //! Comparator event high source is unfiltered event
+    SDFM_COMPHOUT_SOURCE_COMPHIN = 0x0,
+    //! Comparator event high source is filtered event
+    SDFM_COMPHOUT_SOURCE_FILTER  = 0x8
+} SDFM_CompEventHighSource;
+
+//*****************************************************************************
+//
+//! Values that can be passed to SDFM_selectCompEventLowSource() as the
+//! \e source parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    //! Comparator event low source is unfiltered event
+    SDFM_COMPLOUT_SOURCE_COMPLIN = 0x000,
+    //! Comparator event low source is filtered event
+    SDFM_COMPLOUT_SOURCE_FILTER  = 0x800
+} SDFM_CompEventLowSource;
+
+//*****************************************************************************
+//
+//! Values that can be passed to SDFM_configCompEventLowFilter() &
+//! SDFM_configCompEventHighFilter() as the \e filterNumber.
+//
+//*****************************************************************************
+typedef struct
+{
+    uint16_t sampleWindow; //!< Sample window size
+    uint16_t threshold;    //!< Majority voting threshold
+    uint16_t clkPrescale;  //!< Sample clock pre-scale
+} SDFM_CompEventFilterConfig;
 
 //*****************************************************************************
 //
@@ -373,7 +514,8 @@ static inline bool
 SDFM_isBaseValid(uint32_t base)
 {
     return(
-           (base == SDFM1_BASE)
+           (base == SDFM1_BASE) ||
+           (base == SDFM2_BASE)
           );
 }
 #endif
@@ -640,6 +782,58 @@ SDFM_disableComparator(uint32_t base, SDFM_FilterNumber filterNumber)
 
 //*****************************************************************************
 //
+//! Selects Comparator Event Source.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number
+//! \param compEventNum is the event number
+//! \param compEventSource is the event source
+//!
+//!  This function selects the comparator event source. Valid values for
+//! \e compEventNum are:
+//! - SDFM_COMP_EVENT_1 - Selects comparator event 1
+//! - SDFM_COMP_EVENT_2 - Selects comparator event 2
+//! Valid values for \e SDFM_COMP_EVENT_1 are:
+//! - SDFM_COMP_EVENT_SRC_COMPH1 - COMPH1 event is the source for selected event
+//! - SDFM_COMP_EVENT_SRC_COMPH1_L1 - Either of COMPH1 or COMPL1 event can be
+//!                                   the source for selected event
+//! - SDFM_COMP_EVENT_SRC_COMPH2 - COMPH2 event is the source for selected event
+//! - SDFM_COMP_EVENT_SRC_COMPH2_L2 - Either of COMPH2 or COMPL2 event can be
+//!                                   the source for selected event
+//!
+//! Valid values for \e SDFM_COMP_EVENT_2 are:
+//! - SDFM_COMP_EVENT_SRC_COMPL1 - COMPL1 event is the source for selected event
+//! - SDFM_COMP_EVENT_SRC_COMPH1_L1 - Either of COMPH1 or COMPL1 event can be
+//!                                   the source for selected event
+//! - SDFM_COMP_EVENT_SRC_COMPL2 - COMPL2 event is the source for selected event
+//! - SDFM_COMP_EVENT_SRC_COMPH2_L2 - Either of COMPH2 or COMPL2 event can be
+//!                                   the source for selected event
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_selectCompEventSource(uint32_t base, SDFM_FilterNumber filterNumber,
+                           SDFM_CompEventNumber compEventNum,
+                           SDFM_CompEventSource compEventSource)
+{
+    uint32_t address;
+    ASSERT(SDFM_isBaseValid(base));
+    address = base + SDFM_O_SDCPARM1 + ((uint32_t)filterNumber *
+                                         SDFM_SDFIL_OFFSET);
+
+    //
+    // Select source for selected comparator event
+    //
+    EALLOW;
+    HWREGH(address) = (HWREGH(address) & ~((uint16_t)0x2U <<
+                       (uint16_t)compEventNum)) |
+                      ((uint16_t)compEventSource << (uint16_t)compEventNum) ;
+    EDIS;
+}
+
+//*****************************************************************************
+//
 //! Set filter type.
 //!
 //! \param base is the base address of the SDFM module
@@ -716,6 +910,8 @@ SDFM_setFilterOverSamplingRatio(uint32_t base, SDFM_FilterNumber filterNumber,
 //! This function sets the modulator clock mode specified by clockMode
 //! for the filter specified by filterNumber.
 //!
+//! \note This function also enables the data and clock synchronizers for
+//! the specified filter.
 //!
 //! \return None.
 //*****************************************************************************
@@ -736,6 +932,12 @@ SDFM_setupModulatorClock(uint32_t base, SDFM_FilterNumber filterNumber,
     HWREGH(address) = (HWREGH(address) & (~SDFM_SDCTLPARM1_MOD_M)) |
                       (uint16_t)clockMode;
 
+    //
+    // Enable data and clock synchronizer
+    //
+    HWREGH(base + SDFM_O_SDCTLPARM1 +
+           ((uint32_t)filterNumber * SDFM_SDFIL_OFFSET)) |=
+           (SDFM_CLOCK_SYNCHRONIZER | SDFM_DATA_SYNCHRONIZER);
     EDIS;
 }
 
@@ -808,38 +1010,48 @@ SDFM_setDataShiftValue(uint32_t base, SDFM_FilterNumber filterNumber,
     EDIS;
 }
 
+
 //*****************************************************************************
 //
 //! Set Filter output high-level threshold.
 //!
 //! \param base is the base address of the SDFM module
 //! \param filterNumber is the filter number.
-//! \param highThreshold is the high-level threshold.
+//! \param highThreshold is the high-level threshold 1 & 2.
 //!
 //! This function sets the unsigned high-level threshold value for the
 //! Comparator filter output. If the output value of the filter exceeds
 //! highThreshold and interrupt generation is enabled, an interrupt will be
-//! issued.
+//! issued. The param \b highThreshold takes both high threshold 1 & 2 values.
+//! The upper 16-bits represent the high threshold 2 value while lower 16-bits
+//! represent the threshold 1 values.
 //!
 //! \return None.
 //
 //*****************************************************************************
 static inline void
 SDFM_setCompFilterHighThreshold(uint32_t base, SDFM_FilterNumber filterNumber,
-                                uint16_t highThreshold)
+                                uint32_t highThreshold)
 {
     uint32_t address;
 
     ASSERT(SDFM_isBaseValid(base));
-    ASSERT(highThreshold < 0x7FFFU);
+    ASSERT((uint16_t)highThreshold <= SDFM_SDFLT1CMPH1_HLT_M);
+    ASSERT((uint16_t)(highThreshold >> 16U) <= SDFM_SDFLT1CMPH2_HLT2_M);
 
-    address = base + SDFM_O_SDCMPH1 + ((uint32_t)filterNumber * 16U);
+    address = base + SDFM_O_SDFLT1CMPH1 +
+              ((uint32_t)filterNumber * SDFM_SDFIL_OFFSET);
 
     //
     // Write to HLT bit
     //
     EALLOW;
-    HWREGH(address) = (HWREGH(address) & ~SDFM_SDCMPH1_HLT_M) | highThreshold;
+    HWREGH(address) = (HWREGH(address) & ~SDFM_SDFLT1CMPH1_HLT_M) |
+                      (uint16_t)highThreshold;
+    HWREGH(address + SDFM_SDFLT1CMPHx_OFFSET) =
+                                  (HWREGH(address + SDFM_SDFLT1CMPHx_OFFSET) &
+                                   ~SDFM_SDFLT1CMPH2_HLT2_M) |
+                                  (uint16_t)(highThreshold >> 16U);
     EDIS;
 }
 
@@ -848,36 +1060,44 @@ SDFM_setCompFilterHighThreshold(uint32_t base, SDFM_FilterNumber filterNumber,
 //! Set Filter output low-level threshold.
 //!
 //! \param base is the base address of the SDFM module
-//! \param filterNumber is the filter number.
-//! \param lowThreshold is the low-level threshold.
+//! \param filterNumber is the filter number
+//! \param lowThreshold is the low-level threshold
 //!
-//! This function sets the unsigned low-level threshold value for the
+//! This function sets the unsigned low-level threshold value 1 or 2 for the
 //! Comparator filter output. If the output value of the filter gets below
 //! lowThreshold and interrupt generation is enabled, an interrupt will be
-//! issued.
+//! issued. The param \b lowThreshold takes both low threshold 1 & 2 values.
+//! The upper 16-bits represent the low threshold 2 value while lower 16-bits
+//! represent the threshold 1 values.
 //!
 //! \return None.
 //
 //*****************************************************************************
 static inline void
 SDFM_setCompFilterLowThreshold(uint32_t base, SDFM_FilterNumber filterNumber,
-                               uint16_t lowThreshold)
+                               uint32_t lowThreshold)
 {
     uint32_t address;
 
     ASSERT(SDFM_isBaseValid(base));
-    ASSERT(lowThreshold < 0x7FFFU);
+    ASSERT((uint16_t)lowThreshold <= SDFM_SDFLT1CMPL1_LLT_M);
+    ASSERT((uint16_t)(lowThreshold >> 16U) <= SDFM_SDFLT1CMPL2_LLT2_M);
 
-    address = base + SDFM_O_SDCMPL1 + ((uint32_t)filterNumber * 16U);
+    address = base + SDFM_O_SDFLT1CMPL1 +
+              ((uint32_t)filterNumber * SDFM_SDFIL_OFFSET);
 
     //
-    // Write to LLT bit
+    // Write to LLT bit.
     //
     EALLOW;
-    HWREGH(address) = (HWREGH(address) & ~SDFM_SDCMPL1_LLT_M) | lowThreshold;
+    HWREGH(address) = (HWREGH(address) & ~SDFM_SDFLT1CMPL1_LLT_M) |
+                      (uint16_t)lowThreshold;
+    HWREGH(address + SDFM_SDFLT1CMPLx_OFFSET) =
+                                   (HWREGH(address + SDFM_SDFLT1CMPLx_OFFSET) &
+                                    ~SDFM_SDFLT1CMPL2_LLT2_M) |
+                                   (uint16_t)(lowThreshold >> 16U);
     EDIS;
 }
-
 //*****************************************************************************
 //
 //! Set Filter output zero-cross threshold.
@@ -902,13 +1122,13 @@ SDFM_setCompFilterZeroCrossThreshold(uint32_t base,
     ASSERT(SDFM_isBaseValid(base));
     ASSERT(zeroCrossThreshold < 0x7FFFU);
 
-    address = base + SDFM_O_SDCMPHZ1 + ((uint32_t)filterNumber * 16U);
+    address = base + SDFM_O_SDFLT1CMPHZ + ((uint32_t)filterNumber * 16U);
 
     //
     // Write to ZCT bit
     //
     EALLOW;
-    HWREGH(address) = (HWREGH(address) & ~SDFM_SDCMPHZ1_HLTZ_M) |
+    HWREGH(address) = (HWREGH(address) & ~SDFM_SDFLT1CMPHZ_HLTZ_M) |
                       zeroCrossThreshold;
 
     EDIS;
@@ -1859,6 +2079,257 @@ SDFM_setWaitForSyncClearMode(uint32_t base, SDFM_FilterNumber filterNumber,
 
 //*****************************************************************************
 //
+//! Selects clock source for SDFM channels.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param clkSource is the clock source
+//!
+//! This function selects the clock for SDFM module filter channels.
+//! Valid values for clkSource are:
+//!   - SDFM_CLK_SOURCE_CHANNEL_CLK - Respective channel's clk is the source
+//!   - SDFM_CLK_SOURCE_SD1_CLK     - Filter 1 clock is the source
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_selectClockSource(uint32_t base, SDFM_FilterNumber filterNumber,
+                       SDFM_ClockSource clkSource)
+{
+    uint32_t address;
+
+    ASSERT(SDFM_isBaseValid(base));
+    address = base + SDFM_O_SDCTLPARM1 +
+              ((uint32_t)filterNumber * SDFM_SDFIL_OFFSET);
+
+    //
+    // Select SDFM clock source.
+    //
+    EALLOW;
+    HWREGH(address) = (HWREGH(address) & ~(SDFM_SDCTLPARM1_SDCLKSEL)) |
+                      (uint16_t)clkSource;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Enables Input Synchronizer.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param syncConfig defines which synchronizer to be enabled
+//!
+//! This function enables either data or clock or both synchronizer.
+//! Valid values for syncConfig can be the logical OR of any of the values:
+//!   - SDFM_CLOCK_SYNCHRONIZER - Enable SDFM input clock synchronizer
+//!   - SDFM_DATA_SYNCHRONIZER  - Enable SDFM input data synchronizer
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_enableSynchronizer(uint32_t base, SDFM_FilterNumber filterNumber,
+                        uint16_t syncConfig)
+{
+    ASSERT(SDFM_isBaseValid(base));
+
+    //
+    // Select SDFM clock source.
+    //
+    EALLOW;
+    HWREGH(base + SDFM_O_SDCTLPARM1 +
+           ((uint32_t)filterNumber * SDFM_SDFIL_OFFSET)) |= syncConfig;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Disables Input Synchronizer.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param syncConfig defines which synchronizer to be disabled
+//!
+//! This function disables either data or clock or both synchronizer.
+//! Valid values for syncConfig can be the logical OR of any of the values:
+//!   - SDFM_CLOCK_SYNCHRONIZER - Disable SDFM input clock synchronizer
+//!   - SDFM_DATA_SYNCHRONIZER  - Disable SDFM input data synchronizer
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_disableSynchronizer(uint32_t base, SDFM_FilterNumber filterNumber,
+                         uint16_t syncConfig)
+{
+    ASSERT(SDFM_isBaseValid(base));
+
+    //
+    // Select SDFM clock source.
+    //
+    EALLOW;
+    HWREGH(base + SDFM_O_SDCTLPARM1 +
+           ((uint32_t)filterNumber * SDFM_SDFIL_OFFSET)) &= ~syncConfig;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Selects comparator event high source.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param source is the comparator event high source
+//!
+//! This function selects the source for comparator event high.
+//! Valid values for source are:
+//!   - SDFM_COMPHOUT_SOURCE_COMPHIN - Original COMPHIN/CEVT1 signal is source
+//!   - SDFM_COMPHOUT_SOURCE_FILTER  - Filtered COMPHIN/CEVT1 signal is source
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_selectCompEventHighSource(uint32_t base, SDFM_FilterNumber filterNumber,
+                               SDFM_CompEventHighSource source)
+{
+    uint32_t address;
+    ASSERT(SDFM_isBaseValid(base));
+    address = base + SDFM_O_SDCOMP1CTL +
+              ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET);
+
+    //
+    // Set COMPHOUT source.
+    //
+    EALLOW;
+    HWREGH(address) = (HWREGH(address) & ~SDFM_SDCOMP1CTL_CEVT1DIGFILTSEL_M) |
+                      (uint16_t)source;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Selects comparator event low source.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param source is the comparator event low source
+//!
+//! This function selects the source for comparator event low.
+//! Valid values for source are:
+//!   - SDFM_COMPLOUT_SOURCE_COMPLIN - Original COMPLIN/CEVT2 signal is source
+//!   - SDFM_COMPHOUT_SOURCE_FILTER  - Filtered COMPLIN/CEVT2 signal is source
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_selectCompEventLowSource(uint32_t base, SDFM_FilterNumber filterNumber,
+                              SDFM_CompEventLowSource source)
+{
+    uint32_t address;
+    ASSERT(SDFM_isBaseValid(base));
+    address = base + SDFM_O_SDCOMP1CTL +
+              ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET);
+
+    //
+    // Set COMPLOUT source.
+    //
+    EALLOW;
+    HWREGH(address) = (HWREGH(address) & ~SDFM_SDCOMP1CTL_CEVT2DIGFILTSEL_M) |
+                      (uint16_t)source;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Initializes Comparator Event Low Filter.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//!
+//! This function initializes Comparator Event Low Filter.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_initCompEventLowFilter(uint32_t base, SDFM_FilterNumber filterNumber)
+{
+    ASSERT(SDFM_isBaseValid(base));
+
+    //
+    // Initialize comparator event low filter.
+    //
+    EALLOW;
+    HWREGH(base + SDFM_O_SDCOMP1EVT2FLTCTL +
+           ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET)) |=
+                                      (uint16_t)SDFM_SDCOMP1EVT2FLTCTL_FILINIT;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Initializes Comparator Event High Filter.
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//!
+//! This function initializes Comparator Event High Filter.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_initCompEventHighFilter(uint32_t base, SDFM_FilterNumber filterNumber)
+{
+    ASSERT(SDFM_isBaseValid(base));
+
+    //
+    // Initialize comparator event high filter.
+    //
+    EALLOW;
+    HWREGH(base + SDFM_O_SDCOMP1EVT1FLTCTL +
+           ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET)) |=
+                                      (uint16_t)SDFM_SDCOMP1EVT1FLTCTL_FILINIT;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Lock Comparator Event Filter Configurations
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param lockConfig defines the configurations to be locked
+//!
+//! This function locks the comparator event filter configurations. Valid
+//! values of the lockConfig can be logical OR of any of the following values:
+//! - SDFM_SDCOMPLOCK_SDCOMPCTL - Locks write access to SDCOMPCTL register
+//! - SDFM_SDCOMPLOCK_COMP - Locks write access to SDCOMPxFILCTL &
+//!                          SDCOMPxFILCLKCTL register
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+SDFM_lockCompEventFilterConfig(uint32_t base, SDFM_FilterNumber filterNumber,
+                               uint16_t lockConfig)
+{
+    ASSERT(SDFM_isBaseValid(base));
+
+    //
+    // Lock comparator event filter related configurations.
+    //
+    EALLOW;
+    HWREGH(base + SDFM_O_SDCOMP1LOCK +
+           ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET)) |= lockConfig;
+    EDIS;
+}
+
+//*****************************************************************************
+//
 // Prototypes for the APIs.
 //
 //*****************************************************************************
@@ -1868,7 +2339,7 @@ SDFM_setWaitForSyncClearMode(uint32_t base, SDFM_FilterNumber filterNumber,
 //!
 //! \param base is the base address of the SDFM module
 //! \param config1 is the filter number, filter type and over sampling ratio.
-//! \param config2 is high-level and low-level threshold values.
+//! \param config2 is high-level and low-level threshold 1 values.
 //! \param config3 is the zero-cross threshold value.
 //!
 //! This function configures the comparator filter for filter config and
@@ -1889,14 +2360,13 @@ SDFM_setWaitForSyncClearMode(uint32_t base, SDFM_FilterNumber filterNumber,
 //! will select Filter 1, SINC 2 type with an oversampling ratio of 16.
 //!
 //! The config2 parameter is the logical OR of the filter high and low
-//! threshold values.
+//! threshold 1 values.
 //! The bit definitions for config2 are as follow:
-//!   - config2.[15:0]  low threshold
-//!   - config2.[31:16] high threshold
-//! The upper 16 bits define the high threshold and the lower
-//! 16 bits define the low threshold.
-//! SDFM_THRESHOLD(H,L) can be used to combine the high and low thresholds.
-//!
+//!   - config2.[15:0]  low threshold 1
+//!   - config2.[31:16] high threshold 1
+//! The upper 16 bits define the high threshold 1 and the lower 16 bits define
+//! the low threshold 1. SDFM_THRESHOLD(H,L) can be used to combine the high
+//! and low thresholds.
 //! The config3 parameter is the logical OR of the zero cross threshold
 //! enable flag and the zero-cross threshold value.
 //! The bit definitions for config3 are as follow:
@@ -1913,6 +2383,70 @@ SDFM_setWaitForSyncClearMode(uint32_t base, SDFM_FilterNumber filterNumber,
 extern void
 SDFM_configComparator(uint32_t base, uint16_t config1,
                       uint32_t config2, uint16_t config3);
+
+//*****************************************************************************
+//
+//! Configure SDFM enhanced comparator for filter config & threshold values
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterConfig is the filter number, filter type & over sampling ratio.
+//! \param highLowThreshold1 is high-level and low-level threshold 1 values.
+//! \param highLowThreshold2 is high-level and low-level threshold 2 values.
+//! \param zeroCrossThreshold is the zero-cross threshold value.
+//!
+//! This function configures the comparator filter for filter config and
+//! threshold values based on input parameters.
+//!
+//! The filterConfig parameter is the logical OR of the filter number, filter
+//! type and oversampling ratio.
+//! The bit definitions for filterConfig are as follow:
+//!   - filterConfig.[3:0]  filter number
+//!   - filterConfig.[7:4]  filter type
+//!   - filterConfig.[15:8] Over sampling Ratio
+//! Valid values for filter number and filter type are defined in
+//! SDFM_FilterNumber and SDFM_FilterType enumerations respectively.
+//! SDFM_SET_OSR(X) macro can be used to set the value of the oversampling
+//! ratio ,which ranges [1,32] inclusive, in the appropriate bit location.
+//! For example the value
+//! (SDFM_FILTER_1 | SDFM_FILTER_SINC_2 | SDFM_SET_OSR(16))
+//! will select Filter 1, SINC 2 type with an oversampling ratio of 16.
+//!
+//! The highLowThreshold1 parameter is the logical OR of the filter high & low
+//! threshold 1 values.
+//! The bit definitions for highLowThreshold1 are as follow:
+//!   - highLowThreshold1.[15:0]  low threshold 1
+//!   - highLowThreshold1.[31:16] high threshold 1
+//! The upper 16 bits define the high threshold and the lower 16 bits define
+//! the low threshold. SDFM_THRESHOLD(H,L) can be used to combine the high and
+//! low thresholds.
+//!
+//! The highLowThreshold2 parameter is the logical OR of the filter high & low
+//! threshold 2 values.
+//! The bit definitions for highLowThreshold2 are as follow:
+//!   - highLowThreshold2.[15:0]  low threshold 2
+//!   - highLowThreshold2.[31:16] high threshold 2
+//! The upper 16 bits define the high threshold and the lower 16 bits define
+//! the low threshold. SDFM_THRESHOLD(H,L) can be used to combine the high &
+//! low thresholds.
+//!
+//! The zeroCrossThreshold parameter is the logical OR of the zero cross
+//! threshold enable flag and the zero-cross threshold value. The bit
+//! definitions for zeroCrossThreshold are as follows:
+//!   - zeroCrossThreshold.[15] - Enable or disable zero cross threshold. Valid
+//!     values are 1 or 0 to enable or disable the zero cross threshold
+//!     respectively.
+//!   - zeroCrossThreshold.[14:0] - Zero Cross Threshold value.
+//! The SDFM_SET_ZERO_CROSS_THRESH_VALUE(X) macro can be used as parameter
+//! zeroCrossThreshold to enable & specify the zero-cross threshold value.
+//!
+//! \return None.
+//!
+//*****************************************************************************
+extern void
+SDFM_configEnhancedComparator(uint32_t base, uint16_t filterConfig,
+                              uint32_t highLowThreshold1,
+                              uint32_t highLowThreshold2,
+                              uint16_t zeroCrossThreshold);
 
 //*****************************************************************************
 //
@@ -2043,6 +2577,42 @@ SDFM_configZeroCrossComparator(uint32_t base, uint16_t config1,
 //*****************************************************************************
 extern void
 SDFM_configDataFilterFIFO(uint32_t base, uint16_t config1, uint16_t config2);
+
+//*****************************************************************************
+//
+//! Configure Comparator Event Low Filter
+//!
+//! \param base is the base address of the SDFM module
+//! \param filterNumber is the filter number.
+//! \param config is the comparator event low source
+//!
+//! This function configures the sample window, threshold and clock prescale
+//! configurations for the comparator event low filter.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+SDFM_configCompEventLowFilter(uint32_t base, SDFM_FilterNumber filterNumber,
+                              const SDFM_CompEventFilterConfig *config);
+
+//*****************************************************************************
+//
+//! Configure Comparator Event High Filter
+//!
+//! \param base is the base address of the SDFM module.
+//! \param filterNumber is the filter number.
+//! \param config is the comparator event high source
+//!
+//! This function configures the sample window, threshold and clock prescale
+//! configurations for the comparator event high filter.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+SDFM_configCompEventHighFilter(uint32_t base, SDFM_FilterNumber filterNumber,
+                               const SDFM_CompEventFilterConfig *config);
 
 //*****************************************************************************
 //

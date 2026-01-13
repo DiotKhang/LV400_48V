@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -47,24 +47,24 @@
 // for use by application code.
 //
 //*****************************************************************************
-#define ADC_OFFSET_TRIM_OTP                     0x70194U
+#define ADC_OFFSET_TRIM_OTP                     0x7016CU
 
 #define ADC_VOLTAGE_REF_REG_OFFSET              8U
 //
 // The following macro calculates the INL trim location in OTP memory
 // required to calibrate the ADC linearity.
 //
-#define ADC_getINLTrimOTPLoc(offset) ((uint16_t *)(0x701BFU + (0x6U * offset)))
+#define ADC_getINLTrimOTPLoc(offset) ((uint32_t *)(0x70160U + (0x4U * offset)))
 
 //
 // TI-OTP key value expected to be programmed in trimmed device
 //
-#define TI_OTP_DEV_KEY                          (0x7700U)
+#define TI_OTP_DEV_KEY                          (0x5A5AU)
 
 //
 // Macro to read the key value programmed in the device
 //
-#define TI_OTP_DEV_PRG_KEY                      (HWREGH(0x70280UL))
+#define TI_OTP_DEV_PRG_KEY                      (HWREGH(0x7026EUL))
 
 
 //*****************************************************************************
@@ -81,32 +81,6 @@ ADC_setVREF(uint32_t base, ADC_ReferenceMode refMode,
     //
     ASSERT(ADC_isBaseValid(base));
 
-
-    uint16_t moduleShiftVal;
-
-    //
-    // Assign a shift amount corresponding to which ADC module is being
-    // configured.
-    //
-    switch(base)
-    {
-        case ADCA_BASE:
-            moduleShiftVal = 0U;
-            break;
-        case ADCB_BASE:
-            moduleShiftVal = 1U;
-            break;
-        case ADCC_BASE:
-            moduleShiftVal = 2U;
-            break;
-        default:
-            //
-            // Invalid base address!!
-            //
-            moduleShiftVal = 0U;
-            break;
-    }
-
     EALLOW;
     //
     // Configure the reference mode (internal or external).
@@ -114,14 +88,14 @@ ADC_setVREF(uint32_t base, ADC_ReferenceMode refMode,
     if(refMode == ADC_REFERENCE_INTERNAL)
     {
         HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL) &=
-            ~(ASYSCTL_ANAREFCTL_ANAREFASEL << moduleShiftVal);
+            ~(ASYSCTL_ANAREFCTL_ANAREFSEL);
     }
 
 
     else
     {
         HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL) |=
-            ASYSCTL_ANAREFCTL_ANAREFASEL << moduleShiftVal;
+            ASYSCTL_ANAREFCTL_ANAREFSEL;
     }
 
     //
@@ -130,12 +104,12 @@ ADC_setVREF(uint32_t base, ADC_ReferenceMode refMode,
     if(refVoltage == ADC_REFERENCE_3_3V)
     {
         HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL) &=
-            ~(ASYSCTL_ANAREFCTL_ANAREFA2P5SEL << moduleShiftVal);
+            ~(ASYSCTL_ANAREFCTL_ANAREF2P5SEL);
     }
     else
     {
         HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_ANAREFCTL) |=
-            ASYSCTL_ANAREFCTL_ANAREFA2P5SEL << moduleShiftVal;
+            ASYSCTL_ANAREFCTL_ANAREF2P5SEL;
 
     }
     EDIS;
@@ -155,7 +129,7 @@ void
 ADC_setINLTrim(uint32_t base)
 {
     uint16_t i;
-    uint16_t * inlTrimAddress;
+    uint32_t * inlTrimAddress;
 
     //
     // Check the arguments.
@@ -189,13 +163,10 @@ ADC_setINLTrim(uint32_t base)
         EALLOW;
         for(i = 0U; i < 4U; i += 2U)
         {
-
             //
-            // 16-bit writes are performed since the OTP source is not word
-            // aligned.
+            // 32-bit writes are performed since the OTP source is word aligned.
             //
-            HWREGH(base + ADC_O_INLTRIM2 + i + 1U) = (*inlTrimAddress++);
-            HWREGH(base + ADC_O_INLTRIM2 + i)     = (*inlTrimAddress++);
+            HWREG(base + ADC_O_INLTRIM2 + i) = (*inlTrimAddress++);
         }
         EDIS;
     }
@@ -273,8 +244,7 @@ ADC_setOffsetTrim(uint32_t base)
     //
     // Set up pointer to offset trim in OTP.
     //
-    offset = (uint16_t *)(ADC_OFFSET_TRIM_OTP + ((uint32_t)6U *
-                                                 moduleShiftVal));
+    offset = (uint16_t *)((uint32_t)ADC_OFFSET_TRIM_OTP + moduleShiftVal);
 
     //
     // Get offset trim from OTP and write it to the register.
@@ -311,7 +281,7 @@ ADC_setOffsetTrimAll(ADC_ReferenceMode refMode, ADC_ReferenceVoltage refVoltage)
     //
     // Set up pointer to offset trim in OTP for ADCA.
     //
-    offset = (uint16_t *)(ADC_OFFSET_TRIM_OTP);
+    offset = (uint16_t *)((uint32_t)ADC_OFFSET_TRIM_OTP);
 
     //
     // Get offset trim from OTP and write it to the register for ADCA.
@@ -322,7 +292,7 @@ ADC_setOffsetTrimAll(ADC_ReferenceMode refMode, ADC_ReferenceVoltage refVoltage)
     //
     // Set up pointer to offset trim in OTP for ADCB.
     //
-    offset = (uint16_t *)(ADC_OFFSET_TRIM_OTP + (uint32_t)6U);
+    offset = (uint16_t *)((uint32_t)ADC_OFFSET_TRIM_OTP + (uint32_t)1U);
 
     //
     // Get offset trim from OTP and write it to the register for ADCB.
@@ -332,7 +302,7 @@ ADC_setOffsetTrimAll(ADC_ReferenceMode refMode, ADC_ReferenceVoltage refVoltage)
     //
     // Set up pointer to offset trim in OTP for ADCC.
     //
-    offset = (uint16_t *)(ADC_OFFSET_TRIM_OTP + (uint32_t)12U);
+    offset = (uint16_t *)((uint32_t)ADC_OFFSET_TRIM_OTP + (uint32_t)2U);
 
     //
     // Get offset trim from OTP and write it to the register for ADCC.

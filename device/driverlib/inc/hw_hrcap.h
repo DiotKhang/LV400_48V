@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,19 +46,20 @@
 // The following are defines for the HRCAP register offsets
 //
 //*************************************************************************************************
-#define HRCAP_O_TSCTR    0x0U    // Time-Stamp Counter
-#define HRCAP_O_CTRPHS   0x2U    // Counter Phase Offset Value Register
-#define HRCAP_O_CAP1     0x4U    // Capture 1 Register
-#define HRCAP_O_CAP2     0x6U    // Capture 2 Register
-#define HRCAP_O_CAP3     0x8U    // Capture 3 Register
-#define HRCAP_O_CAP4     0xAU    // Capture 4 Register
-#define HRCAP_O_ECCTL0   0x12U   // Capture Control Register 0
-#define HRCAP_O_ECCTL1   0x14U   // Capture Control Register 1
-#define HRCAP_O_ECCTL2   0x15U   // Capture Control Register 2
-#define HRCAP_O_ECEINT   0x16U   // Capture Interrupt Enable Register
-#define HRCAP_O_ECFLG    0x17U   // Capture Interrupt Flag Register
-#define HRCAP_O_ECCLR    0x18U   // Capture Interrupt Clear Register
-#define HRCAP_O_ECFRC    0x19U   // Capture Interrupt Force Register
+#define HRCAP_O_TSCTR           0x0U    // Time-Stamp Counter
+#define HRCAP_O_CTRPHS          0x2U    // Counter Phase Offset Value Register
+#define HRCAP_O_CAP1            0x4U    // Capture 1 Register
+#define HRCAP_O_CAP2            0x6U    // Capture 2 Register
+#define HRCAP_O_CAP3            0x8U    // Capture 3 Register
+#define HRCAP_O_CAP4            0xAU    // Capture 4 Register
+#define HRCAP_O_ECCTL0          0x12U   // Capture Control Register 0
+#define HRCAP_O_ECCTL1          0x14U   // Capture Control Register 1
+#define HRCAP_O_ECCTL2          0x15U   // Capture Control Register 2
+#define HRCAP_O_ECEINT          0x16U   // Capture Interrupt Enable Register
+#define HRCAP_O_ECFLG           0x17U   // Capture Interrupt Flag Register
+#define HRCAP_O_ECCLR           0x18U   // Capture Interrupt Clear Register
+#define HRCAP_O_ECFRC           0x19U   // Capture Interrupt Force Register
+#define HRCAP_O_ECAPSYNCINSEL   0x1EU   // SYNC source select register
 
 #define HRCAP_O_HRCTL         0x0U    // High-Res Control Register
 #define HRCAP_O_HRINTEN       0x4U    // High-Res Calibration Interrupt Enable Register
@@ -175,6 +176,14 @@
 #define HRCAP_ECFRC_CTROVF    0x20U   // Counter Overflow Force Interrupt
 #define HRCAP_ECFRC_CTR_PRD   0x40U   // Period Equal Force Interrupt
 #define HRCAP_ECFRC_CTR_CMP   0x80U   // Compare Equal Force Interrupt
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the ECAPSYNCINSEL register
+//
+//*************************************************************************************************
+#define HRCAP_ECAPSYNCINSEL_SEL_S   0U
+#define HRCAP_ECAPSYNCINSEL_SEL_M   0x1FU   // SYNCIN source select
 
 
 //*************************************************************************************************

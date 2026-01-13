@@ -6,7 +6,7 @@
 //
 //#############################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -525,9 +525,7 @@ use HRPWM_forceActionQualifierSWAction*/
 static inline bool HRPWM_isBaseValid(uint32_t base)
 {
     return((base == EPWM1_BASE) || (base == EPWM2_BASE) ||
-           (base == EPWM3_BASE) || (base == EPWM4_BASE) ||
-           (base == EPWM5_BASE) || (base == EPWM6_BASE) ||
-           (base == EPWM7_BASE) || (base == EPWM8_BASE));
+           (base == EPWM3_BASE) || (base == EPWM4_BASE));
 }
 #endif
 //*****************************************************************************

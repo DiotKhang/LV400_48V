@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,59 +46,71 @@
 // The following are defines for the GPIO register offsets
 //
 //*************************************************************************************************
-#define GPIO_O_GPACTRL    0x0U     // GPIO A Qualification Sampling Period (GPIO0 to GPIO31)
-#define GPIO_O_GPAQSEL1   0x2U     // GPIO A Qualification Type (GPIO0 to GPIO15)
-#define GPIO_O_GPAQSEL2   0x4U     // GPIO A Qualification Type (GPIO16 to GPIO31)
-#define GPIO_O_GPAMUX1    0x6U     // GPIO A Peripheral Mux (GPIO0 to GPIO15)
-#define GPIO_O_GPAMUX2    0x8U     // GPIO A Peripheral Mux (GPIO16 to GPIO31)
-#define GPIO_O_GPADIR     0xAU     // GPIO A Direction (GPIO0 to GPIO31)
-#define GPIO_O_GPAPUD     0xCU     // GPIO A Pull-Up Disable (GPIO0 to GPIO31)
-#define GPIO_O_GPAINV     0x10U    // GPIO A Input Inversion (GPIO0 to GPIO31)
-#define GPIO_O_GPAODR     0x12U    // GPIO A Open Drain Output Mode (GPIO0 to GPIO31)
-#define GPIO_O_GPAAMSEL   0x14U    // GPIO A Analog Mode Select (GPIO0 to GPIO31)
-#define GPIO_O_GPAGMUX1   0x20U    // GPIO A Peripheral Group Mux (GPIO0 to GPIO15)
-#define GPIO_O_GPAGMUX2   0x22U    // GPIO A Peripheral Group Mux (GPIO16 to GPIO31)
-#define GPIO_O_GPACSEL1   0x28U    // GPIO A Master Core Select (GPIO0 to GPIO7)
-#define GPIO_O_GPACSEL2   0x2AU    // GPIO A Master Core Select (GPIO8 to GPIO15)
-#define GPIO_O_GPACSEL3   0x2CU    // GPIO A Master Core Select (GPIO16 to GPIO23)
-#define GPIO_O_GPACSEL4   0x2EU    // GPIO A Master Core Select (GPIO24 to GPIO31)
-#define GPIO_O_GPALOCK    0x3CU    // GPIO A Lock Register (GPIO0 to GPIO31)
-#define GPIO_O_GPACR      0x3EU    // GPIO A Lock Commit Register (GPIO0 to GPIO31)
-#define GPIO_O_GPBCTRL    0x40U    // GPIO B Qualification Sampling Period (GPIO32 to GPIO63)
-#define GPIO_O_GPBQSEL1   0x42U    // GPIO B Qualification Type (GPIO32 to GPIO47)
-#define GPIO_O_GPBQSEL2   0x44U    // GPIO B Qualification Type (GPIO48 to GPIO63)
-#define GPIO_O_GPBMUX1    0x46U    // GPIO B Peripheral Mux (GPIO32 to GPIO47)
-#define GPIO_O_GPBMUX2    0x48U    // GPIO B Peripheral Mux (GPIO48 to GPIO63)
-#define GPIO_O_GPBDIR     0x4AU    // GPIO B Direction (GPIO32 to GPIO63)
-#define GPIO_O_GPBPUD     0x4CU    // GPIO B Pull-Up Disable (GPIO32 to GPIO63)
-#define GPIO_O_GPBINV     0x50U    // GPIO B Input Inversion (GPIO32 to GPIO63)
-#define GPIO_O_GPBODR     0x52U    // GPIO B Open Drain Output Mode (GPIO32 to GPIO63)
-#define GPIO_O_GPBGMUX1   0x60U    // GPIO B Peripheral Group Mux (GPIO32 to GPIO47)
-#define GPIO_O_GPBGMUX2   0x62U    // GPIO B Peripheral Group Mux (GPIO48 to GPIO63)
-#define GPIO_O_GPBCSEL1   0x68U    // GPIO B Master Core Select (GPIO32 to GPIO39)
-#define GPIO_O_GPBCSEL2   0x6AU    // GPIO B Master Core Select (GPIO40 to GPIO47)
-#define GPIO_O_GPBCSEL3   0x6CU    // GPIO B Master Core Select (GPIO48 to GPIO55)
-#define GPIO_O_GPBCSEL4   0x6EU    // GPIO B Master Core Select (GPIO56 to GPIO63)
-#define GPIO_O_GPBLOCK    0x7CU    // GPIO B Lock Register (GPIO32 to GPIO63)
-#define GPIO_O_GPBCR      0x7EU    // GPIO B Lock Commit Register (GPIO32 to GPIO63)
-#define GPIO_O_GPHCTRL    0x1C0U   // GPIO H Qualification Sampling Period (GPIO224 to GPIO255)
-#define GPIO_O_GPHQSEL1   0x1C2U   // GPIO H Qualification Type (GPIO224 to GPIO239)
-#define GPIO_O_GPHQSEL2   0x1C4U   // GPIO H Qualification Type (GPIO240 to GPIO255)
-#define GPIO_O_GPHPUD     0x1CCU   // GPIO H Pull-Up Disable (GPIO224 to GPIO255)
-#define GPIO_O_GPHINV     0x1D0U   // GPIO H Input Inversion (GPIO224 to GPIO255)
-#define GPIO_O_GPHAMSEL   0x1D4U   // GPIO H Analog Mode Select (GPIO224 to GPIO255)
-#define GPIO_O_GPHLOCK    0x1FCU   // GPIO H Lock Register (GPIO224 to GPIO255)
-#define GPIO_O_GPHCR      0x1FEU   // GPIO H Lock Commit Register (GPIO224 to GPIO255)
+#define GPIO_O_GPACTRL    0x0U     // GPIO A Qualification Sampling Period Control (GPIO0 to 31)
+#define GPIO_O_GPAQSEL1   0x2U     // GPIO A Qualifier Select 1 Register (GPIO0 to 15)
+#define GPIO_O_GPAQSEL2   0x4U     // GPIO A Qualifier Select 2 Register (GPIO16 to 31)
+#define GPIO_O_GPAMUX1    0x6U     // GPIO A Mux 1 Register (GPIO0 to 15)
+#define GPIO_O_GPAMUX2    0x8U     // GPIO A Mux 2 Register (GPIO16 to 31)
+#define GPIO_O_GPADIR     0xAU     // GPIO A Direction Register (GPIO0 to 31)
+#define GPIO_O_GPAPUD     0xCU     // GPIO A Pull Up Disable Register (GPIO0 to 31)
+#define GPIO_O_GPAINV     0x10U    // GPIO A Input Polarity Invert Registers (GPIO0 to 31)
+#define GPIO_O_GPAODR     0x12U    // GPIO A Open Drain Output Register (GPIO0 to GPIO31)
+#define GPIO_O_GPAAMSEL   0x14U    // GPIO A Analog Mode Select register (GPIO0 to GPIO31)
+#define GPIO_O_GPAGMUX1   0x20U    // GPIO A Peripheral Group Mux (GPIO0 to 15)
+#define GPIO_O_GPAGMUX2   0x22U    // GPIO A Peripheral Group Mux (GPIO16 to 31)
+#define GPIO_O_GPACSEL1   0x28U    // GPIO A Core Select Register (GPIO0 to 7)
+#define GPIO_O_GPACSEL2   0x2AU    // GPIO A Core Select Register (GPIO8 to 15)
+#define GPIO_O_GPACSEL3   0x2CU    // GPIO A Core Select Register (GPIO16 to 23)
+#define GPIO_O_GPACSEL4   0x2EU    // GPIO A Core Select Register (GPIO24 to 31)
+#define GPIO_O_GPALOCK    0x3CU    // GPIO A Lock Configuration Register (GPIO0 to 31)
+#define GPIO_O_GPACR      0x3EU    // GPIO A Lock Commit Register (GPIO0 to 31)
+#define GPIO_O_GPBCTRL    0x40U    // GPIO B Qualification Sampling Period Control (GPIO32 to 63)
+#define GPIO_O_GPBQSEL1   0x42U    // GPIO B Qualifier Select 1 Register (GPIO32 to 47)
+#define GPIO_O_GPBQSEL2   0x44U    // GPIO B Qualifier Select 2 Register (GPIO48 to 63)
+#define GPIO_O_GPBMUX1    0x46U    // GPIO B Mux 1 Register (GPIO32 to 47)
+#define GPIO_O_GPBMUX2    0x48U    // GPIO B Mux 2 Register (GPIO48 to 63)
+#define GPIO_O_GPBDIR     0x4AU    // GPIO B Direction Register (GPIO32 to 63)
+#define GPIO_O_GPBPUD     0x4CU    // GPIO B Pull Up Disable Register (GPIO32 to 63)
+#define GPIO_O_GPBINV     0x50U    // GPIO B Input Polarity Invert Registers (GPIO32 to 63)
+#define GPIO_O_GPBODR     0x52U    // GPIO B Open Drain Output Register (GPIO32 to GPIO63)
+#define GPIO_O_GPBGMUX1   0x60U    // GPIO B Peripheral Group Mux (GPIO32 to 47)
+#define GPIO_O_GPBGMUX2   0x62U    // GPIO B Peripheral Group Mux (GPIO48 to 63)
+#define GPIO_O_GPBCSEL1   0x68U    // GPIO B Core Select Register (GPIO32 to 39)
+#define GPIO_O_GPBCSEL2   0x6AU    // GPIO B Core Select Register (GPIO40 to 47)
+#define GPIO_O_GPBCSEL3   0x6CU    // GPIO B Core Select Register (GPIO48 to 55)
+#define GPIO_O_GPBCSEL4   0x6EU    // GPIO B Core Select Register (GPIO56 to 63)
+#define GPIO_O_GPBLOCK    0x7CU    // GPIO B Lock Configuration Register (GPIO32 to 63)
+#define GPIO_O_GPBCR      0x7EU    // GPIO B Lock Commit Register (GPIO32 to 63)
+#define GPIO_O_GPHCTRL    0x1C0U   // GPIO H Qualification Sampling Period Control (GPIO224 to 255)
+#define GPIO_O_GPHQSEL1   0x1C2U   // GPIO H Qualifier Select 1 Register (GPIO224 to 239)
+#define GPIO_O_GPHQSEL2   0x1C4U   // GPIO H Qualifier Select 2 Register (GPIO240 to 255)
+#define GPIO_O_GPHMUX1    0x1C6U   // GPIO H Mux 1 Register (GPIO224 to 239)
+#define GPIO_O_GPHMUX2    0x1C8U   // GPIO H Mux 2 Register (GPIO240 to 255)
+#define GPIO_O_GPHPUD     0x1CCU   // GPIO H Pull Up Disable Register (GPIO224 to 255)
+#define GPIO_O_GPHINV     0x1D0U   // GPIO H Input Polarity Invert Registers (GPIO224 to 255)
+#define GPIO_O_GPHAMSEL   0x1D4U   // GPIO H Analog Mode Select register (GPIO224 to GPIO255)
+#define GPIO_O_GPHGMUX1   0x1E0U   // GPIO H Peripheral Group Mux (GPIO224 to 239)
+#define GPIO_O_GPHGMUX2   0x1E2U   // GPIO H Peripheral Group Mux (GPIO240 to 255)
+#define GPIO_O_GPHCSEL1   0x1E8U   // GPIO H Core Select Register (GPIO224 to 231)
+#define GPIO_O_GPHCSEL2   0x1EAU   // GPIO H Core Select Register (GPIO232 to 239)
+#define GPIO_O_GPHCSEL3   0x1ECU   // GPIO H Core Select Register (GPIO240 to 247)
+#define GPIO_O_GPHCSEL4   0x1EEU   // GPIO H Core Select Register (GPIO248 to 255)
+#define GPIO_O_GPHLOCK    0x1FCU   // GPIO H Lock Configuration Register (GPIO224 to 255)
+#define GPIO_O_GPHCR      0x1FEU   // GPIO H Lock Commit Register (GPIO224 to 255)
 
-#define GPIO_O_GPADAT      0x0U    // GPIO A Data Register (GPIO0 to GPIO31)
-#define GPIO_O_GPASET      0x2U    // GPIO A Output Set (GPIO0 to GPIO31)
-#define GPIO_O_GPACLEAR    0x4U    // GPIO A Output Clear (GPIO0 to GPIO31)
-#define GPIO_O_GPATOGGLE   0x6U    // GPIO A Output Toggle (GPIO0 to GPIO31)
-#define GPIO_O_GPBDAT      0x8U    // GPIO B Data Register (GPIO32 to GPIO64)
-#define GPIO_O_GPBSET      0xAU    // GPIO B Output Set (GPIO32 to GPIO64)
-#define GPIO_O_GPBCLEAR    0xCU    // GPIO B Output Clear (GPIO32 to GPIO64)
-#define GPIO_O_GPBTOGGLE   0xEU    // GPIO B Output Toggle (GPIO32 to GPIO64)
-#define GPIO_O_GPHDAT      0x38U   // GPIO H Data Register (GPIO0 to GPIO255)
+#define GPIO_O_GPADAT      0x0U    // GPIO A Data Register (GPIO0 to 31)
+#define GPIO_O_GPASET      0x2U    // GPIO A Data Set Register (GPIO0 to 31)
+#define GPIO_O_GPACLEAR    0x4U    // GPIO A Data Clear Register (GPIO0 to 31)
+#define GPIO_O_GPATOGGLE   0x6U    // GPIO A Data Toggle Register (GPIO0 to 31)
+#define GPIO_O_GPBDAT      0x8U    // GPIO B Data Register (GPIO32 to 63)
+#define GPIO_O_GPBSET      0xAU    // GPIO B Data Set Register (GPIO32 to 63)
+#define GPIO_O_GPBCLEAR    0xCU    // GPIO B Data Clear Register (GPIO32 to 63)
+#define GPIO_O_GPBTOGGLE   0xEU    // GPIO B Data Toggle Register (GPIO32 to 63)
+#define GPIO_O_GPHDAT      0x38U   // GPIO H Data Register (GPIO224 to 255)
+
+#define GPIO_O_GPADAT_R   0x0U   // GPIO A Data Read Register
+#define GPIO_O_GPBDAT_R   0x2U   // GPIO B Data Read Register
+#define GPIO_O_GPHDAT_R   0xEU   // GPIO H Data Read Register
 
 
 //*************************************************************************************************
@@ -389,46 +401,46 @@
 // The following are defines for the bit fields in the GPAODR register
 //
 //*************************************************************************************************
-#define GPIO_GPAODR_GPIO0    0x1U          // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO1    0x2U          // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO2    0x4U          // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO3    0x8U          // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO4    0x10U         // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO5    0x20U         // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO6    0x40U         // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO7    0x80U         // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO8    0x100U        // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO9    0x200U        // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO10   0x400U        // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO11   0x800U        // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO12   0x1000U       // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO13   0x2000U       // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO14   0x4000U       // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO15   0x8000U       // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO16   0x10000U      // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO17   0x20000U      // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO18   0x40000U      // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO19   0x80000U      // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO20   0x100000U     // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO21   0x200000U     // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO22   0x400000U     // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO23   0x800000U     // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO24   0x1000000U    // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO25   0x2000000U    // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO26   0x4000000U    // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO27   0x8000000U    // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO28   0x10000000U   // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO29   0x20000000U   // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO30   0x40000000U   // Output Open-Drain control for this pin
-#define GPIO_GPAODR_GPIO31   0x80000000U   // Output Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO0    0x1U          // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO1    0x2U          // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO2    0x4U          // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO3    0x8U          // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO4    0x10U         // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO5    0x20U         // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO6    0x40U         // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO7    0x80U         // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO8    0x100U        // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO9    0x200U        // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO10   0x400U        // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO11   0x800U        // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO12   0x1000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO13   0x2000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO14   0x4000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO15   0x8000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO16   0x10000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO17   0x20000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO18   0x40000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO19   0x80000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO20   0x100000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO21   0x200000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO22   0x400000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO23   0x800000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO24   0x1000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO25   0x2000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO26   0x4000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO27   0x8000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO28   0x10000000U   // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO29   0x20000000U   // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO30   0x40000000U   // Outpout Open-Drain control for this pin
+#define GPIO_GPAODR_GPIO31   0x80000000U   // Outpout Open-Drain control for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPAAMSEL register
 //
 //*************************************************************************************************
-#define GPIO_GPAAMSEL_GPIO22   0x400000U   // Analog Mode select for this pin
-#define GPIO_GPAAMSEL_GPIO23   0x800000U   // Analog Mode select for this pin
+#define GPIO_GPAAMSEL_GPIO20   0x100000U   // Analog Mode select for this pin
+#define GPIO_GPAAMSEL_GPIO21   0x200000U   // Analog Mode select for this pin
 
 //*************************************************************************************************
 //
@@ -728,29 +740,33 @@
 //
 //*************************************************************************************************
 #define GPIO_GPBQSEL2_GPIO48_S   0U
-#define GPIO_GPBQSEL2_GPIO48_M   0x3U        // Select input qualification type for GPIO48
+#define GPIO_GPBQSEL2_GPIO48_M   0x3U         // Select input qualification type for GPIO48
 #define GPIO_GPBQSEL2_GPIO49_S   2U
-#define GPIO_GPBQSEL2_GPIO49_M   0xCU        // Select input qualification type for GPIO49
+#define GPIO_GPBQSEL2_GPIO49_M   0xCU         // Select input qualification type for GPIO49
 #define GPIO_GPBQSEL2_GPIO50_S   4U
-#define GPIO_GPBQSEL2_GPIO50_M   0x30U       // Select input qualification type for GPIO50
+#define GPIO_GPBQSEL2_GPIO50_M   0x30U        // Select input qualification type for GPIO50
 #define GPIO_GPBQSEL2_GPIO51_S   6U
-#define GPIO_GPBQSEL2_GPIO51_M   0xC0U       // Select input qualification type for GPIO51
+#define GPIO_GPBQSEL2_GPIO51_M   0xC0U        // Select input qualification type for GPIO51
 #define GPIO_GPBQSEL2_GPIO52_S   8U
-#define GPIO_GPBQSEL2_GPIO52_M   0x300U      // Select input qualification type for GPIO52
+#define GPIO_GPBQSEL2_GPIO52_M   0x300U       // Select input qualification type for GPIO52
 #define GPIO_GPBQSEL2_GPIO53_S   10U
-#define GPIO_GPBQSEL2_GPIO53_M   0xC00U      // Select input qualification type for GPIO53
+#define GPIO_GPBQSEL2_GPIO53_M   0xC00U       // Select input qualification type for GPIO53
 #define GPIO_GPBQSEL2_GPIO54_S   12U
-#define GPIO_GPBQSEL2_GPIO54_M   0x3000U     // Select input qualification type for GPIO54
+#define GPIO_GPBQSEL2_GPIO54_M   0x3000U      // Select input qualification type for GPIO54
 #define GPIO_GPBQSEL2_GPIO55_S   14U
-#define GPIO_GPBQSEL2_GPIO55_M   0xC000U     // Select input qualification type for GPIO55
+#define GPIO_GPBQSEL2_GPIO55_M   0xC000U      // Select input qualification type for GPIO55
 #define GPIO_GPBQSEL2_GPIO56_S   16U
-#define GPIO_GPBQSEL2_GPIO56_M   0x30000U    // Select input qualification type for GPIO56
+#define GPIO_GPBQSEL2_GPIO56_M   0x30000U     // Select input qualification type for GPIO56
 #define GPIO_GPBQSEL2_GPIO57_S   18U
-#define GPIO_GPBQSEL2_GPIO57_M   0xC0000U    // Select input qualification type for GPIO57
+#define GPIO_GPBQSEL2_GPIO57_M   0xC0000U     // Select input qualification type for GPIO57
 #define GPIO_GPBQSEL2_GPIO58_S   20U
-#define GPIO_GPBQSEL2_GPIO58_M   0x300000U   // Select input qualification type for GPIO58
+#define GPIO_GPBQSEL2_GPIO58_M   0x300000U    // Select input qualification type for GPIO58
 #define GPIO_GPBQSEL2_GPIO59_S   22U
-#define GPIO_GPBQSEL2_GPIO59_M   0xC00000U   // Select input qualification type for GPIO59
+#define GPIO_GPBQSEL2_GPIO59_M   0xC00000U    // Select input qualification type for GPIO59
+#define GPIO_GPBQSEL2_GPIO60_S   24U
+#define GPIO_GPBQSEL2_GPIO60_M   0x3000000U   // Select input qualification type for GPIO60
+#define GPIO_GPBQSEL2_GPIO61_S   26U
+#define GPIO_GPBQSEL2_GPIO61_M   0xC000000U   // Select input qualification type for GPIO61
 
 //*************************************************************************************************
 //
@@ -792,157 +808,169 @@
 //
 //*************************************************************************************************
 #define GPIO_GPBMUX2_GPIO48_S   0U
-#define GPIO_GPBMUX2_GPIO48_M   0x3U        // Defines pin-muxing selection for GPIO48
+#define GPIO_GPBMUX2_GPIO48_M   0x3U         // Defines pin-muxing selection for GPIO48
 #define GPIO_GPBMUX2_GPIO49_S   2U
-#define GPIO_GPBMUX2_GPIO49_M   0xCU        // Defines pin-muxing selection for GPIO49
+#define GPIO_GPBMUX2_GPIO49_M   0xCU         // Defines pin-muxing selection for GPIO49
 #define GPIO_GPBMUX2_GPIO50_S   4U
-#define GPIO_GPBMUX2_GPIO50_M   0x30U       // Defines pin-muxing selection for GPIO50
+#define GPIO_GPBMUX2_GPIO50_M   0x30U        // Defines pin-muxing selection for GPIO50
 #define GPIO_GPBMUX2_GPIO51_S   6U
-#define GPIO_GPBMUX2_GPIO51_M   0xC0U       // Defines pin-muxing selection for GPIO51
+#define GPIO_GPBMUX2_GPIO51_M   0xC0U        // Defines pin-muxing selection for GPIO51
 #define GPIO_GPBMUX2_GPIO52_S   8U
-#define GPIO_GPBMUX2_GPIO52_M   0x300U      // Defines pin-muxing selection for GPIO52
+#define GPIO_GPBMUX2_GPIO52_M   0x300U       // Defines pin-muxing selection for GPIO52
 #define GPIO_GPBMUX2_GPIO53_S   10U
-#define GPIO_GPBMUX2_GPIO53_M   0xC00U      // Defines pin-muxing selection for GPIO53
+#define GPIO_GPBMUX2_GPIO53_M   0xC00U       // Defines pin-muxing selection for GPIO53
 #define GPIO_GPBMUX2_GPIO54_S   12U
-#define GPIO_GPBMUX2_GPIO54_M   0x3000U     // Defines pin-muxing selection for GPIO54
+#define GPIO_GPBMUX2_GPIO54_M   0x3000U      // Defines pin-muxing selection for GPIO54
 #define GPIO_GPBMUX2_GPIO55_S   14U
-#define GPIO_GPBMUX2_GPIO55_M   0xC000U     // Defines pin-muxing selection for GPIO55
+#define GPIO_GPBMUX2_GPIO55_M   0xC000U      // Defines pin-muxing selection for GPIO55
 #define GPIO_GPBMUX2_GPIO56_S   16U
-#define GPIO_GPBMUX2_GPIO56_M   0x30000U    // Defines pin-muxing selection for GPIO56
+#define GPIO_GPBMUX2_GPIO56_M   0x30000U     // Defines pin-muxing selection for GPIO56
 #define GPIO_GPBMUX2_GPIO57_S   18U
-#define GPIO_GPBMUX2_GPIO57_M   0xC0000U    // Defines pin-muxing selection for GPIO57
+#define GPIO_GPBMUX2_GPIO57_M   0xC0000U     // Defines pin-muxing selection for GPIO57
 #define GPIO_GPBMUX2_GPIO58_S   20U
-#define GPIO_GPBMUX2_GPIO58_M   0x300000U   // Defines pin-muxing selection for GPIO58
+#define GPIO_GPBMUX2_GPIO58_M   0x300000U    // Defines pin-muxing selection for GPIO58
 #define GPIO_GPBMUX2_GPIO59_S   22U
-#define GPIO_GPBMUX2_GPIO59_M   0xC00000U   // Defines pin-muxing selection for GPIO59
+#define GPIO_GPBMUX2_GPIO59_M   0xC00000U    // Defines pin-muxing selection for GPIO59
+#define GPIO_GPBMUX2_GPIO60_S   24U
+#define GPIO_GPBMUX2_GPIO60_M   0x3000000U   // Defines pin-muxing selection for GPIO60
+#define GPIO_GPBMUX2_GPIO61_S   26U
+#define GPIO_GPBMUX2_GPIO61_M   0xC000000U   // Defines pin-muxing selection for GPIO61
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBDIR register
 //
 //*************************************************************************************************
-#define GPIO_GPBDIR_GPIO32   0x1U         // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO33   0x2U         // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO34   0x4U         // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO35   0x8U         // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO37   0x20U        // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO39   0x80U        // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO40   0x100U       // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO41   0x200U       // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO42   0x400U       // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO43   0x800U       // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO44   0x1000U      // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO45   0x2000U      // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO46   0x4000U      // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO47   0x8000U      // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO48   0x10000U     // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO49   0x20000U     // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO50   0x40000U     // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO51   0x80000U     // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO52   0x100000U    // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO53   0x200000U    // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO54   0x400000U    // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO55   0x800000U    // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO56   0x1000000U   // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO57   0x2000000U   // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO58   0x4000000U   // Defines direction for this pin in GPIO mode
-#define GPIO_GPBDIR_GPIO59   0x8000000U   // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO32   0x1U          // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO33   0x2U          // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO34   0x4U          // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO35   0x8U          // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO37   0x20U         // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO39   0x80U         // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO40   0x100U        // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO41   0x200U        // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO42   0x400U        // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO43   0x800U        // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO44   0x1000U       // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO45   0x2000U       // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO46   0x4000U       // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO47   0x8000U       // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO48   0x10000U      // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO49   0x20000U      // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO50   0x40000U      // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO51   0x80000U      // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO52   0x100000U     // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO53   0x200000U     // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO54   0x400000U     // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO55   0x800000U     // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO56   0x1000000U    // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO57   0x2000000U    // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO58   0x4000000U    // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO59   0x8000000U    // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO60   0x10000000U   // Defines direction for this pin in GPIO mode
+#define GPIO_GPBDIR_GPIO61   0x20000000U   // Defines direction for this pin in GPIO mode
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBPUD register
 //
 //*************************************************************************************************
-#define GPIO_GPBPUD_GPIO32   0x1U         // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO33   0x2U         // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO34   0x4U         // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO35   0x8U         // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO37   0x20U        // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO39   0x80U        // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO40   0x100U       // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO41   0x200U       // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO42   0x400U       // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO43   0x800U       // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO44   0x1000U      // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO45   0x2000U      // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO46   0x4000U      // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO47   0x8000U      // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO48   0x10000U     // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO49   0x20000U     // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO50   0x40000U     // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO51   0x80000U     // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO52   0x100000U    // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO53   0x200000U    // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO54   0x400000U    // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO55   0x800000U    // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO56   0x1000000U   // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO57   0x2000000U   // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO58   0x4000000U   // Pull-Up Disable control for this pin
-#define GPIO_GPBPUD_GPIO59   0x8000000U   // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO32   0x1U          // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO33   0x2U          // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO34   0x4U          // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO35   0x8U          // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO37   0x20U         // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO39   0x80U         // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO40   0x100U        // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO41   0x200U        // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO42   0x400U        // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO43   0x800U        // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO44   0x1000U       // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO45   0x2000U       // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO46   0x4000U       // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO47   0x8000U       // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO48   0x10000U      // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO49   0x20000U      // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO50   0x40000U      // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO51   0x80000U      // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO52   0x100000U     // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO53   0x200000U     // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO54   0x400000U     // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO55   0x800000U     // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO56   0x1000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO57   0x2000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO58   0x4000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO59   0x8000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO60   0x10000000U   // Pull-Up Disable control for this pin
+#define GPIO_GPBPUD_GPIO61   0x20000000U   // Pull-Up Disable control for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBINV register
 //
 //*************************************************************************************************
-#define GPIO_GPBINV_GPIO32   0x1U         // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO33   0x2U         // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO34   0x4U         // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO35   0x8U         // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO37   0x20U        // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO39   0x80U        // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO40   0x100U       // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO41   0x200U       // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO42   0x400U       // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO43   0x800U       // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO44   0x1000U      // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO45   0x2000U      // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO46   0x4000U      // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO47   0x8000U      // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO48   0x10000U     // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO49   0x20000U     // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO50   0x40000U     // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO51   0x80000U     // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO52   0x100000U    // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO53   0x200000U    // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO54   0x400000U    // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO55   0x800000U    // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO56   0x1000000U   // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO57   0x2000000U   // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO58   0x4000000U   // Input inversion control for this pin
-#define GPIO_GPBINV_GPIO59   0x8000000U   // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO32   0x1U          // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO33   0x2U          // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO34   0x4U          // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO35   0x8U          // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO37   0x20U         // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO39   0x80U         // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO40   0x100U        // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO41   0x200U        // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO42   0x400U        // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO43   0x800U        // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO44   0x1000U       // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO45   0x2000U       // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO46   0x4000U       // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO47   0x8000U       // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO48   0x10000U      // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO49   0x20000U      // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO50   0x40000U      // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO51   0x80000U      // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO52   0x100000U     // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO53   0x200000U     // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO54   0x400000U     // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO55   0x800000U     // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO56   0x1000000U    // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO57   0x2000000U    // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO58   0x4000000U    // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO59   0x8000000U    // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO60   0x10000000U   // Input inversion control for this pin
+#define GPIO_GPBINV_GPIO61   0x20000000U   // Input inversion control for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBODR register
 //
 //*************************************************************************************************
-#define GPIO_GPBODR_GPIO32   0x1U         // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO33   0x2U         // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO34   0x4U         // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO35   0x8U         // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO37   0x20U        // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO39   0x80U        // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO40   0x100U       // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO41   0x200U       // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO42   0x400U       // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO43   0x800U       // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO44   0x1000U      // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO45   0x2000U      // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO46   0x4000U      // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO47   0x8000U      // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO48   0x10000U     // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO49   0x20000U     // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO50   0x40000U     // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO51   0x80000U     // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO52   0x100000U    // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO53   0x200000U    // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO54   0x400000U    // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO55   0x800000U    // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO56   0x1000000U   // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO57   0x2000000U   // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO58   0x4000000U   // Output Open-Drain control for this pin
-#define GPIO_GPBODR_GPIO59   0x8000000U   // Output Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO32   0x1U          // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO33   0x2U          // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO34   0x4U          // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO35   0x8U          // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO37   0x20U         // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO39   0x80U         // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO40   0x100U        // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO41   0x200U        // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO42   0x400U        // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO43   0x800U        // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO44   0x1000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO45   0x2000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO46   0x4000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO47   0x8000U       // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO48   0x10000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO49   0x20000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO50   0x40000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO51   0x80000U      // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO52   0x100000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO53   0x200000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO54   0x400000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO55   0x800000U     // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO56   0x1000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO57   0x2000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO58   0x4000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO59   0x8000000U    // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO60   0x10000000U   // Outpout Open-Drain control for this pin
+#define GPIO_GPBODR_GPIO61   0x20000000U   // Outpout Open-Drain control for this pin
 
 //*************************************************************************************************
 //
@@ -984,29 +1012,33 @@
 //
 //*************************************************************************************************
 #define GPIO_GPBGMUX2_GPIO48_S   0U
-#define GPIO_GPBGMUX2_GPIO48_M   0x3U        // Defines pin-muxing selection for GPIO48
+#define GPIO_GPBGMUX2_GPIO48_M   0x3U         // Defines pin-muxing selection for GPIO48
 #define GPIO_GPBGMUX2_GPIO49_S   2U
-#define GPIO_GPBGMUX2_GPIO49_M   0xCU        // Defines pin-muxing selection for GPIO49
+#define GPIO_GPBGMUX2_GPIO49_M   0xCU         // Defines pin-muxing selection for GPIO49
 #define GPIO_GPBGMUX2_GPIO50_S   4U
-#define GPIO_GPBGMUX2_GPIO50_M   0x30U       // Defines pin-muxing selection for GPIO50
+#define GPIO_GPBGMUX2_GPIO50_M   0x30U        // Defines pin-muxing selection for GPIO50
 #define GPIO_GPBGMUX2_GPIO51_S   6U
-#define GPIO_GPBGMUX2_GPIO51_M   0xC0U       // Defines pin-muxing selection for GPIO51
+#define GPIO_GPBGMUX2_GPIO51_M   0xC0U        // Defines pin-muxing selection for GPIO51
 #define GPIO_GPBGMUX2_GPIO52_S   8U
-#define GPIO_GPBGMUX2_GPIO52_M   0x300U      // Defines pin-muxing selection for GPIO52
+#define GPIO_GPBGMUX2_GPIO52_M   0x300U       // Defines pin-muxing selection for GPIO52
 #define GPIO_GPBGMUX2_GPIO53_S   10U
-#define GPIO_GPBGMUX2_GPIO53_M   0xC00U      // Defines pin-muxing selection for GPIO53
+#define GPIO_GPBGMUX2_GPIO53_M   0xC00U       // Defines pin-muxing selection for GPIO53
 #define GPIO_GPBGMUX2_GPIO54_S   12U
-#define GPIO_GPBGMUX2_GPIO54_M   0x3000U     // Defines pin-muxing selection for GPIO54
+#define GPIO_GPBGMUX2_GPIO54_M   0x3000U      // Defines pin-muxing selection for GPIO54
 #define GPIO_GPBGMUX2_GPIO55_S   14U
-#define GPIO_GPBGMUX2_GPIO55_M   0xC000U     // Defines pin-muxing selection for GPIO55
+#define GPIO_GPBGMUX2_GPIO55_M   0xC000U      // Defines pin-muxing selection for GPIO55
 #define GPIO_GPBGMUX2_GPIO56_S   16U
-#define GPIO_GPBGMUX2_GPIO56_M   0x30000U    // Defines pin-muxing selection for GPIO56
+#define GPIO_GPBGMUX2_GPIO56_M   0x30000U     // Defines pin-muxing selection for GPIO56
 #define GPIO_GPBGMUX2_GPIO57_S   18U
-#define GPIO_GPBGMUX2_GPIO57_M   0xC0000U    // Defines pin-muxing selection for GPIO57
+#define GPIO_GPBGMUX2_GPIO57_M   0xC0000U     // Defines pin-muxing selection for GPIO57
 #define GPIO_GPBGMUX2_GPIO58_S   20U
-#define GPIO_GPBGMUX2_GPIO58_M   0x300000U   // Defines pin-muxing selection for GPIO58
+#define GPIO_GPBGMUX2_GPIO58_M   0x300000U    // Defines pin-muxing selection for GPIO58
 #define GPIO_GPBGMUX2_GPIO59_S   22U
-#define GPIO_GPBGMUX2_GPIO59_M   0xC00000U   // Defines pin-muxing selection for GPIO59
+#define GPIO_GPBGMUX2_GPIO59_M   0xC00000U    // Defines pin-muxing selection for GPIO59
+#define GPIO_GPBGMUX2_GPIO60_S   24U
+#define GPIO_GPBGMUX2_GPIO60_M   0x3000000U   // Defines pin-muxing selection for GPIO60
+#define GPIO_GPBGMUX2_GPIO61_S   26U
+#define GPIO_GPBGMUX2_GPIO61_M   0xC000000U   // Defines pin-muxing selection for GPIO61
 
 //*************************************************************************************************
 //
@@ -1076,77 +1108,85 @@
 //
 //*************************************************************************************************
 #define GPIO_GPBCSEL4_GPIO56_S   0U
-#define GPIO_GPBCSEL4_GPIO56_M   0xFU      // GPIO56 Master CPU Select
+#define GPIO_GPBCSEL4_GPIO56_M   0xFU        // GPIO56 Master CPU Select
 #define GPIO_GPBCSEL4_GPIO57_S   4U
-#define GPIO_GPBCSEL4_GPIO57_M   0xF0U     // GPIO57 Master CPU Select
+#define GPIO_GPBCSEL4_GPIO57_M   0xF0U       // GPIO57 Master CPU Select
 #define GPIO_GPBCSEL4_GPIO58_S   8U
-#define GPIO_GPBCSEL4_GPIO58_M   0xF00U    // GPIO58 Master CPU Select
+#define GPIO_GPBCSEL4_GPIO58_M   0xF00U      // GPIO58 Master CPU Select
 #define GPIO_GPBCSEL4_GPIO59_S   12U
-#define GPIO_GPBCSEL4_GPIO59_M   0xF000U   // GPIO59 Master CPU Select
+#define GPIO_GPBCSEL4_GPIO59_M   0xF000U     // GPIO59 Master CPU Select
+#define GPIO_GPBCSEL4_GPIO60_S   16U
+#define GPIO_GPBCSEL4_GPIO60_M   0xF0000U    // GPIO60 Master CPU Select
+#define GPIO_GPBCSEL4_GPIO61_S   20U
+#define GPIO_GPBCSEL4_GPIO61_M   0xF00000U   // GPIO61 Master CPU Select
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBLOCK register
 //
 //*************************************************************************************************
-#define GPIO_GPBLOCK_GPIO32   0x1U         // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO33   0x2U         // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO34   0x4U         // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO35   0x8U         // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO37   0x20U        // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO39   0x80U        // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO40   0x100U       // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO41   0x200U       // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO42   0x400U       // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO43   0x800U       // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO44   0x1000U      // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO45   0x2000U      // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO46   0x4000U      // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO47   0x8000U      // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO48   0x10000U     // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO49   0x20000U     // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO50   0x40000U     // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO51   0x80000U     // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO52   0x100000U    // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO53   0x200000U    // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO54   0x400000U    // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO55   0x800000U    // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO56   0x1000000U   // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO57   0x2000000U   // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO58   0x4000000U   // Configuration Lock bit for this pin
-#define GPIO_GPBLOCK_GPIO59   0x8000000U   // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO32   0x1U          // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO33   0x2U          // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO34   0x4U          // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO35   0x8U          // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO37   0x20U         // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO39   0x80U         // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO40   0x100U        // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO41   0x200U        // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO42   0x400U        // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO43   0x800U        // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO44   0x1000U       // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO45   0x2000U       // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO46   0x4000U       // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO47   0x8000U       // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO48   0x10000U      // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO49   0x20000U      // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO50   0x40000U      // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO51   0x80000U      // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO52   0x100000U     // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO53   0x200000U     // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO54   0x400000U     // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO55   0x800000U     // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO56   0x1000000U    // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO57   0x2000000U    // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO58   0x4000000U    // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO59   0x8000000U    // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO60   0x10000000U   // Configuration Lock bit for this pin
+#define GPIO_GPBLOCK_GPIO61   0x20000000U   // Configuration Lock bit for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBCR register
 //
 //*************************************************************************************************
-#define GPIO_GPBCR_GPIO32   0x1U         // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO33   0x2U         // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO34   0x4U         // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO35   0x8U         // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO37   0x20U        // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO39   0x80U        // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO40   0x100U       // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO41   0x200U       // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO42   0x400U       // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO43   0x800U       // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO44   0x1000U      // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO45   0x2000U      // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO46   0x4000U      // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO47   0x8000U      // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO48   0x10000U     // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO49   0x20000U     // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO50   0x40000U     // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO51   0x80000U     // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO52   0x100000U    // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO53   0x200000U    // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO54   0x400000U    // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO55   0x800000U    // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO56   0x1000000U   // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO57   0x2000000U   // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO58   0x4000000U   // Configuration lock commit bit for this pin
-#define GPIO_GPBCR_GPIO59   0x8000000U   // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO32   0x1U          // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO33   0x2U          // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO34   0x4U          // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO35   0x8U          // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO37   0x20U         // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO39   0x80U         // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO40   0x100U        // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO41   0x200U        // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO42   0x400U        // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO43   0x800U        // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO44   0x1000U       // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO45   0x2000U       // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO46   0x4000U       // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO47   0x8000U       // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO48   0x10000U      // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO49   0x20000U      // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO50   0x40000U      // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO51   0x80000U      // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO52   0x100000U     // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO53   0x200000U     // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO54   0x400000U     // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO55   0x800000U     // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO56   0x1000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO57   0x2000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO58   0x4000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO59   0x8000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO60   0x10000000U   // Configuration lock commit bit for this pin
+#define GPIO_GPBCR_GPIO61   0x20000000U   // Configuration lock commit bit for this pin
 
 //*************************************************************************************************
 //
@@ -1154,14 +1194,17 @@
 //
 //*************************************************************************************************
 #define GPIO_GPHCTRL_QUALPRD0_S   0U
-#define GPIO_GPHCTRL_QUALPRD0_M   0xFFU       // Qualification sampling period for GPIO224 to
-                                              // GPIO231
+#define GPIO_GPHCTRL_QUALPRD0_M   0xFFU         // Qualification sampling period for GPIO224 to
+                                                // GPIO231
 #define GPIO_GPHCTRL_QUALPRD1_S   8U
-#define GPIO_GPHCTRL_QUALPRD1_M   0xFF00U     // Qualification sampling period for GPIO232 to
-                                              // GPIO239
+#define GPIO_GPHCTRL_QUALPRD1_M   0xFF00U       // Qualification sampling period for GPIO232 to
+                                                // GPIO239
 #define GPIO_GPHCTRL_QUALPRD2_S   16U
-#define GPIO_GPHCTRL_QUALPRD2_M   0xFF0000U   // Qualification sampling period for GPIO240 to
-                                              // GPIO247
+#define GPIO_GPHCTRL_QUALPRD2_M   0xFF0000U     // Qualification sampling period for GPIO240 to
+                                                // GPIO247
+#define GPIO_GPHCTRL_QUALPRD3_S   24U
+#define GPIO_GPHCTRL_QUALPRD3_M   0xFF000000U   // Qualification sampling period for GPIO248 to
+                                                // GPIO255
 
 //*************************************************************************************************
 //
@@ -1198,12 +1241,6 @@
 #define GPIO_GPHQSEL1_GPIO233_S   18U
 #define GPIO_GPHQSEL1_GPIO233_M   0xC0000U      // Select input qualification type for this GPIO
                                                 // Pin
-#define GPIO_GPHQSEL1_GPIO234_S   20U
-#define GPIO_GPHQSEL1_GPIO234_M   0x300000U     // Select input qualification type for this GPIO
-                                                // Pin
-#define GPIO_GPHQSEL1_GPIO235_S   22U
-#define GPIO_GPHQSEL1_GPIO235_M   0xC00000U     // Select input qualification type for this GPIO
-                                                // Pin
 #define GPIO_GPHQSEL1_GPIO236_S   24U
 #define GPIO_GPHQSEL1_GPIO236_M   0x3000000U    // Select input qualification type for this GPIO
                                                 // Pin
@@ -1223,171 +1260,352 @@
 //
 //*************************************************************************************************
 #define GPIO_GPHQSEL2_GPIO240_S   0U
-#define GPIO_GPHQSEL2_GPIO240_M   0x3U      // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO240_M   0x3U         // Select input qualification type for this GPIO Pin
 #define GPIO_GPHQSEL2_GPIO241_S   2U
-#define GPIO_GPHQSEL2_GPIO241_M   0xCU      // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO241_M   0xCU         // Select input qualification type for this GPIO Pin
 #define GPIO_GPHQSEL2_GPIO242_S   4U
-#define GPIO_GPHQSEL2_GPIO242_M   0x30U     // Select input qualification type for this GPIO Pin
-#define GPIO_GPHQSEL2_GPIO243_S   6U
-#define GPIO_GPHQSEL2_GPIO243_M   0xC0U     // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO242_M   0x30U        // Select input qualification type for this GPIO Pin
 #define GPIO_GPHQSEL2_GPIO244_S   8U
-#define GPIO_GPHQSEL2_GPIO244_M   0x300U    // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO244_M   0x300U       // Select input qualification type for this GPIO Pin
 #define GPIO_GPHQSEL2_GPIO245_S   10U
-#define GPIO_GPHQSEL2_GPIO245_M   0xC00U    // Select input qualification type for this GPIO Pin
-#define GPIO_GPHQSEL2_GPIO246_S   12U
-#define GPIO_GPHQSEL2_GPIO246_M   0x3000U   // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO245_M   0xC00U       // Select input qualification type for this GPIO Pin
 #define GPIO_GPHQSEL2_GPIO247_S   14U
-#define GPIO_GPHQSEL2_GPIO247_M   0xC000U   // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO247_M   0xC000U      // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO248_S   16U
+#define GPIO_GPHQSEL2_GPIO248_M   0x30000U     // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO249_S   18U
+#define GPIO_GPHQSEL2_GPIO249_M   0xC0000U     // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO251_S   22U
+#define GPIO_GPHQSEL2_GPIO251_M   0xC00000U    // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO252_S   24U
+#define GPIO_GPHQSEL2_GPIO252_M   0x3000000U   // Select input qualification type for this GPIO Pin
+#define GPIO_GPHQSEL2_GPIO253_S   26U
+#define GPIO_GPHQSEL2_GPIO253_M   0xC000000U   // Select input qualification type for this GPIO Pin
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHMUX1 register
+//
+//*************************************************************************************************
+#define GPIO_GPHMUX1_GPIO224_S   0U
+#define GPIO_GPHMUX1_GPIO224_M   0x3U          // Defines pin-muxing selection for GPIO224
+#define GPIO_GPHMUX1_GPIO225_S   2U
+#define GPIO_GPHMUX1_GPIO225_M   0xCU          // Defines pin-muxing selection for GPIO225
+#define GPIO_GPHMUX1_GPIO226_S   4U
+#define GPIO_GPHMUX1_GPIO226_M   0x30U         // Defines pin-muxing selection for GPIO226
+#define GPIO_GPHMUX1_GPIO227_S   6U
+#define GPIO_GPHMUX1_GPIO227_M   0xC0U         // Defines pin-muxing selection for GPIO227
+#define GPIO_GPHMUX1_GPIO228_S   8U
+#define GPIO_GPHMUX1_GPIO228_M   0x300U        // Defines pin-muxing selection for GPIO228
+#define GPIO_GPHMUX1_GPIO230_S   12U
+#define GPIO_GPHMUX1_GPIO230_M   0x3000U       // Defines pin-muxing selection for GPIO230
+#define GPIO_GPHMUX1_GPIO231_S   14U
+#define GPIO_GPHMUX1_GPIO231_M   0xC000U       // Defines pin-muxing selection for GPIO231
+#define GPIO_GPHMUX1_GPIO232_S   16U
+#define GPIO_GPHMUX1_GPIO232_M   0x30000U      // Defines pin-muxing selection for GPIO232
+#define GPIO_GPHMUX1_GPIO233_S   18U
+#define GPIO_GPHMUX1_GPIO233_M   0xC0000U      // Defines pin-muxing selection for GPIO233
+#define GPIO_GPHMUX1_GPIO237_S   26U
+#define GPIO_GPHMUX1_GPIO237_M   0xC000000U    // Defines pin-muxing selection for GPIO237
+#define GPIO_GPHMUX1_GPIO238_S   28U
+#define GPIO_GPHMUX1_GPIO238_M   0x30000000U   // Defines pin-muxing selection for GPIO238
+#define GPIO_GPHMUX1_GPIO239_S   30U
+#define GPIO_GPHMUX1_GPIO239_M   0xC0000000U   // Defines pin-muxing selection for GPIO239
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHMUX2 register
+//
+//*************************************************************************************************
+#define GPIO_GPHMUX2_GPIO240_S   0U
+#define GPIO_GPHMUX2_GPIO240_M   0x3U         // Defines pin-muxing selection for GPIO240
+#define GPIO_GPHMUX2_GPIO241_S   2U
+#define GPIO_GPHMUX2_GPIO241_M   0xCU         // Defines pin-muxing selection for GPIO241
+#define GPIO_GPHMUX2_GPIO242_S   4U
+#define GPIO_GPHMUX2_GPIO242_M   0x30U        // Defines pin-muxing selection for GPIO242
+#define GPIO_GPHMUX2_GPIO244_S   8U
+#define GPIO_GPHMUX2_GPIO244_M   0x300U       // Defines pin-muxing selection for GPIO244
+#define GPIO_GPHMUX2_GPIO245_S   10U
+#define GPIO_GPHMUX2_GPIO245_M   0xC00U       // Defines pin-muxing selection for GPIO245
+#define GPIO_GPHMUX2_GPIO252_S   24U
+#define GPIO_GPHMUX2_GPIO252_M   0x3000000U   // Defines pin-muxing selection for GPIO252
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPHPUD register
 //
 //*************************************************************************************************
-#define GPIO_GPHPUD_GPIO224   0x1U        // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO225   0x2U        // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO226   0x4U        // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO227   0x8U        // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO228   0x10U       // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO229   0x20U       // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO230   0x40U       // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO231   0x80U       // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO232   0x100U      // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO233   0x200U      // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO234   0x400U      // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO235   0x800U      // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO236   0x1000U     // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO237   0x2000U     // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO238   0x4000U     // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO239   0x8000U     // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO240   0x10000U    // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO241   0x20000U    // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO242   0x40000U    // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO243   0x80000U    // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO244   0x100000U   // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO245   0x200000U   // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO246   0x400000U   // Pull-Up Disable control for this pin
-#define GPIO_GPHPUD_GPIO247   0x800000U   // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO224   0x1U          // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO225   0x2U          // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO226   0x4U          // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO227   0x8U          // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO228   0x10U         // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO229   0x20U         // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO230   0x40U         // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO231   0x80U         // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO232   0x100U        // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO233   0x200U        // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO236   0x1000U       // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO237   0x2000U       // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO238   0x4000U       // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO239   0x8000U       // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO240   0x10000U      // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO241   0x20000U      // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO242   0x40000U      // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO244   0x100000U     // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO245   0x200000U     // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO247   0x800000U     // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO248   0x1000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO249   0x2000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO251   0x8000000U    // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO252   0x10000000U   // Pull-Up Disable control for this pin
+#define GPIO_GPHPUD_GPIO253   0x20000000U   // Pull-Up Disable control for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPHINV register
 //
 //*************************************************************************************************
-#define GPIO_GPHINV_GPIO224   0x1U        // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO225   0x2U        // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO226   0x4U        // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO227   0x8U        // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO228   0x10U       // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO229   0x20U       // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO230   0x40U       // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO231   0x80U       // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO232   0x100U      // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO233   0x200U      // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO234   0x400U      // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO235   0x800U      // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO236   0x1000U     // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO237   0x2000U     // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO238   0x4000U     // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO239   0x8000U     // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO240   0x10000U    // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO241   0x20000U    // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO242   0x40000U    // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO243   0x80000U    // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO244   0x100000U   // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO245   0x200000U   // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO246   0x400000U   // Input inversion control for this pin
-#define GPIO_GPHINV_GPIO247   0x800000U   // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO224   0x1U          // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO225   0x2U          // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO226   0x4U          // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO227   0x8U          // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO228   0x10U         // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO229   0x20U         // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO230   0x40U         // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO231   0x80U         // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO232   0x100U        // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO233   0x200U        // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO236   0x1000U       // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO237   0x2000U       // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO238   0x4000U       // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO239   0x8000U       // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO240   0x10000U      // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO241   0x20000U      // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO242   0x40000U      // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO244   0x100000U     // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO245   0x200000U     // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO247   0x800000U     // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO248   0x1000000U    // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO249   0x2000000U    // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO251   0x8000000U    // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO252   0x10000000U   // Input inversion control for this pin
+#define GPIO_GPHINV_GPIO253   0x20000000U   // Input inversion control for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPHAMSEL register
 //
 //*************************************************************************************************
-#define GPIO_GPHAMSEL_GPIO224   0x1U        // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO225   0x2U        // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO226   0x4U        // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO227   0x8U        // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO228   0x10U       // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO229   0x20U       // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO230   0x40U       // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO231   0x80U       // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO232   0x100U      // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO233   0x200U      // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO234   0x400U      // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO235   0x800U      // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO236   0x1000U     // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO237   0x2000U     // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO238   0x4000U     // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO239   0x8000U     // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO240   0x10000U    // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO241   0x20000U    // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO242   0x40000U    // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO243   0x80000U    // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO244   0x100000U   // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO245   0x200000U   // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO246   0x400000U   // Analog Mode select for this pin
-#define GPIO_GPHAMSEL_GPIO247   0x800000U   // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO224   0x1U          // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO225   0x2U          // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO226   0x4U          // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO227   0x8U          // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO228   0x10U         // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO229   0x20U         // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO230   0x40U         // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO231   0x80U         // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO232   0x100U        // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO233   0x200U        // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO236   0x1000U       // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO237   0x2000U       // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO238   0x4000U       // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO239   0x8000U       // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO240   0x10000U      // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO241   0x20000U      // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO242   0x40000U      // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO244   0x100000U     // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO245   0x200000U     // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO247   0x800000U     // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO248   0x1000000U    // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO249   0x2000000U    // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO251   0x8000000U    // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO252   0x10000000U   // Analog Mode select for this pin
+#define GPIO_GPHAMSEL_GPIO253   0x20000000U   // Analog Mode select for this pin
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHGMUX1 register
+//
+//*************************************************************************************************
+#define GPIO_GPHGMUX1_GPIO224_S   0U
+#define GPIO_GPHGMUX1_GPIO224_M   0x3U          // Defines pin-muxing selection for GPIO224
+#define GPIO_GPHGMUX1_GPIO225_S   2U
+#define GPIO_GPHGMUX1_GPIO225_M   0xCU          // Defines pin-muxing selection for GPIO225
+#define GPIO_GPHGMUX1_GPIO226_S   4U
+#define GPIO_GPHGMUX1_GPIO226_M   0x30U         // Defines pin-muxing selection for GPIO226
+#define GPIO_GPHGMUX1_GPIO227_S   6U
+#define GPIO_GPHGMUX1_GPIO227_M   0xC0U         // Defines pin-muxing selection for GPIO227
+#define GPIO_GPHGMUX1_GPIO228_S   8U
+#define GPIO_GPHGMUX1_GPIO228_M   0x300U        // Defines pin-muxing selection for GPIO228
+#define GPIO_GPHGMUX1_GPIO230_S   12U
+#define GPIO_GPHGMUX1_GPIO230_M   0x3000U       // Defines pin-muxing selection for GPIO230
+#define GPIO_GPHGMUX1_GPIO231_S   14U
+#define GPIO_GPHGMUX1_GPIO231_M   0xC000U       // Defines pin-muxing selection for GPIO231
+#define GPIO_GPHGMUX1_GPIO232_S   16U
+#define GPIO_GPHGMUX1_GPIO232_M   0x30000U      // Defines pin-muxing selection for GPIO232
+#define GPIO_GPHGMUX1_GPIO233_S   18U
+#define GPIO_GPHGMUX1_GPIO233_M   0xC0000U      // Defines pin-muxing selection for GPIO233
+#define GPIO_GPHGMUX1_GPIO237_S   26U
+#define GPIO_GPHGMUX1_GPIO237_M   0xC000000U    // Defines pin-muxing selection for GPIO237
+#define GPIO_GPHGMUX1_GPIO238_S   28U
+#define GPIO_GPHGMUX1_GPIO238_M   0x30000000U   // Defines pin-muxing selection for GPIO238
+#define GPIO_GPHGMUX1_GPIO239_S   30U
+#define GPIO_GPHGMUX1_GPIO239_M   0xC0000000U   // Defines pin-muxing selection for GPIO239
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHGMUX2 register
+//
+//*************************************************************************************************
+#define GPIO_GPHGMUX2_GPIO240_S   0U
+#define GPIO_GPHGMUX2_GPIO240_M   0x3U         // Defines pin-muxing selection for GPIO240
+#define GPIO_GPHGMUX2_GPIO241_S   2U
+#define GPIO_GPHGMUX2_GPIO241_M   0xCU         // Defines pin-muxing selection for GPIO241
+#define GPIO_GPHGMUX2_GPIO242_S   4U
+#define GPIO_GPHGMUX2_GPIO242_M   0x30U        // Defines pin-muxing selection for GPIO242
+#define GPIO_GPHGMUX2_GPIO244_S   8U
+#define GPIO_GPHGMUX2_GPIO244_M   0x300U       // Defines pin-muxing selection for GPIO244
+#define GPIO_GPHGMUX2_GPIO245_S   10U
+#define GPIO_GPHGMUX2_GPIO245_M   0xC00U       // Defines pin-muxing selection for GPIO245
+#define GPIO_GPHGMUX2_GPIO252_S   24U
+#define GPIO_GPHGMUX2_GPIO252_M   0x3000000U   // Defines pin-muxing selection for GPIO252
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHCSEL1 register
+//
+//*************************************************************************************************
+#define GPIO_GPHCSEL1_GPIO224_S   0U
+#define GPIO_GPHCSEL1_GPIO224_M   0xFU          // GPIO224 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO225_S   4U
+#define GPIO_GPHCSEL1_GPIO225_M   0xF0U         // GPIO225 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO226_S   8U
+#define GPIO_GPHCSEL1_GPIO226_M   0xF00U        // GPIO226 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO227_S   12U
+#define GPIO_GPHCSEL1_GPIO227_M   0xF000U       // GPIO227 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO228_S   16U
+#define GPIO_GPHCSEL1_GPIO228_M   0xF0000U      // GPIO228 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO229_S   20U
+#define GPIO_GPHCSEL1_GPIO229_M   0xF00000U     // GPIO229 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO230_S   24U
+#define GPIO_GPHCSEL1_GPIO230_M   0xF000000U    // GPIO230 Master CPU Select
+#define GPIO_GPHCSEL1_GPIO231_S   28U
+#define GPIO_GPHCSEL1_GPIO231_M   0xF0000000U   // GPIO231 Master CPU Select
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHCSEL2 register
+//
+//*************************************************************************************************
+#define GPIO_GPHCSEL2_GPIO232_S   0U
+#define GPIO_GPHCSEL2_GPIO232_M   0xFU          // GPIO232 Master CPU Select
+#define GPIO_GPHCSEL2_GPIO233_S   4U
+#define GPIO_GPHCSEL2_GPIO233_M   0xF0U         // GPIO233 Master CPU Select
+#define GPIO_GPHCSEL2_GPIO236_S   16U
+#define GPIO_GPHCSEL2_GPIO236_M   0xF0000U      // GPIO236 Master CPU Select
+#define GPIO_GPHCSEL2_GPIO237_S   20U
+#define GPIO_GPHCSEL2_GPIO237_M   0xF00000U     // GPIO237 Master CPU Select
+#define GPIO_GPHCSEL2_GPIO238_S   24U
+#define GPIO_GPHCSEL2_GPIO238_M   0xF000000U    // GPIO238 Master CPU Select
+#define GPIO_GPHCSEL2_GPIO239_S   28U
+#define GPIO_GPHCSEL2_GPIO239_M   0xF0000000U   // GPIO239 Master CPU Select
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHCSEL3 register
+//
+//*************************************************************************************************
+#define GPIO_GPHCSEL3_GPIO240_S   0U
+#define GPIO_GPHCSEL3_GPIO240_M   0xFU          // GPIO240 Master CPU Select
+#define GPIO_GPHCSEL3_GPIO241_S   4U
+#define GPIO_GPHCSEL3_GPIO241_M   0xF0U         // GPIO241 Master CPU Select
+#define GPIO_GPHCSEL3_GPIO242_S   8U
+#define GPIO_GPHCSEL3_GPIO242_M   0xF00U        // GPIO242 Master CPU Select
+#define GPIO_GPHCSEL3_GPIO244_S   16U
+#define GPIO_GPHCSEL3_GPIO244_M   0xF0000U      // GPIO244 Master CPU Select
+#define GPIO_GPHCSEL3_GPIO245_S   20U
+#define GPIO_GPHCSEL3_GPIO245_M   0xF00000U     // GPIO245 Master CPU Select
+#define GPIO_GPHCSEL3_GPIO247_S   28U
+#define GPIO_GPHCSEL3_GPIO247_M   0xF0000000U   // GPIO247 Master CPU Select
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the GPHCSEL4 register
+//
+//*************************************************************************************************
+#define GPIO_GPHCSEL4_GPIO248_S   0U
+#define GPIO_GPHCSEL4_GPIO248_M   0xFU        // GPIO248 Master CPU Select
+#define GPIO_GPHCSEL4_GPIO249_S   4U
+#define GPIO_GPHCSEL4_GPIO249_M   0xF0U       // GPIO249 Master CPU Select
+#define GPIO_GPHCSEL4_GPIO251_S   12U
+#define GPIO_GPHCSEL4_GPIO251_M   0xF000U     // GPIO251 Master CPU Select
+#define GPIO_GPHCSEL4_GPIO252_S   16U
+#define GPIO_GPHCSEL4_GPIO252_M   0xF0000U    // GPIO252 Master CPU Select
+#define GPIO_GPHCSEL4_GPIO253_S   20U
+#define GPIO_GPHCSEL4_GPIO253_M   0xF00000U   // GPIO253 Master CPU Select
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPHLOCK register
 //
 //*************************************************************************************************
-#define GPIO_GPHLOCK_GPIO224   0x1U        // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO225   0x2U        // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO226   0x4U        // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO227   0x8U        // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO228   0x10U       // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO229   0x20U       // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO230   0x40U       // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO231   0x80U       // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO232   0x100U      // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO233   0x200U      // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO234   0x400U      // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO235   0x800U      // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO236   0x1000U     // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO237   0x2000U     // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO238   0x4000U     // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO239   0x8000U     // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO240   0x10000U    // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO241   0x20000U    // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO242   0x40000U    // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO243   0x80000U    // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO244   0x100000U   // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO245   0x200000U   // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO246   0x400000U   // Configuration Lock bit for this pin
-#define GPIO_GPHLOCK_GPIO247   0x800000U   // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO224   0x1U          // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO225   0x2U          // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO226   0x4U          // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO227   0x8U          // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO228   0x10U         // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO229   0x20U         // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO230   0x40U         // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO231   0x80U         // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO232   0x100U        // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO233   0x200U        // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO236   0x1000U       // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO237   0x2000U       // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO238   0x4000U       // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO239   0x8000U       // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO240   0x10000U      // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO241   0x20000U      // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO242   0x40000U      // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO244   0x100000U     // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO245   0x200000U     // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO247   0x800000U     // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO248   0x1000000U    // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO249   0x2000000U    // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO251   0x8000000U    // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO252   0x10000000U   // Configuration Lock bit for this pin
+#define GPIO_GPHLOCK_GPIO253   0x20000000U   // Configuration Lock bit for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPHCR register
 //
 //*************************************************************************************************
-#define GPIO_GPHCR_GPIO224   0x1U        // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO225   0x2U        // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO226   0x4U        // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO227   0x8U        // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO228   0x10U       // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO229   0x20U       // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO230   0x40U       // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO231   0x80U       // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO232   0x100U      // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO233   0x200U      // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO234   0x400U      // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO235   0x800U      // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO236   0x1000U     // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO237   0x2000U     // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO238   0x4000U     // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO239   0x8000U     // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO240   0x10000U    // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO241   0x20000U    // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO242   0x40000U    // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO243   0x80000U    // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO244   0x100000U   // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO245   0x200000U   // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO246   0x400000U   // Configuration lock commit bit for this pin
-#define GPIO_GPHCR_GPIO247   0x800000U   // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO224   0x1U          // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO225   0x2U          // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO226   0x4U          // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO227   0x8U          // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO228   0x10U         // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO229   0x20U         // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO230   0x40U         // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO231   0x80U         // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO232   0x100U        // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO233   0x200U        // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO236   0x1000U       // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO237   0x2000U       // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO238   0x4000U       // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO239   0x8000U       // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO240   0x10000U      // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO241   0x20000U      // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO242   0x40000U      // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO244   0x100000U     // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO245   0x200000U     // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO247   0x800000U     // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO248   0x1000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO249   0x2000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO251   0x8000000U    // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO252   0x10000000U   // Configuration lock commit bit for this pin
+#define GPIO_GPHCR_GPIO253   0x20000000U   // Configuration lock commit bit for this pin
 
 
 //*************************************************************************************************
@@ -1547,158 +1765,168 @@
 // The following are defines for the bit fields in the GPBDAT register
 //
 //*************************************************************************************************
-#define GPIO_GPBDAT_GPIO32   0x1U         // Data Register for this pin
-#define GPIO_GPBDAT_GPIO33   0x2U         // Data Register for this pin
-#define GPIO_GPBDAT_GPIO34   0x4U         // Data Register for this pin
-#define GPIO_GPBDAT_GPIO35   0x8U         // Data Register for this pin
-#define GPIO_GPBDAT_GPIO37   0x20U        // Data Register for this pin
-#define GPIO_GPBDAT_GPIO39   0x80U        // Data Register for this pin
-#define GPIO_GPBDAT_GPIO40   0x100U       // Data Register for this pin
-#define GPIO_GPBDAT_GPIO41   0x200U       // Data Register for this pin
-#define GPIO_GPBDAT_GPIO42   0x400U       // Data Register for this pin
-#define GPIO_GPBDAT_GPIO43   0x800U       // Data Register for this pin
-#define GPIO_GPBDAT_GPIO44   0x1000U      // Data Register for this pin
-#define GPIO_GPBDAT_GPIO45   0x2000U      // Data Register for this pin
-#define GPIO_GPBDAT_GPIO46   0x4000U      // Data Register for this pin
-#define GPIO_GPBDAT_GPIO47   0x8000U      // Data Register for this pin
-#define GPIO_GPBDAT_GPIO48   0x10000U     // Data Register for this pin
-#define GPIO_GPBDAT_GPIO49   0x20000U     // Data Register for this pin
-#define GPIO_GPBDAT_GPIO50   0x40000U     // Data Register for this pin
-#define GPIO_GPBDAT_GPIO51   0x80000U     // Data Register for this pin
-#define GPIO_GPBDAT_GPIO52   0x100000U    // Data Register for this pin
-#define GPIO_GPBDAT_GPIO53   0x200000U    // Data Register for this pin
-#define GPIO_GPBDAT_GPIO54   0x400000U    // Data Register for this pin
-#define GPIO_GPBDAT_GPIO55   0x800000U    // Data Register for this pin
-#define GPIO_GPBDAT_GPIO56   0x1000000U   // Data Register for this pin
-#define GPIO_GPBDAT_GPIO57   0x2000000U   // Data Register for this pin
-#define GPIO_GPBDAT_GPIO58   0x4000000U   // Data Register for this pin
-#define GPIO_GPBDAT_GPIO59   0x8000000U   // Data Register for this pin
+#define GPIO_GPBDAT_GPIO32   0x1U          // Data Register for this pin
+#define GPIO_GPBDAT_GPIO33   0x2U          // Data Register for this pin
+#define GPIO_GPBDAT_GPIO34   0x4U          // Data Register for this pin
+#define GPIO_GPBDAT_GPIO35   0x8U          // Data Register for this pin
+#define GPIO_GPBDAT_GPIO37   0x20U         // Data Register for this pin
+#define GPIO_GPBDAT_GPIO39   0x80U         // Data Register for this pin
+#define GPIO_GPBDAT_GPIO40   0x100U        // Data Register for this pin
+#define GPIO_GPBDAT_GPIO41   0x200U        // Data Register for this pin
+#define GPIO_GPBDAT_GPIO42   0x400U        // Data Register for this pin
+#define GPIO_GPBDAT_GPIO43   0x800U        // Data Register for this pin
+#define GPIO_GPBDAT_GPIO44   0x1000U       // Data Register for this pin
+#define GPIO_GPBDAT_GPIO45   0x2000U       // Data Register for this pin
+#define GPIO_GPBDAT_GPIO46   0x4000U       // Data Register for this pin
+#define GPIO_GPBDAT_GPIO47   0x8000U       // Data Register for this pin
+#define GPIO_GPBDAT_GPIO48   0x10000U      // Data Register for this pin
+#define GPIO_GPBDAT_GPIO49   0x20000U      // Data Register for this pin
+#define GPIO_GPBDAT_GPIO50   0x40000U      // Data Register for this pin
+#define GPIO_GPBDAT_GPIO51   0x80000U      // Data Register for this pin
+#define GPIO_GPBDAT_GPIO52   0x100000U     // Data Register for this pin
+#define GPIO_GPBDAT_GPIO53   0x200000U     // Data Register for this pin
+#define GPIO_GPBDAT_GPIO54   0x400000U     // Data Register for this pin
+#define GPIO_GPBDAT_GPIO55   0x800000U     // Data Register for this pin
+#define GPIO_GPBDAT_GPIO56   0x1000000U    // Data Register for this pin
+#define GPIO_GPBDAT_GPIO57   0x2000000U    // Data Register for this pin
+#define GPIO_GPBDAT_GPIO58   0x4000000U    // Data Register for this pin
+#define GPIO_GPBDAT_GPIO59   0x8000000U    // Data Register for this pin
+#define GPIO_GPBDAT_GPIO60   0x10000000U   // Data Register for this pin
+#define GPIO_GPBDAT_GPIO61   0x20000000U   // Data Register for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBSET register
 //
 //*************************************************************************************************
-#define GPIO_GPBSET_GPIO32   0x1U         // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO33   0x2U         // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO34   0x4U         // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO35   0x8U         // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO37   0x20U        // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO39   0x80U        // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO40   0x100U       // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO41   0x200U       // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO42   0x400U       // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO43   0x800U       // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO44   0x1000U      // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO45   0x2000U      // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO46   0x4000U      // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO47   0x8000U      // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO48   0x10000U     // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO49   0x20000U     // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO50   0x40000U     // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO51   0x80000U     // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO52   0x100000U    // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO53   0x200000U    // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO54   0x400000U    // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO55   0x800000U    // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO56   0x1000000U   // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO57   0x2000000U   // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO58   0x4000000U   // Output Set bit for this pin
-#define GPIO_GPBSET_GPIO59   0x8000000U   // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO32   0x1U          // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO33   0x2U          // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO34   0x4U          // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO35   0x8U          // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO37   0x20U         // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO39   0x80U         // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO40   0x100U        // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO41   0x200U        // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO42   0x400U        // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO43   0x800U        // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO44   0x1000U       // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO45   0x2000U       // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO46   0x4000U       // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO47   0x8000U       // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO48   0x10000U      // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO49   0x20000U      // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO50   0x40000U      // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO51   0x80000U      // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO52   0x100000U     // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO53   0x200000U     // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO54   0x400000U     // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO55   0x800000U     // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO56   0x1000000U    // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO57   0x2000000U    // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO58   0x4000000U    // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO59   0x8000000U    // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO60   0x10000000U   // Output Set bit for this pin
+#define GPIO_GPBSET_GPIO61   0x20000000U   // Output Set bit for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBCLEAR register
 //
 //*************************************************************************************************
-#define GPIO_GPBCLEAR_GPIO32   0x1U         // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO33   0x2U         // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO34   0x4U         // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO35   0x8U         // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO37   0x20U        // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO39   0x80U        // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO40   0x100U       // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO41   0x200U       // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO42   0x400U       // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO43   0x800U       // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO44   0x1000U      // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO45   0x2000U      // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO46   0x4000U      // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO47   0x8000U      // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO48   0x10000U     // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO49   0x20000U     // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO50   0x40000U     // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO51   0x80000U     // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO52   0x100000U    // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO53   0x200000U    // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO54   0x400000U    // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO55   0x800000U    // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO56   0x1000000U   // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO57   0x2000000U   // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO58   0x4000000U   // Output Clear bit for this pin
-#define GPIO_GPBCLEAR_GPIO59   0x8000000U   // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO32   0x1U          // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO33   0x2U          // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO34   0x4U          // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO35   0x8U          // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO37   0x20U         // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO39   0x80U         // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO40   0x100U        // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO41   0x200U        // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO42   0x400U        // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO43   0x800U        // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO44   0x1000U       // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO45   0x2000U       // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO46   0x4000U       // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO47   0x8000U       // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO48   0x10000U      // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO49   0x20000U      // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO50   0x40000U      // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO51   0x80000U      // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO52   0x100000U     // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO53   0x200000U     // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO54   0x400000U     // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO55   0x800000U     // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO56   0x1000000U    // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO57   0x2000000U    // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO58   0x4000000U    // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO59   0x8000000U    // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO60   0x10000000U   // Output Clear bit for this pin
+#define GPIO_GPBCLEAR_GPIO61   0x20000000U   // Output Clear bit for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPBTOGGLE register
 //
 //*************************************************************************************************
-#define GPIO_GPBTOGGLE_GPIO32   0x1U         // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO33   0x2U         // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO34   0x4U         // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO35   0x8U         // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO37   0x20U        // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO39   0x80U        // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO40   0x100U       // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO41   0x200U       // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO42   0x400U       // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO43   0x800U       // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO44   0x1000U      // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO45   0x2000U      // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO46   0x4000U      // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO47   0x8000U      // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO48   0x10000U     // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO49   0x20000U     // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO50   0x40000U     // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO51   0x80000U     // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO52   0x100000U    // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO53   0x200000U    // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO54   0x400000U    // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO55   0x800000U    // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO56   0x1000000U   // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO57   0x2000000U   // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO58   0x4000000U   // Output Toggle bit for this pin
-#define GPIO_GPBTOGGLE_GPIO59   0x8000000U   // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO32   0x1U          // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO33   0x2U          // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO34   0x4U          // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO35   0x8U          // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO37   0x20U         // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO39   0x80U         // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO40   0x100U        // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO41   0x200U        // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO42   0x400U        // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO43   0x800U        // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO44   0x1000U       // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO45   0x2000U       // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO46   0x4000U       // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO47   0x8000U       // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO48   0x10000U      // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO49   0x20000U      // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO50   0x40000U      // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO51   0x80000U      // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO52   0x100000U     // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO53   0x200000U     // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO54   0x400000U     // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO55   0x800000U     // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO56   0x1000000U    // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO57   0x2000000U    // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO58   0x4000000U    // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO59   0x8000000U    // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO60   0x10000000U   // Output Toggle bit for this pin
+#define GPIO_GPBTOGGLE_GPIO61   0x20000000U   // Output Toggle bit for this pin
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the GPHDAT register
 //
 //*************************************************************************************************
-#define GPIO_GPHDAT_GPIO224   0x1U        // Data Register for this pin
-#define GPIO_GPHDAT_GPIO225   0x2U        // Data Register for this pin
-#define GPIO_GPHDAT_GPIO226   0x4U        // Data Register for this pin
-#define GPIO_GPHDAT_GPIO227   0x8U        // Data Register for this pin
-#define GPIO_GPHDAT_GPIO228   0x10U       // Data Register for this pin
-#define GPIO_GPHDAT_GPIO229   0x20U       // Data Register for this pin
-#define GPIO_GPHDAT_GPIO230   0x40U       // Data Register for this pin
-#define GPIO_GPHDAT_GPIO231   0x80U       // Data Register for this pin
-#define GPIO_GPHDAT_GPIO232   0x100U      // Data Register for this pin
-#define GPIO_GPHDAT_GPIO233   0x200U      // Data Register for this pin
-#define GPIO_GPHDAT_GPIO234   0x400U      // Data Register for this pin
-#define GPIO_GPHDAT_GPIO235   0x800U      // Data Register for this pin
-#define GPIO_GPHDAT_GPIO236   0x1000U     // Data Register for this pin
-#define GPIO_GPHDAT_GPIO237   0x2000U     // Data Register for this pin
-#define GPIO_GPHDAT_GPIO238   0x4000U     // Data Register for this pin
-#define GPIO_GPHDAT_GPIO239   0x8000U     // Data Register for this pin
-#define GPIO_GPHDAT_GPIO240   0x10000U    // Data Register for this pin
-#define GPIO_GPHDAT_GPIO241   0x20000U    // Data Register for this pin
-#define GPIO_GPHDAT_GPIO242   0x40000U    // Data Register for this pin
-#define GPIO_GPHDAT_GPIO243   0x80000U    // Data Register for this pin
-#define GPIO_GPHDAT_GPIO244   0x100000U   // Data Register for this pin
-#define GPIO_GPHDAT_GPIO245   0x200000U   // Data Register for this pin
-#define GPIO_GPHDAT_GPIO246   0x400000U   // Data Register for this pin
-#define GPIO_GPHDAT_GPIO247   0x800000U   // Data Register for this pin
+#define GPIO_GPHDAT_GPIO224   0x1U          // Data Register for this pin
+#define GPIO_GPHDAT_GPIO225   0x2U          // Data Register for this pin
+#define GPIO_GPHDAT_GPIO226   0x4U          // Data Register for this pin
+#define GPIO_GPHDAT_GPIO227   0x8U          // Data Register for this pin
+#define GPIO_GPHDAT_GPIO228   0x10U         // Data Register for this pin
+#define GPIO_GPHDAT_GPIO229   0x20U         // Data Register for this pin
+#define GPIO_GPHDAT_GPIO230   0x40U         // Data Register for this pin
+#define GPIO_GPHDAT_GPIO231   0x80U         // Data Register for this pin
+#define GPIO_GPHDAT_GPIO232   0x100U        // Data Register for this pin
+#define GPIO_GPHDAT_GPIO233   0x200U        // Data Register for this pin
+#define GPIO_GPHDAT_GPIO236   0x1000U       // Data Register for this pin
+#define GPIO_GPHDAT_GPIO237   0x2000U       // Data Register for this pin
+#define GPIO_GPHDAT_GPIO238   0x4000U       // Data Register for this pin
+#define GPIO_GPHDAT_GPIO239   0x8000U       // Data Register for this pin
+#define GPIO_GPHDAT_GPIO240   0x10000U      // Data Register for this pin
+#define GPIO_GPHDAT_GPIO241   0x20000U      // Data Register for this pin
+#define GPIO_GPHDAT_GPIO242   0x40000U      // Data Register for this pin
+#define GPIO_GPHDAT_GPIO244   0x100000U     // Data Register for this pin
+#define GPIO_GPHDAT_GPIO245   0x200000U     // Data Register for this pin
+#define GPIO_GPHDAT_GPIO247   0x800000U     // Data Register for this pin
+#define GPIO_GPHDAT_GPIO248   0x1000000U    // Data Register for this pin
+#define GPIO_GPHDAT_GPIO249   0x2000000U    // Data Register for this pin
+#define GPIO_GPHDAT_GPIO251   0x8000000U    // Data Register for this pin
+#define GPIO_GPHDAT_GPIO252   0x10000000U   // Data Register for this pin
+#define GPIO_GPHDAT_GPIO253   0x20000000U   // Data Register for this pin
+
 
 
 

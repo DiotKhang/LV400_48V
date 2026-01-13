@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -85,36 +85,41 @@
 #define CLB_O_OUTPUT_COND_CTRL_5    0x4AU   // Output conditioning control for output 5
 #define CLB_O_OUTPUT_COND_CTRL_6    0x4CU   // Output conditioning control for output 6
 #define CLB_O_OUTPUT_COND_CTRL_7    0x4EU   // Output conditioning control for output 7
+#define CLB_O_MISC_ACCESS_CTRL      0x50U   // Miscellaneous Access and enable control
+#define CLB_O_SPI_DATA_CTRL_HI      0x51U   // CLB to SPI buffer control High
 
-#define CLB_O_LOAD_EN          0x0U    // Global enable & indirect load enable control
-#define CLB_O_LOAD_ADDR        0x2U    // Indirect address
-#define CLB_O_LOAD_DATA        0x4U    // Data for indirect loads
-#define CLB_O_INPUT_FILTER     0x6U    // Input filter selection for both edge detection and
-                                       // synchronizers
-#define CLB_O_IN_MUX_SEL_0     0x8U    // Input selection to decide between Signals and GP register
-#define CLB_O_LCL_MUX_SEL_1    0xAU    // Input Mux selection for local mux
-#define CLB_O_LCL_MUX_SEL_2    0xCU    // Input Mux selection for local mux
-#define CLB_O_BUF_PTR          0xEU    // PUSH and PULL pointers
-#define CLB_O_GP_REG           0x10U   // General purpose register for CELL inputs
-#define CLB_O_OUT_EN           0x12U   // CELL output enable register
-#define CLB_O_GLBL_MUX_SEL_1   0x14U   // Global Mux select for CELL inputs
-#define CLB_O_GLBL_MUX_SEL_2   0x16U   // Global Mux select for CELL inputs
-#define CLB_O_PRESCALE_CTRL    0x18U   // Prescaler register control
-#define CLB_O_INTR_TAG_REG     0x20U   // Interrupt Tag register
-#define CLB_O_LOCK             0x22U   // Lock control register
-#define CLB_O_DBG_OUT_2        0x2EU   // Visibility for CLB inputs and final  asynchronous outputs
-#define CLB_O_DBG_R0           0x30U   // R0 of High level Controller
-#define CLB_O_DBG_R1           0x32U   // R1 of High level Controller
-#define CLB_O_DBG_R2           0x34U   // R2 of High level Controller
-#define CLB_O_DBG_R3           0x36U   // R3 of High level Controller
-#define CLB_O_DBG_C0           0x38U   // Count of Unit 0
-#define CLB_O_DBG_C1           0x3AU   // Count of Unit 1
-#define CLB_O_DBG_C2           0x3CU   // Count of Unit 2
-#define CLB_O_DBG_OUT          0x3EU   // Outputs of various units in the Cell
+#define CLB_O_LOAD_EN              0x0U    // Global enable & indirect load enable control
+#define CLB_O_LOAD_ADDR            0x2U    // Indirect address
+#define CLB_O_LOAD_DATA            0x4U    // Data for indirect loads
+#define CLB_O_INPUT_FILTER         0x6U    // Input filter selection for both edge detection and
+                                           // synchronizers
+#define CLB_O_IN_MUX_SEL_0         0x8U    // Input selection to decide between Signals and GP
+                                           // register
+#define CLB_O_LCL_MUX_SEL_1        0xAU    // Input Mux selection for local mux
+#define CLB_O_LCL_MUX_SEL_2        0xCU    // Input Mux selection for local mux
+#define CLB_O_BUF_PTR              0xEU    // PUSH and PULL pointers
+#define CLB_O_GP_REG               0x10U   // General purpose register for CELL inputs
+#define CLB_O_OUT_EN               0x12U   // CELL output enable register
+#define CLB_O_GLBL_MUX_SEL_1       0x14U   // Global Mux select for CELL inputs
+#define CLB_O_GLBL_MUX_SEL_2       0x16U   // Global Mux select for CELL inputs
+#define CLB_O_PRESCALE_CTRL        0x18U   // Prescaler register control
+#define CLB_O_INTR_TAG_REG         0x20U   // Interrupt Tag register
+#define CLB_O_LOCK                 0x22U   // Lock control register
+#define CLB_O_HLC_INSTR_READ_PTR   0x24U   // HLC instruction read pointer
+#define CLB_O_HLC_INSTR_VALUE      0x26U   // HLC instruction read value
+#define CLB_O_DBG_OUT_2            0x2EU   // Visibility for CLB inputs and final  asynchronous
+                                           // outputs
+#define CLB_O_DBG_R0               0x30U   // R0 of High level Controller
+#define CLB_O_DBG_R1               0x32U   // R1 of High level Controller
+#define CLB_O_DBG_R2               0x34U   // R2 of High level Controller
+#define CLB_O_DBG_R3               0x36U   // R3 of High level Controller
+#define CLB_O_DBG_C0               0x38U   // Count of Unit 0
+#define CLB_O_DBG_C1               0x3AU   // Count of Unit 1
+#define CLB_O_DBG_C2               0x3CU   // Count of Unit 2
+#define CLB_O_DBG_OUT              0x3EU   // Outputs of various units in the Cell
 
-#define CLB_O_PUSH(i)   (0x0U + ((i) * 0x2U))     // (0 <= i < 4) CLB_PUSH FIFO Registers (from
-                                                  // HLC)
-#define CLB_O_PULL(i)   (0x100U + ((i) * 0x2U))   // (0 <= i < 4) CLB_PULL FIFO Registers (TO HLC)
+#define CLB_O_PUSH(i)   (0x0U + ((i) * 0x2U))    // (0 <= i < 4) CLB_PUSH FIFO Registers (from HLC)
+#define CLB_O_PULL(i)   (0x40U + ((i) * 0x2U))   // (0 <= i < 4) CLB_PULL FIFO Registers (TO HLC)
 
 
 //*************************************************************************************************
@@ -660,16 +665,35 @@
 #define CLB_OUTPUT_COND_CTRL_7_SEL_RAW_IN           0x2000U   // Select input mode for the CLB AOC
 #define CLB_OUTPUT_COND_CTRL_7_ASYNC_COND_EN        0x4000U   // Enable for conditioning
 
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CLB_MISC_ACCESS_CTRL register
+//
+//*************************************************************************************************
+#define CLB_MISC_ACCESS_CTRL_SPIEN   0x1U   // Enable CLB SPI Buffer feature
+#define CLB_MISC_ACCESS_CTRL_BLKEN   0x2U   // Block Register write
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CLB_SPI_DATA_CTRL_HI register
+//
+//*************************************************************************************************
+#define CLB_SPI_DATA_CTRL_HI_STRB_S    0U
+#define CLB_SPI_DATA_CTRL_HI_STRB_M    0x1FU     // Select value for strobe
+#define CLB_SPI_DATA_CTRL_HI_SHIFT_S   8U
+#define CLB_SPI_DATA_CTRL_HI_SHIFT_M   0x1F00U   // Shift value select
+
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the CLB_LOAD_EN register
 //
 //*************************************************************************************************
-#define CLB_LOAD_EN_LOAD_EN     0x1U   // Load Enable
-#define CLB_LOAD_EN_GLOBAL_EN   0x2U   // Global Enable
-#define CLB_LOAD_EN_STOP        0x4U   // Debug stop control
-#define CLB_LOAD_EN_NMI_EN      0x8U   // NMI output enable
+#define CLB_LOAD_EN_LOAD_EN       0x1U    // Load Enable
+#define CLB_LOAD_EN_GLOBAL_EN     0x2U    // Global Enable
+#define CLB_LOAD_EN_STOP          0x4U    // Debug stop control
+#define CLB_LOAD_EN_NMI_EN        0x8U    // NMI output enable
+#define CLB_LOAD_EN_PIPELINE_EN   0x10U   // Enable input pipelining
 
 //*************************************************************************************************
 //
@@ -685,29 +709,37 @@
 //
 //*************************************************************************************************
 #define CLB_INPUT_FILTER_FIN0_S   0U
-#define CLB_INPUT_FILTER_FIN0_M   0x3U        // Input filter control 0
+#define CLB_INPUT_FILTER_FIN0_M   0x3U          // Input filter control 0
 #define CLB_INPUT_FILTER_FIN1_S   2U
-#define CLB_INPUT_FILTER_FIN1_M   0xCU        // Input filter control 1
+#define CLB_INPUT_FILTER_FIN1_M   0xCU          // Input filter control 1
 #define CLB_INPUT_FILTER_FIN2_S   4U
-#define CLB_INPUT_FILTER_FIN2_M   0x30U       // Input filter control 2
+#define CLB_INPUT_FILTER_FIN2_M   0x30U         // Input filter control 2
 #define CLB_INPUT_FILTER_FIN3_S   6U
-#define CLB_INPUT_FILTER_FIN3_M   0xC0U       // Input filter control 3
+#define CLB_INPUT_FILTER_FIN3_M   0xC0U         // Input filter control 3
 #define CLB_INPUT_FILTER_FIN4_S   8U
-#define CLB_INPUT_FILTER_FIN4_M   0x300U      // Input filter control 4
+#define CLB_INPUT_FILTER_FIN4_M   0x300U        // Input filter control 4
 #define CLB_INPUT_FILTER_FIN5_S   10U
-#define CLB_INPUT_FILTER_FIN5_M   0xC00U      // Input filter control 5
+#define CLB_INPUT_FILTER_FIN5_M   0xC00U        // Input filter control 5
 #define CLB_INPUT_FILTER_FIN6_S   12U
-#define CLB_INPUT_FILTER_FIN6_M   0x3000U     // Input filter control 6
+#define CLB_INPUT_FILTER_FIN6_M   0x3000U       // Input filter control 6
 #define CLB_INPUT_FILTER_FIN7_S   14U
-#define CLB_INPUT_FILTER_FIN7_M   0xC000U     // Input filter control 7
-#define CLB_INPUT_FILTER_SYNC0    0x10000U    // Synchronizer control 0
-#define CLB_INPUT_FILTER_SYNC1    0x20000U    // Synchronizer control 1
-#define CLB_INPUT_FILTER_SYNC2    0x40000U    // Synchronizer control 2
-#define CLB_INPUT_FILTER_SYNC3    0x80000U    // Synchronizer control 3
-#define CLB_INPUT_FILTER_SYNC4    0x100000U   // Synchronizer control 4
-#define CLB_INPUT_FILTER_SYNC5    0x200000U   // Synchronizer control 5
-#define CLB_INPUT_FILTER_SYNC6    0x400000U   // Synchronizer control 6
-#define CLB_INPUT_FILTER_SYNC7    0x800000U   // Synchronizer control 7
+#define CLB_INPUT_FILTER_FIN7_M   0xC000U       // Input filter control 7
+#define CLB_INPUT_FILTER_SYNC0    0x10000U      // Synchronizer control 0
+#define CLB_INPUT_FILTER_SYNC1    0x20000U      // Synchronizer control 1
+#define CLB_INPUT_FILTER_SYNC2    0x40000U      // Synchronizer control 2
+#define CLB_INPUT_FILTER_SYNC3    0x80000U      // Synchronizer control 3
+#define CLB_INPUT_FILTER_SYNC4    0x100000U     // Synchronizer control 4
+#define CLB_INPUT_FILTER_SYNC5    0x200000U     // Synchronizer control 5
+#define CLB_INPUT_FILTER_SYNC6    0x400000U     // Synchronizer control 6
+#define CLB_INPUT_FILTER_SYNC7    0x800000U     // Synchronizer control 7
+#define CLB_INPUT_FILTER_PIPE0    0x1000000U    // Enable pipeline 0
+#define CLB_INPUT_FILTER_PIPE1    0x2000000U    // Enable pipeline 1
+#define CLB_INPUT_FILTER_PIPE2    0x4000000U    // Enable pipeline 2
+#define CLB_INPUT_FILTER_PIPE3    0x8000000U    // Enable pipeline 3
+#define CLB_INPUT_FILTER_PIPE4    0x10000000U   // Enable pipeline 4
+#define CLB_INPUT_FILTER_PIPE5    0x20000000U   // Enable pipeline 5
+#define CLB_INPUT_FILTER_PIPE6    0x40000000U   // Enable pipeline 6
+#define CLB_INPUT_FILTER_PIPE7    0x80000000U   // Enable pipeline 7
 
 //*************************************************************************************************
 //
@@ -729,13 +761,17 @@
 //
 //*************************************************************************************************
 #define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_S   0U
-#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_M   0x1FU      // Local Mux select 0
+#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_M   0x1FU         // Local Mux select 0
 #define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_1_S   5U
-#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_1_M   0x3E0U     // Local Mux select 1
+#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_1_M   0x3E0U        // Local Mux select 1
 #define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_2_S   10U
-#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_2_M   0x7C00U    // Local Mux select 2
+#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_2_M   0x7C00U       // Local Mux select 2
 #define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_3_S   15U
-#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_3_M   0xF8000U   // Local Mux select 3
+#define CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_3_M   0xF8000U      // Local Mux select 3
+#define CLB_LCL_MUX_SEL_1_MISC_INPUT_SEL_0     0x10000000U   // Select MISC_INPUT
+#define CLB_LCL_MUX_SEL_1_MISC_INPUT_SEL_1     0x20000000U   // Select MISC_INPUT
+#define CLB_LCL_MUX_SEL_1_MISC_INPUT_SEL_2     0x40000000U   // Select MISC_INPUT
+#define CLB_LCL_MUX_SEL_1_MISC_INPUT_SEL_3     0x80000000U   // Select MISC_INPUT
 
 //*************************************************************************************************
 //
@@ -743,13 +779,17 @@
 //
 //*************************************************************************************************
 #define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_4_S   0U
-#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_4_M   0x1FU      // Local Mux select 4
+#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_4_M   0x1FU         // Local Mux select 4
 #define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_5_S   5U
-#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_5_M   0x3E0U     // Local Mux select 5
+#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_5_M   0x3E0U        // Local Mux select 5
 #define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_6_S   10U
-#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_6_M   0x7C00U    // Local Mux select 6
+#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_6_M   0x7C00U       // Local Mux select 6
 #define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_7_S   15U
-#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_7_M   0xF8000U   // Local Mux select 7
+#define CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_7_M   0xF8000U      // Local Mux select 7
+#define CLB_LCL_MUX_SEL_2_MISC_INPUT_SEL_4     0x10000000U   // Select MISC_INPUT
+#define CLB_LCL_MUX_SEL_2_MISC_INPUT_SEL_5     0x20000000U   // Select MISC_INPUT
+#define CLB_LCL_MUX_SEL_2_MISC_INPUT_SEL_6     0x40000000U   // Select MISC_INPUT
+#define CLB_LCL_MUX_SEL_2_MISC_INPUT_SEL_7     0x80000000U   // Select MISC_INPUT
 
 //*************************************************************************************************
 //
@@ -841,6 +881,22 @@
 #define CLB_LOCK_LOCK    0x1U          // LOCK enable
 #define CLB_LOCK_KEY_S   16U
 #define CLB_LOCK_KEY_M   0xFFFF0000U   // Key for enabling write
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CLB_HLC_INSTR_READ_PTR register
+//
+//*************************************************************************************************
+#define CLB_HLC_INSTR_READ_PTR_READ_PTR_S   0U
+#define CLB_HLC_INSTR_READ_PTR_READ_PTR_M   0x1FU   // HLC instruction read pointer
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CLB_HLC_INSTR_VALUE register
+//
+//*************************************************************************************************
+#define CLB_HLC_INSTR_VALUE_INSTR_S   0U
+#define CLB_HLC_INSTR_VALUE_INSTR_M   0xFFFU   // HLC instruction value
 
 //*************************************************************************************************
 //

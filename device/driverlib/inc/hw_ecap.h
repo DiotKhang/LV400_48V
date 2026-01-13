@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,19 +46,20 @@
 // The following are defines for the ECAP register offsets
 //
 //*************************************************************************************************
-#define ECAP_O_TSCTR    0x0U    // Time-Stamp Counter
-#define ECAP_O_CTRPHS   0x2U    // Counter Phase Offset Value Register
-#define ECAP_O_CAP1     0x4U    // Capture 1 Register
-#define ECAP_O_CAP2     0x6U    // Capture 2 Register
-#define ECAP_O_CAP3     0x8U    // Capture 3 Register
-#define ECAP_O_CAP4     0xAU    // Capture 4 Register
-#define ECAP_O_ECCTL0   0x12U   // Capture Control Register 0
-#define ECAP_O_ECCTL1   0x14U   // Capture Control Register 1
-#define ECAP_O_ECCTL2   0x15U   // Capture Control Register 2
-#define ECAP_O_ECEINT   0x16U   // Capture Interrupt Enable Register
-#define ECAP_O_ECFLG    0x17U   // Capture Interrupt Flag Register
-#define ECAP_O_ECCLR    0x18U   // Capture Interrupt Clear Register
-#define ECAP_O_ECFRC    0x19U   // Capture Interrupt Force Register
+#define ECAP_O_TSCTR       0x0U    // Time-Stamp Counter
+#define ECAP_O_CTRPHS      0x2U    // Counter Phase Offset Value Register
+#define ECAP_O_CAP1        0x4U    // Capture 1 Register
+#define ECAP_O_CAP2        0x6U    // Capture 2 Register
+#define ECAP_O_CAP3        0x8U    // Capture 3 Register
+#define ECAP_O_CAP4        0xAU    // Capture 4 Register
+#define ECAP_O_ECCTL0      0x12U   // Capture Control Register 0
+#define ECAP_O_ECCTL1      0x14U   // Capture Control Register 1
+#define ECAP_O_ECCTL2      0x15U   // Capture Control Register 2
+#define ECAP_O_ECEINT      0x16U   // Capture Interrupt Enable Register
+#define ECAP_O_ECFLG       0x17U   // Capture Interrupt Flag Register
+#define ECAP_O_ECCLR       0x18U   // Capture Interrupt Clear Register
+#define ECAP_O_ECFRC       0x19U   // Capture Interrupt Force Register
+#define ECAP_O_SYNCINSEL   0x1EU   // SYNC source select register
 
 
 //*************************************************************************************************
@@ -164,6 +165,14 @@
 #define ECAP_ECFRC_CTROVF    0x20U   // Counter Overflow Force Interrupt
 #define ECAP_ECFRC_CTR_PRD   0x40U   // Period Equal Force Interrupt
 #define ECAP_ECFRC_CTR_CMP   0x80U   // Compare Equal Force Interrupt
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the ECAPSYNCINSEL register
+//
+//*************************************************************************************************
+#define ECAP_SYNCINSEL_SEL_S   0U
+#define ECAP_SYNCINSEL_SEL_M   0x1FU   // SYNCIN source select
 
 
 

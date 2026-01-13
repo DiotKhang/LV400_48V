@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -81,9 +81,11 @@ extern "C"
 #define MEMCFG_SECT_TYPE_LS     0x01000000U
 #define MEMCFG_SECT_TYPE_GS     0x02000000U
 #define MEMCFG_SECT_TYPE_MSG    0x03000000U
+#define MEMCFG_SECT_TYPE_ROM      0x04000000U
 #define MEMCFG_SECT_NUM_MASK    0x00FFFFFFU
 #define MEMCFG_XACCPROTX_M      ((uint32_t)MEMCFG_GSXACCPROT0_FETCHPROT_GS0 | \
                                  (uint32_t)MEMCFG_GSXACCPROT0_CPUWRPROT_GS0 | \
+                                 (uint32_t)MEMCFG_GSXACCPROT0_HICWRPROT_GS0 | \
                                  (uint32_t)MEMCFG_GSXACCPROT0_DMAWRPROT_GS0)
 #define MEMCFG_XTEST_M          MEMCFG_DXTEST_TEST_M0_M
 
@@ -93,6 +95,11 @@ extern "C"
 #define MEMCFG_NMVIOL_MASK      0x0000FFFFU
 #define MEMCFG_MVIOL_MASK       0x000F0000U
 #define MEMCFG_MVIOL_SHIFT      16U
+
+//
+// Key for writing to memory test config lock registers
+//
+#define MEMCFG_TESTLOCK_KEY     0xA5A50000U
 
 #ifndef DOXYGEN_PDF_IGNORE
 //*****************************************************************************
@@ -137,8 +144,17 @@ extern "C"
 //
 #define MEMCFG_SECT_MSGCPUTOCLA1    0x03000002U //!< CPU-to-CLA1 message RAM
 #define MEMCFG_SECT_MSGCLA1TOCPU    0x03000004U //!< CLA1-to-CPU message RAM
+#define MEMCFG_SECT_MSGCLA1TODMA    0x03000020U //!< CLA1-to-DMA message RAM
+#define MEMCFG_SECT_MSGDMATOCLA1    0x03000040U //!< DMA-to-CLA1 message RAM
 #define MEMCFG_SECT_MSGX_ALL        0x03000006U //!< All message RAM
 
+//
+// ROM memory sections
+//
+#define MEMCFG_SECT_ROMBOOT           0x04000001U //!< BOOT ROM
+#define MEMCFG_SECT_ROMSECURE         0x04000002U //!< Secure ROM
+#define MEMCFG_SECT_ROMCLADATA        0x04000004U //!< CLA Data ROM
+#define MEMCFG_SECT_ROM_ALL           0x04000007U //!< All ROMs
 
 //
 // All sections
@@ -160,6 +176,9 @@ extern "C"
 #define MEMCFG_PROT_ALLOWDMAWRITE   0x00000000U //!< DMA write allowed (GSxRAM)
 #define MEMCFG_PROT_BLOCKDMAWRITE   0x00000004U //!< DMA write blocked (GSxRAM)
 
+#define MEMCFG_PROT_ALLOWHICWRITE   0x00000000U //!< HIC write allowed (GSxRAM)
+#define MEMCFG_PROT_BLOCKHICWRITE   0x00000008U //!< HIC write blocked (GSxRAM)
+
 //*****************************************************************************
 //
 // Values that can be passed to MemCfg_enableViolationInterrupt()
@@ -176,6 +195,9 @@ extern "C"
 #define MEMCFG_NMVIOL_CLA1READ   0x00000010U //!< Non-controller CLA1 read access
 #define MEMCFG_NMVIOL_CLA1WRITE  0x00000020U //!< Non-controller CLA1 write access
 #define MEMCFG_NMVIOL_CLA1FETCH  0x00000040U //!< Non-controller CLA1 fetch access
+#define MEMCFG_NMVIOL_DMAREAD    0x00000400U //!< Non-controller DMA read access
+#define MEMCFG_NMVIOL_HICREAD    0x00000800U //!< Non-controller HIC read access
+#define MEMCFG_NMVIOL_HICWRITE   0x00001000U //!< Non-controller HIC write access
 
 //*****************************************************************************
 //
@@ -189,6 +211,7 @@ extern "C"
 #define MEMCFG_MVIOL_CPUFETCH    0x00010000U //!< Controller CPU fetch access
 #define MEMCFG_MVIOL_CPUWRITE    0x00020000U //!< Controller CPU write access
 #define MEMCFG_MVIOL_DMAWRITE    0x00040000U //!< Controller DMA write access
+#define MEMCFG_MVIOL_HICWRITE    0x00080000U //!< Controller HIC write access
 
 //*****************************************************************************
 //
@@ -204,6 +227,7 @@ extern "C"
 #define MEMCFG_CERR_CPUREAD      0x0001U //!< Correctable CPU read error
 #define MEMCFG_CERR_DMAREAD      0x0002U //!< Correctable DMA read error
 #define MEMCFG_CERR_CLA1READ     0x0004U //!< Correctable CLA1 read error
+#define MEMCFG_CERR_HICREAD      0x0020U //!< Correctable DMA read error
 //*****************************************************************************
 //
 // Values that can be passed to MemCfg_forceUncorrErrorStatus(),
@@ -214,6 +238,15 @@ extern "C"
 #define MEMCFG_UCERR_CPUREAD     0x0001U //!< Uncorrectable CPU read error
 #define MEMCFG_UCERR_DMAREAD     0x0002U //!< Uncorrectable DMA read error
 #define MEMCFG_UCERR_CLA1READ    0x0004U //!< Uncorrectable CLA1 read error
+#define MEMCFG_UCERR_HICREAD     0x0020U //!< Uncorrectable HIC read error
+//*****************************************************************************
+//
+// Values that can be passed to MemCfg_clearDiagErrorStatus() as stsFlags
+// parameter and returned by MemCfg_getDiagErrorStatus().
+//
+//*****************************************************************************
+#define MEMCFG_DIAGERR_UNCORR    0x00000002U //!< Uncorr error in diag/test mode
+#define MEMCFG_DIAGERR_CORR      0x00000001U //!< Corr error in diag/test mode
 
 #endif
 
@@ -256,7 +289,9 @@ typedef enum
     //! Writes allowed to ECC only (for DxRAM/MxRAM)
     MEMCFG_TEST_WRITE_ECC    = 2,
     //! Writes allowed to parity only (for LSxRAM, GSxRAM, and MSGxRAM)
-    MEMCFG_TEST_WRITE_PARITY = 2
+    MEMCFG_TEST_WRITE_PARITY = 2,
+    //! Diagnostic mode, similar to functional mode but NMI is not generated.
+    MEMCFG_TEST_FUNC_DIAG    = 3
 } MemCfg_TestMode;
 
 //*****************************************************************************
@@ -334,9 +369,13 @@ MemCfg_setCLAMemType(uint32_t ramSections, MemCfg_CLAMemoryType claMemType)
 //!  - \b MEMCFG_NMVIOL_CLA1READ  - Non-controller CLA1 read access
 //!  - \b MEMCFG_NMVIOL_CLA1WRITE - Non-controller CLA1 write access
 //!  - \b MEMCFG_NMVIOL_CLA1FETCH - Non-controller CLA1 fetch access
+//!  - \b MEMCFG_NMVIOL_DMAREAD   - Non-controller DMA read access
+//!  - \b MEMCFG_NMVIOL_HICREAD   - Non-controller HIC read access
+//!  - \b MEMCFG_NMVIOL_HICWRITE  - Non-controller HIC write access
 //!  - \b MEMCFG_MVIOL_CPUFETCH   - Controller CPU fetch access
 //!  - \b MEMCFG_MVIOL_CPUWRITE   - Controller CPU write access
 //!  - \b MEMCFG_MVIOL_DMAWRITE   - Controller DMA write access
+//!  - \b MEMCFG_MVIOL_HICWRITE   - Controller HIC write access
 //! This function enables the indicated RAM access violation interrupt sources.
 //! Only the sources that are enabled can be reflected to the processor
 //! interrupt; disabled sources have no effect on the processor.
@@ -374,9 +413,13 @@ MemCfg_enableViolationInterrupt(uint32_t intFlags)
 //!  - \b MEMCFG_NMVIOL_CLA1READ  - Non-controller CLA1 read access
 //!  - \b MEMCFG_NMVIOL_CLA1WRITE - Non-controller CLA1 write access
 //!  - \b MEMCFG_NMVIOL_CLA1FETCH - Non-controller CLA1 fetch access
+//!  - \b MEMCFG_NMVIOL_DMAREAD   - Non-controller DMA read access
+//!  - \b MEMCFG_NMVIOL_HICREAD   - Non-controller HIC read access
+//!  - \b MEMCFG_NMVIOL_HICWRITE  - Non-controller HIC write access
 //!  - \b MEMCFG_MVIOL_CPUFETCH   - Controller CPU fetch access
 //!  - \b MEMCFG_MVIOL_CPUWRITE   - Controller CPU write access
 //!  - \b MEMCFG_MVIOL_DMAWRITE   - Controller DMA write access
+//!  - \b MEMCFG_MVIOL_HICWRITE   - Controller HIC write access
 //!
 //! This function disables the indicated RAM access violation interrupt
 //! sources. Only the sources that are enabled can be reflected to the
@@ -422,9 +465,13 @@ MemCfg_disableViolationInterrupt(uint32_t intFlags)
 //!  - \b MEMCFG_NMVIOL_CLA1READ  - Non-controller CLA1 read access
 //!  - \b MEMCFG_NMVIOL_CLA1WRITE - Non-controller CLA1 write access
 //!  - \b MEMCFG_NMVIOL_CLA1FETCH - Non-controller CLA1 fetch access
+//!  - \b MEMCFG_NMVIOL_DMAREAD   - Non-controller DMA read access
+//!  - \b MEMCFG_NMVIOL_HICREAD   - Non-controller HIC read access
+//!  - \b MEMCFG_NMVIOL_HICWRITE  - Non-controller HIC write access
 //!  - \b MEMCFG_MVIOL_CPUFETCH   - Controller CPU fetch access
 //!  - \b MEMCFG_MVIOL_CPUWRITE   - Controller CPU write access
 //!  - \b MEMCFG_MVIOL_DMAWRITE   - Controller DMA write access
+//!  - \b MEMCFG_MVIOL_HICWRITE   - Controller HIC write access
 //*****************************************************************************
 static inline uint32_t
 MemCfg_getViolationInterruptStatus(void)
@@ -454,9 +501,13 @@ MemCfg_getViolationInterruptStatus(void)
 //!  - \b MEMCFG_NMVIOL_CLA1READ  - Non-controller CLA1 read access
 //!  - \b MEMCFG_NMVIOL_CLA1WRITE - Non-controller CLA1 write access
 //!  - \b MEMCFG_NMVIOL_CLA1FETCH - Non-controller CLA1 fetch access
+//!  - \b MEMCFG_NMVIOL_DMAREAD   - Non-controller DMA read access
+//!  - \b MEMCFG_NMVIOL_HICREAD   - Non-controller HIC read access
+//!  - \b MEMCFG_NMVIOL_HICWRITE  - Non-controller HIC write access
 //!  - \b MEMCFG_MVIOL_CPUFETCH   - Controller CPU fetch access
 //!  - \b MEMCFG_MVIOL_CPUWRITE   - Controller CPU write access
 //!  - \b MEMCFG_MVIOL_DMAWRITE   - Controller DMA write access
+//!  - \b MEMCFG_MVIOL_HICWRITE   - Controller HIC write access
 //!
 //! This function sets the RAM access violation status. This function will
 //! set flags for both controller and non-controller access violations, and an
@@ -496,9 +547,13 @@ MemCfg_forceViolationInterrupt(uint32_t intFlags)
 //!  - \b MEMCFG_NMVIOL_CLA1READ  - Non-controller CLA1 read access
 //!  - \b MEMCFG_NMVIOL_CLA1WRITE - Non-controller CLA1 write access
 //!  - \b MEMCFG_NMVIOL_CLA1FETCH - Non-controller CLA1 fetch access
+//!  - \b MEMCFG_NMVIOL_DMAREAD   - Non-controller DMA read access
+//!  - \b MEMCFG_NMVIOL_HICREAD   - Non-controller HIC read access
+//!  - \b MEMCFG_NMVIOL_HICWRITE  - Non-controller HIC write access
 //!  - \b MEMCFG_MVIOL_CPUFETCH   - Controller CPU fetch access
 //!  - \b MEMCFG_MVIOL_CPUWRITE   - Controller CPU write access
 //!  - \b MEMCFG_MVIOL_DMAWRITE   - Controller DMA write access
+//!  - \b MEMCFG_MVIOL_HICWRITE   - Controller HIC write access
 //!
 //! \return None.
 //
@@ -715,8 +770,8 @@ MemCfg_getCorrErrorStatus(void)
 //! Gets the current uncorrectable RAM error status.
 //!
 //! \return Returns the current error status, enumerated as a bit field of
-//! \b MEMCFG_UCERR_CPUREAD, \b MEMCFG_UCERR_DMAREAD, \b MEMCFG_UCERR_CLA1READ,
-//! or \b MEMCFG_UCERR_ECATMEMREAD.
+//! \b MEMCFG_UCERR_CPUREAD, \b MEMCFG_UCERR_DMAREAD, \b MEMCFG_UCERR_CLA1READ
+//! or \b MEMCFG_UCERR_HICREAD.
 //
 //*****************************************************************************
 static inline uint32_t
@@ -760,8 +815,8 @@ MemCfg_forceCorrErrorStatus(uint32_t stsFlags)
 //!
 //! \param stsFlags is a bit mask of the error sources. This parameter can be
 //! any of the following values:
-//! \b MEMCFG_UCERR_CPUREAD, \b MEMCFG_UCERR_DMAREAD, \b MEMCFG_UCERR_CLA1READ,
-//! or \b MEMCFG_UCERR_ECATMEMREAD.
+//! \b MEMCFG_UCERR_CPUREAD, \b MEMCFG_UCERR_DMAREAD, \b MEMCFG_UCERR_CLA1READ
+//! or \b MEMCFG_UCERR_HICREAD.
 //!
 //! This function sets the specified uncorrectable RAM error status flag.
 //!
@@ -813,8 +868,8 @@ MemCfg_clearCorrErrorStatus(uint32_t stsFlags)
 //!
 //! \param stsFlags is a bit mask of the status flags to be cleared.
 //! This parameter can be any of the following :
-//! \b MEMCFG_UCERR_CPUREAD, \b MEMCFG_UCERR_DMAREAD, \b MEMCFG_UCERR_CLA1READ,
-//! or \b MEMCFG_UCERR_ECATMEMREAD.
+//! \b MEMCFG_UCERR_CPUREAD, \b MEMCFG_UCERR_DMAREAD, \b MEMCFG_UCERR_CLA1READ
+//! or \b MEMCFG_UCERR_HICREAD.
 //!
 //! This function clears the specified uncorrectable RAM error flags.
 //!
@@ -836,6 +891,61 @@ MemCfg_clearUncorrErrorStatus(uint32_t stsFlags)
 
 //*****************************************************************************
 //
+//! Gets the diagnostics corr/uncorr memory error status in test mode.
+//!
+//! \return Returns the diagnostics error status in test mode. It can return
+//! following values: \b MEMCFG_DIAGERR_UNCORR, and/or \b MEMCFG_DIAGERR_CORR.
+//
+//*****************************************************************************
+static inline uint32_t
+MemCfg_getDiagErrorStatus(void)
+{
+    //
+    // Returns diag error status.
+    //
+    return(HWREG(TESTERROR_BASE + MEMCFG_O_CPU_RAM_TEST_ERROR_STS));
+}
+
+//*****************************************************************************
+//
+//! Clears the diagnostics corr/uncorr memory error status.
+//!
+//! \param stsFlags is a bit mask of the status flags to be cleared.
+//!
+//! This function clears the specified diagnostics corr/uncorr RAM/ROM memory
+//! error flags in test mode. The param \e stsFlags can be any of the following
+//! values: \b MEMCFG_DIAGERR_UNCORR, and/or \b MEMCFG_DIAGERR_CORR.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+MemCfg_clearDiagErrorStatus(uint32_t stsFlags)
+{
+    //
+    // Clear diag error status.
+    //
+    HWREG(TESTERROR_BASE + MEMCFG_O_CPU_RAM_TEST_ERROR_STS_CLR ) |= stsFlags;
+}
+
+//*****************************************************************************
+//
+//! Gets address location of diagnostics corr/uncorr memory read/write error.
+//!
+//! \return Return address location of diagnostics corr/uncorr memory error
+//! error in test mode.
+//
+//*****************************************************************************
+static inline uint32_t
+MemCfg_getDiagErrorAddress(void)
+{
+    //
+    // Return diag error address.
+    //
+    return(HWREG(TESTERROR_BASE + MEMCFG_O_CPU_RAM_TEST_ERROR_ADDR));
+}
+//*****************************************************************************
+//
 //! Locks the writes to the configuration of specified memory sections.
 //!
 //! \param memSections is the logical OR of the sections to be configured.
@@ -850,7 +960,8 @@ MemCfg_clearUncorrErrorStatus(uint32_t stsFlags)
 //! - \b MEMCFG_SECT_M0 and \b MEMCFG_SECT_M1 or \b MEMCFG_SECT_DX_ALL
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx or \b MEMCFG_SECT_LSX_ALL
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx or \b MEMCFG_SECT_GSX_ALL
-//! - \b MEMCFG_SECT_MSGCLA1TOCPU, \b MEMCFG_SECT_MSGCPUTOCLA1 or use
+//! - \b MEMCFG_SECT_MSGCLA1TOCPU, \b MEMCFG_SECT_MSGCPUTOCLA1
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or use
 //!   \b MEMCFG_SECT_MSGX_ALL to configure all message RAM sections.
 //! - \b OR use \b MEMCFG_SECT_ALL to configure all possible sections.
 //!
@@ -875,7 +986,8 @@ MemCfg_lockConfig(uint32_t memSections);
 //! - \b MEMCFG_SECT_M0 and \b MEMCFG_SECT_M1 or \b MEMCFG_SECT_DX_ALL
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx or \b MEMCFG_SECT_LSX_ALL
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx or \b MEMCFG_SECT_GSX_ALL
-//! - \b MEMCFG_SECT_MSGCLA1TOCPU, \b MEMCFG_SECT_MSGCPUTOCLA1 or use
+//! - \b MEMCFG_SECT_MSGCLA1TOCPU, \b MEMCFG_SECT_MSGCPUTOCLA1
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or use
 //!   \b MEMCFG_SECT_MSGX_ALL to configure all message RAM sections.
 //! - \b OR use \b MEMCFG_SECT_ALL to configure all possible sections.
 //!
@@ -902,7 +1014,8 @@ MemCfg_unlockConfig(uint32_t memSections);
 //! - \b MEMCFG_SECT_M0 and \b MEMCFG_SECT_M1 or \b MEMCFG_SECT_DX_ALL
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx or \b MEMCFG_SECT_LSX_ALL
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx or \b MEMCFG_SECT_GSX_ALL
-//! - \b MEMCFG_SECT_MSGCLA1TOCPU, \b MEMCFG_SECT_MSGCPUTOCLA1 or use
+//! - \b MEMCFG_SECT_MSGCLA1TOCPU, \b MEMCFG_SECT_MSGCPUTOCLA1
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or use
 //!   \b MEMCFG_SECT_MSGX_ALL to configure all message RAM sections.
 //! - \b OR use \b MEMCFG_SECT_ALL to configure all possible sections.
 //!
@@ -925,8 +1038,10 @@ MemCfg_commitConfig(uint32_t memSections);
 //! - \b MEMCFG_PROT_ALLOWCPUFETCH or \b MEMCFG_PROT_BLOCKCPUFETCH - CPU fetch
 //! - \b MEMCFG_PROT_ALLOWCPUWRITE or \b MEMCFG_PROT_BLOCKCPUWRITE - CPU write
 //! - \b MEMCFG_PROT_ALLOWDMAWRITE or \b MEMCFG_PROT_BLOCKDMAWRITE - DMA write
+//! - \b MEMCFG_PROT_ALLOWHICWRITE or \b MEMCFG_PROT_BLOCKHICWRITE - HIC write
 //!
 //! The \e memSection parameter is one of the following indicators:
+//! - \b MEMCFG_SECT_M0 or \b MEMCFG_SECT_M1
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx
 //!
@@ -971,6 +1086,63 @@ MemCfg_setLSRAMControllerSel(uint32_t ramSection,
 
 //*****************************************************************************
 //
+//! Locks the writes to the test mode configuration of specified memory
+//! sections.
+//!
+//! \param memSections is the logical OR of the sections to be configured.
+//!
+//! This function locks writes to the test mode configuration of a RAM section.
+//! That means calling MemCfg_setTestMode() for a locked RAM section will have
+//! no effect until MemCfg_unlockTestConfig() is called.
+//!
+//! The \e memSections parameter is an OR of one of the following sets of
+//! indicators:
+//! - \b MEMCFG_SECT_M0, \b MEMCFG_SECT_M1, or use \b MEMCFG_SECT_DX_ALL
+//! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx or use
+//!   \b MEMCFG_SECT_LSX_ALL to configure all possible LSRAM sections.
+//! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx or use
+//!   \b MEMCFG_SECT_GSX_ALL to configure all possible GSRAM sections.
+//! - \b MEMCFG_SECT_MSGCPUTOCLA1, \b MEMCFG_SECT_MSGCLA1TOCPU,
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or use
+//!   \b MEMCFG_SECT_MSGX_ALL to configure all possible message RAM sections.
+//! - \b OR use \b MEMCFG_SECT_ALL to configure all possible sections.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+MemCfg_lockTestConfig(uint32_t memSections);
+
+//*****************************************************************************
+//
+//! Unlocks the writes to the test mode configuration of specified memory
+//! sections.
+//!
+//! \param memSections is the logical OR of the sections to be configured.
+//!
+//! This function unlocks writes to the test mode configuration of a RAM
+//! section that has been locked using MemCfg_lockTestConfig().
+//!
+//! The \e memSections parameter is an OR of one of the following sets of
+//! indicators:
+//! - \b MEMCFG_SECT_M0, \b MEMCFG_SECT_M1, or use \b MEMCFG_SECT_DX_ALL
+//! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx or use
+//!   \b MEMCFG_SECT_LSX_ALL to configure all possible LSRAM sections.
+//! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx or use
+//!   \b MEMCFG_SECT_GSX_ALL to configure all possible GSRAM sections.
+//! - \b MEMCFG_SECT_MSGCPUTOCLA1, \b MEMCFG_SECT_MSGCLA1TOCPU,
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or use
+//!   \b MEMCFG_SECT_MSGX_ALL to configure all possible message RAM sections.
+//! - \b OR use \b MEMCFG_SECT_ALL to configure all possible sections.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+MemCfg_unlockTestConfig(uint32_t memSections);
+
+//*****************************************************************************
+//
 //! Sets the test mode of the specified memory section.
 //!
 //! \param memSection is the memory section to be configured.
@@ -982,12 +1154,14 @@ MemCfg_setLSRAMControllerSel(uint32_t ramSection,
 //! - \b MEMCFG_TEST_WRITE_DATA
 //! - \b MEMCFG_TEST_WRITE_ECC
 //! - \b MEMCFG_TEST_WRITE_PARITY
+//! - \b MEMCFG_TEST_FUNC_DIAG
 //!
 //! The \e memSection parameter is one of the following indicators:
 //! - \b MEMCFG_SECT_M0, \b MEMCFG_SECT_M1
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx
-//! - \b MEMCFG_SECT_MSGCPUTOCLA1, or \b MEMCFG_SECT_MSGCLA1TOCPU
+//! - \b MEMCFG_SECT_MSGCPUTOCLA1, \b MEMCFG_SECT_MSGCLA1TOCPU,
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1
 //!
 //! \return None.
 //
@@ -1009,7 +1183,8 @@ MemCfg_setTestMode(uint32_t memSection, MemCfg_TestMode testMode);
 //! - \b MEMCFG_SECT_M0, \b MEMCFG_SECT_M1, or \b MEMCFG_SECT_DX_ALL
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx, or \b MEMCFG_SECT_LSX_ALL
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx, or \b MEMCFG_SECT_GSX_ALL
-//! - \b MEMCFG_SECT_MSGCPUTOCLA1, or \b MEMCFG_SECT_MSGCLA1TOCPU, or
+//! - \b MEMCFG_SECT_MSGCPUTOCLA1, \b MEMCFG_SECT_MSGCLA1TOCPU,
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or
 //!   \b MEMCFG_SECT_MSGX_ALL
 //! - \b OR use \b MEMCFG_SECT_ALL to configure all possible sections.
 //!
@@ -1033,7 +1208,8 @@ MemCfg_initSections(uint32_t ramSections);
 //! - \b MEMCFG_SECT_M0, \b MEMCFG_SECT_M1, or \b MEMCFG_SECT_DX_ALL
 //! - \b MEMCFG_SECT_LS0 through \b MEMCFG_SECT_LSx, or \b MEMCFG_SECT_LSX_ALL
 //! - \b MEMCFG_SECT_GS0 through \b MEMCFG_SECT_GSx, or \b MEMCFG_SECT_GSX_ALL
-//! - \b MEMCFG_SECT_MSGCPUTOCLA1, or \b MEMCFG_SECT_MSGCLA1TOCPU, or
+//! - \b MEMCFG_SECT_MSGCPUTOCLA1, \b MEMCFG_SECT_MSGCLA1TOCPU,
+//!   \b MEMCFG_SECT_MSGCLA1TODMA, \b MEMCFG_SECT_MSGDMATOCLA1, or
 //!   \b MEMCFG_SECT_MSGX_ALL
 //! - \b OR use \b MEMCFG_SECT_ALL to get status of all possible sections.
 //!
@@ -1059,9 +1235,13 @@ MemCfg_getInitStatus(uint32_t ramSections);
 //!  - \b MEMCFG_NMVIOL_CLA1READ  - Non-controller CLA1 read access
 //!  - \b MEMCFG_NMVIOL_CLA1WRITE - Non-controller CLA1 write access
 //!  - \b MEMCFG_NMVIOL_CLA1FETCH - Non-controller CLA1 fetch access
+//!  - \b MEMCFG_NMVIOL_DMAREAD   - Non-controller DMA read access
+//!  - \b MEMCFG_NMVIOL_HICREAD   - Non-controller HIC read access
+//!  - \b MEMCFG_NMVIOL_HICWRITE  - Non-controller HIC write access
 //!  - \b MEMCFG_MVIOL_CPUFETCH   - Controller CPU fetch access
 //!  - \b MEMCFG_MVIOL_CPUWRITE   - Controller CPU write access
 //!  - \b MEMCFG_MVIOL_DMAWRITE   - Controller DMA write access
+//!  - \b MEMCFG_MVIOL_HICWRITE   - Controller HIC write access
 //!
 //! \return Returns the violation address associated with the \e intFlag.
 //
@@ -1074,8 +1254,8 @@ MemCfg_getViolationAddress(uint32_t intFlag);
 //! Get the correctable error address associated with a stsFlag.
 //!
 //! \param stsFlag is the type of error to which the returned address will
-//! correspond.  Can currently take the value \b MEMCFG_CERR_CPUREAD only.
-//! Other values are reserved.
+//! correspond. It can take following values: \b MEMCFG_CERR_CPUREAD,
+//! \b MEMCFG_CERR_CLA1READ, \b MEMCFG_CERR_DMAREAD.
 //!
 //! \return Returns the error address associated with the stsFlag.
 //
@@ -1098,6 +1278,27 @@ MemCfg_getCorrErrorAddress(uint32_t stsFlag);
 extern uint32_t
 MemCfg_getUncorrErrorAddress(uint32_t stsFlag);
 
+//*****************************************************************************
+//
+//! Forces parity error in the selected memory.
+//!
+//! \param memSections is the logical OR of the sections to be tested.
+//!
+//! This function forces the parity error in the memories specified
+//! by the \e memSections parameter.
+//!
+//! The \e memSections parameter is an OR of one of the following sets of
+//! indicators:
+//! - \b MEMCFG_SECT_ROMBOOT, \b MEMCFG_SECT_ROMSECURE ,
+//!   \b MEMCFG_SECT_ROMCLADATA, \b MEMCFG_SECT_ROM_ALL.
+//! - \b OR use \b MEMCFG_SECT_ALL to force parity error in all possible
+//!      memory sections.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+MemCfg_forceMemError(uint32_t memSections);
 
 //*****************************************************************************
 //

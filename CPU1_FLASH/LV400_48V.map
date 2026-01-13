@@ -1,0 +1,789 @@
+******************************************************************************
+             TMS320C2000 Linker PC v22.6.2                     
+******************************************************************************
+>> Linked Mon Jan 12 23:01:26 2026
+
+OUTPUT FILE NAME:   <LV400_48V.out>
+ENTRY POINT SYMBOL: "code_start"  address: 00080000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  BOOT_RSVD             00000002   00000126  00000000  00000126  RWIX
+  RAMM0                 00000128   000002d8  00000000  000002d8  RWIX
+  RAMM1                 00000400   000003f8  000003f8  00000000  RWIX
+  CLA1_MSGRAMLOW        00001480   00000080  00000000  00000080  RWIX
+  CLA1_MSGRAMHIGH       00001500   00000080  00000000  00000080  RWIX
+  RAMLS0LS1             00008000   00001000  00000124  00000edc  RWIX
+  RAMLS2LS3LS4LS5       00009000   00002000  00000000  00002000  RWIX
+  RAMLS6                0000b000   00000800  00000000  00000800  RWIX
+  RAMLS7                0000b800   00000800  00000000  00000800  RWIX
+  RAMGS0GS1             0000c000   00002000  00000360  00001ca0  RWIX
+  RAMGS2                0000e000   00001000  00000018  00000fe8  RWIX
+  RAMGS3                0000f000   00000ff8  00000000  00000ff8  RWIX
+  BEGIN                 00080000   00000002  00000002  00000000  RWIX
+  FLASH_BANK0_SEC0      00080002   00000ffe  00000000  00000ffe  RWIX
+  FLASH_BANK0_SEC1      00081000   00001000  000000c4  00000f3c  RWIX
+  FLASH_BANK0_SEC2_3_4  00082000   00004000  000017df  00002821  RWIX
+  FLASH_BANK0_SEC6      00086000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC7      00087000   00001000  000002c0  00000d40  RWIX
+  FLASH_BANK0_SEC8      00088000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC9      00089000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC10     0008a000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC11     0008b000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC12     0008c000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC13     0008d000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC14     0008e000   00001000  00000000  00001000  RWIX
+  FLASH_BANK0_SEC15     0008f000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC0      00090000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC1      00091000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC2      00092000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC3      00093000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC4      00094000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC5      00095000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC6      00096000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC7      00097000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC8      00098000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC9      00099000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC10     0009a000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC11     0009b000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC12     0009c000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC13     0009d000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC14     0009e000   00001000  00000000  00001000  RWIX
+  FLASH_BANK1_SEC15     0009f000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC0      000a0000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC1      000a1000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC2      000a2000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC3      000a3000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC4      000a4000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC5      000a5000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC6      000a6000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC7      000a7000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC8      000a8000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC9      000a9000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC10     000aa000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC11     000ab000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC12     000ac000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC13     000ad000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC14     000ae000   00001000  00000000  00001000  RWIX
+  FLASH_BANK2_SEC15     000af000   00000ff0  00000000  00000ff0  RWIX
+  SECURE_ROM            003f2000   00006000  00000000  00006000  RWIX
+  BOOTROM               003f8000   00007fc0  00000000  00007fc0  RWIX
+  RESET                 003fffc0   00000002  00000000  00000002  RWIX
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.stack     0    00000400    000003f8     UNINITIALIZED
+                  00000400    000003f8     --HOLE--
+
+codestart 
+*          0    00080000    00000002     
+                  00080000    00000002     f28003x_codestartbranch.obj (codestart)
+
+.cinit     0    000810a0    00000024     
+                  000810a0    00000009     (.cinit..data.load) [load image, compression = lzss]
+                  000810a9    00000001     --HOLE-- [fill = 0]
+                  000810aa    00000006     (__TI_handler_table)
+                  000810b0    00000004     (.cinit..bss.load) [load image, compression = zero_init]
+                  000810b4    00000004     (.cinit.controlVariables.load) [load image, compression = zero_init]
+                  000810b8    0000000c     (__TI_cinit_table)
+
+.init_array 
+*          0    00081000    00000000     UNINITIALIZED
+
+.bss       0    0000e000    0000000e     UNINITIALIZED
+                  0000e000    0000000e     cllc_main.obj (.bss)
+
+.data      0    0000e00e    0000000a     UNINITIALIZED
+                  0000e00e    00000006     rts2800_fpu64_eabi.lib : exit.c.obj (.data)
+                  0000e014    00000002                            : _lock.c.obj (.data:_lock)
+                  0000e016    00000002                            : _lock.c.obj (.data:_unlock)
+
+.reset     0    003fffc0    00000000     DSECT
+
+Cla1Prog   0    00009000    00000000     UNINITIALIZED
+
+.TI.ramfunc 
+*          0    00081000    0000004f     RUN ADDR = 0000c2c0
+                  00081000    0000004b     flash.obj (.TI.ramfunc:Flash_initModule)
+                  0008104b    00000004     sysctl.obj (.TI.ramfunc)
+
+ramfuncs   0    0008104f    00000051     RUN ADDR = 0000c30f
+                  0008104f    00000051     cllc_main.obj (ramfuncs:CLLC_ISR3)
+
+controlVariables 
+*          0    00008000    00000124     UNINITIALIZED
+                  00008000    00000124     cllc.obj (controlVariables)
+
+.const_cla 
+*          0    00008000    00000000     UNINITIALIZED
+
+isrcodefuncs 
+*          0    00087000    000002c0     RUN ADDR = 0000c000
+                  00087000    0000023a     cllc_main.obj (isrcodefuncs:CLLC_ISR2_secToPrimPowerFlow)
+                  0008723a    00000058     cllc_main.obj (isrcodefuncs:CLLC_ISR1)
+                  00087292    0000002e     cllc_main.obj (isrcodefuncs:CLLC_ISR1_second)
+
+dclfuncs   0    000872c0    00000000     UNINITIALIZEDRUN ADDR = 0000c2c0
+
+.text      0    00082000    000017df     
+                  00082000    0000037d     cllc_hal.obj (.text:CLLC_HAL_setupSynchronousRectificationAction)
+                  0008237d    00000215     cllc.obj (.text:CLLC_initGlobalVariables)
+                  00082592    000001f2     cllc_main.obj (.text:CLLC_ISR2_primToSecPowerFlow)
+                  00082784    00000192     cllc_hal.obj (.text:CLLC_HAL_setupADC)
+                  00082916    00000158     cllc_hal.obj (.text:CLLC_HAL_setupPWM)
+                  00082a6e    0000012e     sysctl.obj (.text:SysCtl_setClock)
+                  00082b9c    000000e1     cllc.obj (.text:CLLC_runISR3)
+                  00082c7d    000000dd     cllc_main.obj (.text:main)
+                  00082d5a    000000da     sysctl.obj (.text:SysCtl_isPLLValid)
+                  00082e34    000000d3     device.obj (.text:Device_enableAllPeripherals)
+                  00082f07    000000c7     cllc_hal.obj (.text:CLLC_HAL_setupHRPWMinUpDownCountModeWithDeadBand)
+                  00082fce    000000c7     cllc_hal.obj (.text:CLLC_HAL_setupPWMpins)
+                  00083095    0000007b     cllc_hal.obj (.text:CLLC_HAL_setupHRPWMinUpDownCount2ChAsymmetricMode)
+                  00083110    00000071     cllc_hal.obj (.text:CLLC_HAL_setupDevice)
+                  00083181    00000062     sysctl.obj (.text:SysCtl_pollX1Counter)
+                  000831e3    00000049     device.obj (.text:Device_init)
+                  0008322c    00000048     sysctl.obj (.text:SysCtl_selectXTAL)
+                  00083274    00000045     gpio.obj (.text:GPIO_setAnalogMode)
+                  000832b9    00000041     cllc_hal.obj (.text:CLLC_HAL_setupTrigForADC)
+                  000832fa    00000041     interrupt.obj (.text:Interrupt_initModule)
+                  0008333b    0000003f     gpio.obj (.text:GPIO_setPadConfig)
+                  0008337a    00000039     cllc_hal.obj (.text:CLLC_HAL_setupSynchronousRectificationActionDebug)
+                  000833b3    00000038     cllc.obj (.text:CLLC_updateBoardStatus)
+                  000833eb    00000036     interrupt.obj (.text:Interrupt_enable)
+                  00083421    00000034     cllc_hal.obj (.text:CLLC_HAL_setupPWMinUpDownCountMode)
+                  00083455    00000031     sysctl.obj (.text:SysCtl_selectOscSource)
+                  00083486    00000030     gpio.obj (.text:GPIO_setPinConfig)
+                  000834b6    0000002f     xbar.obj (.text:XBAR_getInputFlagStatus)
+                  000834e5    0000002e     rts2800_fpu64_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss)
+                  00083513    0000002b     xbar.obj (.text:XBAR_setEPWMMuxConfig)
+                  0008353e    0000002b     rts2800_fpu64_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
+                  00083569    0000002a     cllc_hal.obj (.text:CLLC_HAL_setupECAPinPWMMode)
+                  00083593    00000029     rts2800_fpu64_eabi.lib : exit.c.obj (.text)
+                  000835bc    00000028     xbar.obj (.text:XBAR_clearInputFlag)
+                  000835e4    00000025     cllc_hal.obj (.text:CLLC_HAL_setupProfilingGPIO)
+                  00083609    00000025     xbar.obj (.text:XBAR_setOutputMuxConfig)
+                  0008362e    00000022     gpio.obj (.text:GPIO_setQualificationMode)
+                  00083650    00000022     sysctl.obj (.text:SysCtl_selectXTALSingleEnded)
+                  00083672    00000020     gpio.obj (.text:GPIO_setDirectionMode)
+                  00083692    0000001d     interrupt.obj (.text:Interrupt_initVectorTable)
+                  000836af    0000001d     rts2800_fpu64_eabi.lib : memcpy.c.obj (.text)
+                  000836cc    0000001a     adc.obj (.text:ADC_setOffsetTrimAll)
+                  000836e6    00000019     adc.obj (.text:ADC_setVREF)
+                  000836ff    00000019     cmpss.obj (.text:CMPSS_configFilterHigh)
+                  00083718    00000019     cmpss.obj (.text:CMPSS_configFilterLow)
+                  00083731    00000019     rts2800_fpu64_eabi.lib : boot28.asm.obj (.text)
+                  0008374a    00000015     cmpss.obj (.text:CMPSS_configLatchOnPWMSYNC)
+                  0008375f    00000010     device.obj (.text:Device_initGPIO)
+                  0008376f    0000000d     rts2800_fpu64_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset)
+                  0008377c    0000000c     interrupt.obj (.text:Interrupt_defaultHandler)
+                  00083788    0000000c     rts2800_fpu64_eabi.lib : args_main.c.obj (.text)
+                  00083794    0000000a     interrupt.obj (.text:Interrupt_illegalOperationHandler)
+                  0008379e    0000000a     interrupt.obj (.text:Interrupt_nmiHandler)
+                  000837a8    00000009     cllc_hal.obj (.text:CLLC_HAL_disablePWMClkCounting)
+                  000837b1    00000009     rts2800_fpu64_eabi.lib : _lock.c.obj (.text)
+                  000837ba    00000008     cllc_hal.obj (.text:CLLC_HAL_enablePWMClkCounting)
+                  000837c2    00000008     rts2800_fpu64_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none)
+                  000837ca    00000008     f28003x_codestartbranch.obj (.text)
+                  000837d2    00000006     cputimer.obj (.text:CPUTimer_setEmulationMode)
+                  000837d8    00000004     cllc.obj (.text:CLLC_setBuildLevelIndicatorVariable)
+                  000837dc    00000002     rts2800_fpu64_eabi.lib : pre_init.c.obj (.text)
+                  000837de    00000001                            : startup.c.obj (.text)
+
+MODULE SUMMARY
+
+       Module                        code   ro data   rw data
+       ------                        ----   -------   -------
+    .\
+       cllc_main.obj                 2289   0         14     
+    +--+-----------------------------+------+---------+---------+
+       Total:                        2289   0         14     
+                                                             
+    .\cllc\
+       cllc_hal.obj                  2543   0         0      
+       cllc.obj                      818    0         292    
+    +--+-----------------------------+------+---------+---------+
+       Total:                        3361   0         292    
+                                                             
+    .\device\
+       device.obj                    300    0         0      
+       f28003x_codestartbranch.obj   10     0         0      
+    +--+-----------------------------+------+---------+---------+
+       Total:                        310    0         0      
+                                                             
+    .\device\driverlib\
+       sysctl.obj                    781    0         0      
+       gpio.obj                      246    0         0      
+       interrupt.obj                 180    0         0      
+       xbar.obj                      167    0         0      
+       flash.obj                     150    0         0      
+       cmpss.obj                     71     0         0      
+       adc.obj                       51     0         0      
+       cputimer.obj                  6      0         0      
+    +--+-----------------------------+------+---------+---------+
+       Total:                        1652   0         0      
+                                                             
+    C:\ti\ccs2031\ccs\tools\compiler\ti-cgt-c2000_22.6.2.LTS\lib\rts2800_fpu64_eabi.lib
+       exit.c.obj                    41     0         6      
+       copy_decompress_lzss.c.obj    46     0         0      
+       autoinit.c.obj                43     0         0      
+       memcpy.c.obj                  29     0         0      
+       boot28.asm.obj                25     0         0      
+       _lock.c.obj                   9      0         4      
+       copy_zero_init.c.obj          13     0         0      
+       args_main.c.obj               12     0         0      
+       copy_decompress_none.c.obj    8      0         0      
+       pre_init.c.obj                2      0         0      
+       startup.c.obj                 1      0         0      
+    +--+-----------------------------+------+---------+---------+
+       Total:                        229    0         10     
+                                                             
+       Stack:                        0      0         1016   
+       Linker Generated:             0      35        0      
+    +--+-----------------------------+------+---------+---------+
+       Grand Total:                  7841   35        1332   
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 000810b8 records: 3, size/record: 4, table size: 12
+	.data: load addr=000810a0, load size=00000009 bytes, run addr=0000e00e, run size=0000000a bytes, compression=lzss
+	.bss: load addr=000810b0, load size=00000004 bytes, run addr=0000e000, run size=0000000e bytes, compression=zero_init
+	controlVariables: load addr=000810b4, load size=00000004 bytes, run addr=00008000, run size=00000124 bytes, compression=zero_init
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 000810aa records: 3, size/record: 2, table size: 6
+	index: 0, handler: __TI_zero_init
+	index: 1, handler: __TI_decompress_lzss
+	index: 2, handler: __TI_decompress_none
+
+
+GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
+
+address     data page           name
+--------    ----------------    ----
+00000400      10 (00000400)     __stack
+
+00008000     200 (00008000)     CLLC_pwmDeadBandREDSec_ticks
+00008001     200 (00008000)     CLLC_pwmDeadbandFEDSec_ticks
+00008002     200 (00008000)     CLLC_pwmPhaseShiftPrimSec_countDirection
+00008003     200 (00008000)     CLLC_pwmISRTrig_ticks
+00008004     200 (00008000)     CLLC_Lab
+00008006     200 (00008000)     CLLC_tripFlag
+00008008     200 (00008000)     CLLC_pwmSwStateActive
+0000800a     200 (00008000)     CLLC_pwmSwState
+0000800c     200 (00008000)     CLLC_powerFlowStateActive
+0000800e     200 (00008000)     CLLC_powerFlowState
+00008010     200 (00008000)     CLLC_PrechargeState
+00008012     200 (00008000)     CLLC_giOut
+00008014     200 (00008000)     CLLC_giError
+00008016     200 (00008000)     CLLC_giPartialComputedValue
+00008018     200 (00008000)     CLLC_gvOut
+0000801a     200 (00008000)     CLLC_gvError
+0000801c     200 (00008000)     CLLC_gvPartialComputedValue
+0000801e     200 (00008000)     CLLC_closeGiLoop
+00008020     200 (00008000)     CLLC_closeGvLoop
+00008022     200 (00008000)     CLLC_clearTrip
+00008024     200 (00008000)     CLLC_pwmFrequencyRef_Hz
+00008026     200 (00008000)     CLLC_pwmFrequency_Hz
+00008028     200 (00008000)     CLLC_pwmFrequencyPrev_Hz
+0000802a     200 (00008000)     CLLC_pwmPeriodRef_pu
+0000802c     200 (00008000)     CLLC_pwmPeriod_pu
+0000802e     200 (00008000)     CLLC_pwmPeriodSlewed_pu
+00008030     200 (00008000)     CLLC_pwmPeriodMin_pu
+00008032     200 (00008000)     CLLC_pwmPeriodMax_pu
+00008034     200 (00008000)     CLLC_pwmPeriodMax_ticks
+00008036     200 (00008000)     CLLC_pwmPeriod_ticks
+00008038     200 (00008000)     CLLC_iPrimSensed_Amps
+0000803a     200 (00008000)     CLLC_iPrimSensed_pu
+0000803c     200 (00008000)     CLLC_iPrimSensedOffset_pu
+0000803e     200 (00008000)     CLLC_iPrimSensedCalIntercept_pu
+
+00008040     201 (00008040)     CLLC_iPrimSensedCalXvariable_pu
+00008042     201 (00008040)     CLLC_iPrimTankSensed_Amps
+00008044     201 (00008040)     CLLC_iPrimTankSensed_pu
+00008046     201 (00008040)     CLLC_iPrimTankSensedOffset_pu
+00008048     201 (00008040)     CLLC_iPrimTankSensedCalIntercept_pu
+0000804a     201 (00008040)     CLLC_iPrimTankSensedCalXvariable_pu
+0000804c     201 (00008040)     CLLC_vPrimSensed_Volts
+0000804e     201 (00008040)     CLLC_vPrimSensed_pu
+00008050     201 (00008040)     CLLC_vPrimSensedOffset_pu
+00008052     201 (00008040)     CLLC_vPrimRef_Volts
+00008054     201 (00008040)     CLLC_vPrimRef_pu
+00008056     201 (00008040)     CLLC_vPrimRefSlewed_pu
+00008058     201 (00008040)     CLLC_pwmDutyPrimRef_pu
+0000805a     201 (00008040)     CLLC_pwmDutyPrim_pu
+0000805c     201 (00008040)     CLLC_pwmDutyAPrim_ticks
+0000805e     201 (00008040)     CLLC_pwmDutyBPrim_ticks
+00008060     201 (00008040)     CLLC_pwmDeadBandREDPrimRef_ns
+00008062     201 (00008040)     CLLC_pwmDeadBandREDPrim_ticks
+00008064     201 (00008040)     CLLC_pwmDeadBandFEDPrimRef_ns
+00008066     201 (00008040)     CLLC_pwmDeadBandFEDPrim_ticks
+00008068     201 (00008040)     CLLC_iSecSensed_Amps
+0000806a     201 (00008040)     CLLC_iSecSensed_pu
+0000806c     201 (00008040)     CLLC_iSecSensedOffset_pu
+0000806e     201 (00008040)     CLLC_iSecSensedCalIntercept_pu
+00008070     201 (00008040)     CLLC_iSecSensedCalXvariable_pu
+00008072     201 (00008040)     CLLC_iSecRef_Amps
+00008074     201 (00008040)     CLLC_iSecRef_pu
+00008076     201 (00008040)     CLLC_iSecRefSlewed_pu
+00008078     201 (00008040)     CLLC_vSecSensed_Volts
+0000807a     201 (00008040)     CLLC_vSecSensed_pu
+0000807c     201 (00008040)     CLLC_vSecSensedOffset_pu
+0000807e     201 (00008040)     CLLC_vSecRef_Volts
+
+00008080     202 (00008080)     CLLC_vSecRef_pu
+00008082     202 (00008080)     CLLC_vSecRefSlewed_pu
+00008084     202 (00008080)     CLLC_pwmDutySecRef_pu
+00008086     202 (00008080)     CLLC_pwmDutySec_pu
+00008088     202 (00008080)     CLLC_pwmDutyASec_ticks
+0000808a     202 (00008080)     CLLC_pwmDutyBSec_ticks
+0000808c     202 (00008080)     CLLC_pwmDeadBandREDSec_ns
+0000808e     202 (00008080)     CLLC_pwmDeadBandFEDSec_ns
+00008090     202 (00008080)     CLLC_pwmPhaseShiftPrimSecRef_ns
+00008092     202 (00008080)     CLLC_pwmPhaseShiftPrimSec_ns
+00008094     202 (00008080)     CLLC_pwmPhaseShiftPrimSec_ticks
+00008096     202 (00008080)     CLLC_cla_task_counter
+00008098     202 (00008080)     CLLC_precharge_count
+0000809a     202 (00008080)     CLLC_iPrimSensedAvg_pu
+0000809e     202 (00008080)     CLLC_iPrimTankSensedAvg_pu
+000080a2     202 (00008080)     CLLC_vPrimSensedAvg_pu
+000080a6     202 (00008080)     CLLC_iSecSensedAvg_pu
+000080aa     202 (00008080)     CLLC_vSecSensedAvg_pu
+
+000080c0     203 (000080c0)     CLLC_gi
+
+00008100     204 (00008100)     CLLC_gv
+
+0000e000     380 (0000e000)     Alpha_State_Ptr
+0000e002     380 (0000e000)     A_Task_Ptr
+0000e004     380 (0000e000)     B_Task_Ptr
+0000e006     380 (0000e000)     C_Task_Ptr
+0000e008     380 (0000e000)     CLLC_countcheckISR1
+0000e00a     380 (0000e000)     CLLC_countcheckISR2
+0000e00c     380 (0000e000)     CLLC_countcheckISR3
+0000e00e     380 (0000e000)     __TI_enable_exit_profile_output
+0000e010     380 (0000e000)     __TI_cleanup_ptr
+0000e012     380 (0000e000)     __TI_dtors_ptr
+0000e014     380 (0000e000)     _lock
+0000e016     380 (0000e000)     _unlock
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+page  address   name                                             
+----  -------   ----                                             
+0     000836cc  ADC_setOffsetTrimAll                             
+0     000836e6  ADC_setVREF                                      
+0     0000e002  A_Task_Ptr                                       
+0     0000e000  Alpha_State_Ptr                                  
+0     0000e004  B_Task_Ptr                                       
+0     00083593  C$$EXIT                                          
+0     000837a8  CLLC_HAL_disablePWMClkCounting                   
+0     000837ba  CLLC_HAL_enablePWMClkCounting                    
+0     00082784  CLLC_HAL_setupADC                                
+0     00083110  CLLC_HAL_setupDevice                             
+0     00083569  CLLC_HAL_setupECAPinPWMMode                      
+0     00083095  CLLC_HAL_setupHRPWMinUpDownCount2ChAsymmetricMode
+0     00082f07  CLLC_HAL_setupHRPWMinUpDownCountModeWithDeadBand 
+0     00082916  CLLC_HAL_setupPWM                                
+0     00083421  CLLC_HAL_setupPWMinUpDownCountMode               
+0     00082fce  CLLC_HAL_setupPWMpins                            
+0     000835e4  CLLC_HAL_setupProfilingGPIO                      
+0     00082000  CLLC_HAL_setupSynchronousRectificationAction     
+0     0008337a  CLLC_HAL_setupSynchronousRectificationActionDebug
+0     000832b9  CLLC_HAL_setupTrigForADC                         
+0     0000c23a  CLLC_ISR1                                        
+0     0000c292  CLLC_ISR1_second                                 
+0     00082592  CLLC_ISR2_primToSecPowerFlow                     
+0     0000c000  CLLC_ISR2_secToPrimPowerFlow                     
+0     0000c30f  CLLC_ISR3                                        
+0     00008004  CLLC_Lab                                         
+0     00008010  CLLC_PrechargeState                              
+0     00008096  CLLC_cla_task_counter                            
+0     00008022  CLLC_clearTrip                                   
+0     0000801e  CLLC_closeGiLoop                                 
+0     00008020  CLLC_closeGvLoop                                 
+0     0000e008  CLLC_countcheckISR1                              
+0     0000e00a  CLLC_countcheckISR2                              
+0     0000e00c  CLLC_countcheckISR3                              
+0     000080c0  CLLC_gi                                          
+0     00008014  CLLC_giError                                     
+0     00008012  CLLC_giOut                                       
+0     00008016  CLLC_giPartialComputedValue                      
+0     00008100  CLLC_gv                                          
+0     0000801a  CLLC_gvError                                     
+0     00008018  CLLC_gvOut                                       
+0     0000801c  CLLC_gvPartialComputedValue                      
+0     0000809a  CLLC_iPrimSensedAvg_pu                           
+0     0000803e  CLLC_iPrimSensedCalIntercept_pu                  
+0     00008040  CLLC_iPrimSensedCalXvariable_pu                  
+0     0000803c  CLLC_iPrimSensedOffset_pu                        
+0     00008038  CLLC_iPrimSensed_Amps                            
+0     0000803a  CLLC_iPrimSensed_pu                              
+0     0000809e  CLLC_iPrimTankSensedAvg_pu                       
+0     00008048  CLLC_iPrimTankSensedCalIntercept_pu              
+0     0000804a  CLLC_iPrimTankSensedCalXvariable_pu              
+0     00008046  CLLC_iPrimTankSensedOffset_pu                    
+0     00008042  CLLC_iPrimTankSensed_Amps                        
+0     00008044  CLLC_iPrimTankSensed_pu                          
+0     00008076  CLLC_iSecRefSlewed_pu                            
+0     00008072  CLLC_iSecRef_Amps                                
+0     00008074  CLLC_iSecRef_pu                                  
+0     000080a6  CLLC_iSecSensedAvg_pu                            
+0     0000806e  CLLC_iSecSensedCalIntercept_pu                   
+0     00008070  CLLC_iSecSensedCalXvariable_pu                   
+0     0000806c  CLLC_iSecSensedOffset_pu                         
+0     00008068  CLLC_iSecSensed_Amps                             
+0     0000806a  CLLC_iSecSensed_pu                               
+0     0008237d  CLLC_initGlobalVariables                         
+0     0000800e  CLLC_powerFlowState                              
+0     0000800c  CLLC_powerFlowStateActive                        
+0     00008098  CLLC_precharge_count                             
+0     00008064  CLLC_pwmDeadBandFEDPrimRef_ns                    
+0     00008066  CLLC_pwmDeadBandFEDPrim_ticks                    
+0     0000808e  CLLC_pwmDeadBandFEDSec_ns                        
+0     00008060  CLLC_pwmDeadBandREDPrimRef_ns                    
+0     00008062  CLLC_pwmDeadBandREDPrim_ticks                    
+0     0000808c  CLLC_pwmDeadBandREDSec_ns                        
+0     00008000  CLLC_pwmDeadBandREDSec_ticks                     
+0     00008001  CLLC_pwmDeadbandFEDSec_ticks                     
+0     0000805c  CLLC_pwmDutyAPrim_ticks                          
+0     00008088  CLLC_pwmDutyASec_ticks                           
+0     0000805e  CLLC_pwmDutyBPrim_ticks                          
+0     0000808a  CLLC_pwmDutyBSec_ticks                           
+0     00008058  CLLC_pwmDutyPrimRef_pu                           
+0     0000805a  CLLC_pwmDutyPrim_pu                              
+0     00008084  CLLC_pwmDutySecRef_pu                            
+0     00008086  CLLC_pwmDutySec_pu                               
+0     00008028  CLLC_pwmFrequencyPrev_Hz                         
+0     00008024  CLLC_pwmFrequencyRef_Hz                          
+0     00008026  CLLC_pwmFrequency_Hz                             
+0     00008003  CLLC_pwmISRTrig_ticks                            
+0     00008032  CLLC_pwmPeriodMax_pu                             
+0     00008034  CLLC_pwmPeriodMax_ticks                          
+0     00008030  CLLC_pwmPeriodMin_pu                             
+0     0000802a  CLLC_pwmPeriodRef_pu                             
+0     0000802e  CLLC_pwmPeriodSlewed_pu                          
+0     0000802c  CLLC_pwmPeriod_pu                                
+0     00008036  CLLC_pwmPeriod_ticks                             
+0     00008090  CLLC_pwmPhaseShiftPrimSecRef_ns                  
+0     00008002  CLLC_pwmPhaseShiftPrimSec_countDirection         
+0     00008092  CLLC_pwmPhaseShiftPrimSec_ns                     
+0     00008094  CLLC_pwmPhaseShiftPrimSec_ticks                  
+0     0000800a  CLLC_pwmSwState                                  
+0     00008008  CLLC_pwmSwStateActive                            
+0     00082b9c  CLLC_runISR3                                     
+0     000837d8  CLLC_setBuildLevelIndicatorVariable              
+0     00008006  CLLC_tripFlag                                    
+0     000833b3  CLLC_updateBoardStatus                           
+0     00008056  CLLC_vPrimRefSlewed_pu                           
+0     00008052  CLLC_vPrimRef_Volts                              
+0     00008054  CLLC_vPrimRef_pu                                 
+0     000080a2  CLLC_vPrimSensedAvg_pu                           
+0     00008050  CLLC_vPrimSensedOffset_pu                        
+0     0000804c  CLLC_vPrimSensed_Volts                           
+0     0000804e  CLLC_vPrimSensed_pu                              
+0     00008082  CLLC_vSecRefSlewed_pu                            
+0     0000807e  CLLC_vSecRef_Volts                               
+0     00008080  CLLC_vSecRef_pu                                  
+0     000080aa  CLLC_vSecSensedAvg_pu                            
+0     0000807c  CLLC_vSecSensedOffset_pu                         
+0     00008078  CLLC_vSecSensed_Volts                            
+0     0000807a  CLLC_vSecSensed_pu                               
+0     000836ff  CMPSS_configFilterHigh                           
+0     00083718  CMPSS_configFilterLow                            
+0     0008374a  CMPSS_configLatchOnPWMSYNC                       
+0     000837d2  CPUTimer_setEmulationMode                        
+0     0000e006  C_Task_Ptr                                       
+abs   00000000  Cla1ConstLoadSize                                
+0     00008000  Cla1ConstLoadStart                               
+0     00008000  Cla1ConstRunStart                                
+abs   00000000  Cla1ProgLoadSize                                 
+0     00009000  Cla1ProgLoadStart                                
+0     00009000  Cla1ProgRunStart                                 
+0     00082e34  Device_enableAllPeripherals                      
+0     000831e3  Device_init                                      
+0     0008375f  Device_initGPIO                                  
+0     0000c2c0  Flash_initModule                                 
+0     00083274  GPIO_setAnalogMode                               
+0     00083672  GPIO_setDirectionMode                            
+0     0008333b  GPIO_setPadConfig                                
+0     00083486  GPIO_setPinConfig                                
+0     0008362e  GPIO_setQualificationMode                        
+0     0008377c  Interrupt_defaultHandler                         
+0     000833eb  Interrupt_enable                                 
+0     00083794  Interrupt_illegalOperationHandler                
+0     000832fa  Interrupt_initModule                             
+0     00083692  Interrupt_initVectorTable                        
+0     0008379e  Interrupt_nmiHandler                             
+abs   000810a0  RamfuncsLoadEnd                                  
+abs   000000a0  RamfuncsLoadSize                                 
+abs   00081000  RamfuncsLoadStart                                
+abs   0000c360  RamfuncsRunEnd                                   
+abs   000000a0  RamfuncsRunSize                                  
+abs   0000c2c0  RamfuncsRunStart                                 
+0     0000c30b  SysCtl_delay                                     
+0     00082d5a  SysCtl_isPLLValid                                
+0     00083455  SysCtl_selectOscSource                           
+0     0008322c  SysCtl_selectXTAL                                
+0     00083650  SysCtl_selectXTALSingleEnded                     
+0     00082a6e  SysCtl_setClock                                  
+0     000835bc  XBAR_clearInputFlag                              
+0     000834b6  XBAR_getInputFlagStatus                          
+0     00083513  XBAR_setEPWMMuxConfig                            
+0     00083609  XBAR_setOutputMuxConfig                          
+0     000810b8  __TI_CINIT_Base                                  
+0     000810c4  __TI_CINIT_Limit                                 
+0     000810c4  __TI_CINIT_Warm                                  
+0     000810aa  __TI_Handler_Table_Base                          
+0     000810b0  __TI_Handler_Table_Limit                         
+0     000007f8  __TI_STACK_END                                   
+abs   000003f8  __TI_STACK_SIZE                                  
+0     0008353e  __TI_auto_init_nobinit_nopinit                   
+0     0000e010  __TI_cleanup_ptr                                 
+0     000834e5  __TI_decompress_lzss                             
+0     000837c2  __TI_decompress_none                             
+0     0000e012  __TI_dtors_ptr                                   
+0     0000e00e  __TI_enable_exit_profile_output                  
+abs   ffffffff  __TI_pprof_out_hndl                              
+abs   ffffffff  __TI_prof_data_size                              
+abs   ffffffff  __TI_prof_data_start                             
+0     0008376f  __TI_zero_init_nomemset                          
+n/a   UNDEFED   __c_args__                                       
+0     00000400  __stack                                          
+0     00083788  _args_main                                       
+0     00083731  _c_int00                                         
+0     0000e014  _lock                                            
+0     000837b9  _nop                                             
+0     000837b5  _register_lock                                   
+0     000837b1  _register_unlock                                 
+0     000837de  _system_post_cinit                               
+0     000837dc  _system_pre_init                                 
+0     0000e016  _unlock                                          
+0     00083593  abort                                            
+0     00080000  code_start                                       
+0     00083595  exit                                             
+abs   000872c0  isrcodefuncsLoadEnd                              
+abs   000002c0  isrcodefuncsLoadSize                             
+abs   00087000  isrcodefuncsLoadStart                            
+abs   0000c2c0  isrcodefuncsRunEnd                               
+abs   000002c0  isrcodefuncsRunSize                              
+abs   0000c000  isrcodefuncsRunStart                             
+0     00082c7d  main                                             
+0     000836af  memcpy                                           
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+page  address   name                                             
+----  -------   ----                                             
+0     00000400  __stack                                          
+0     000007f8  __TI_STACK_END                                   
+0     00008000  CLLC_pwmDeadBandREDSec_ticks                     
+0     00008000  Cla1ConstLoadStart                               
+0     00008000  Cla1ConstRunStart                                
+0     00008001  CLLC_pwmDeadbandFEDSec_ticks                     
+0     00008002  CLLC_pwmPhaseShiftPrimSec_countDirection         
+0     00008003  CLLC_pwmISRTrig_ticks                            
+0     00008004  CLLC_Lab                                         
+0     00008006  CLLC_tripFlag                                    
+0     00008008  CLLC_pwmSwStateActive                            
+0     0000800a  CLLC_pwmSwState                                  
+0     0000800c  CLLC_powerFlowStateActive                        
+0     0000800e  CLLC_powerFlowState                              
+0     00008010  CLLC_PrechargeState                              
+0     00008012  CLLC_giOut                                       
+0     00008014  CLLC_giError                                     
+0     00008016  CLLC_giPartialComputedValue                      
+0     00008018  CLLC_gvOut                                       
+0     0000801a  CLLC_gvError                                     
+0     0000801c  CLLC_gvPartialComputedValue                      
+0     0000801e  CLLC_closeGiLoop                                 
+0     00008020  CLLC_closeGvLoop                                 
+0     00008022  CLLC_clearTrip                                   
+0     00008024  CLLC_pwmFrequencyRef_Hz                          
+0     00008026  CLLC_pwmFrequency_Hz                             
+0     00008028  CLLC_pwmFrequencyPrev_Hz                         
+0     0000802a  CLLC_pwmPeriodRef_pu                             
+0     0000802c  CLLC_pwmPeriod_pu                                
+0     0000802e  CLLC_pwmPeriodSlewed_pu                          
+0     00008030  CLLC_pwmPeriodMin_pu                             
+0     00008032  CLLC_pwmPeriodMax_pu                             
+0     00008034  CLLC_pwmPeriodMax_ticks                          
+0     00008036  CLLC_pwmPeriod_ticks                             
+0     00008038  CLLC_iPrimSensed_Amps                            
+0     0000803a  CLLC_iPrimSensed_pu                              
+0     0000803c  CLLC_iPrimSensedOffset_pu                        
+0     0000803e  CLLC_iPrimSensedCalIntercept_pu                  
+0     00008040  CLLC_iPrimSensedCalXvariable_pu                  
+0     00008042  CLLC_iPrimTankSensed_Amps                        
+0     00008044  CLLC_iPrimTankSensed_pu                          
+0     00008046  CLLC_iPrimTankSensedOffset_pu                    
+0     00008048  CLLC_iPrimTankSensedCalIntercept_pu              
+0     0000804a  CLLC_iPrimTankSensedCalXvariable_pu              
+0     0000804c  CLLC_vPrimSensed_Volts                           
+0     0000804e  CLLC_vPrimSensed_pu                              
+0     00008050  CLLC_vPrimSensedOffset_pu                        
+0     00008052  CLLC_vPrimRef_Volts                              
+0     00008054  CLLC_vPrimRef_pu                                 
+0     00008056  CLLC_vPrimRefSlewed_pu                           
+0     00008058  CLLC_pwmDutyPrimRef_pu                           
+0     0000805a  CLLC_pwmDutyPrim_pu                              
+0     0000805c  CLLC_pwmDutyAPrim_ticks                          
+0     0000805e  CLLC_pwmDutyBPrim_ticks                          
+0     00008060  CLLC_pwmDeadBandREDPrimRef_ns                    
+0     00008062  CLLC_pwmDeadBandREDPrim_ticks                    
+0     00008064  CLLC_pwmDeadBandFEDPrimRef_ns                    
+0     00008066  CLLC_pwmDeadBandFEDPrim_ticks                    
+0     00008068  CLLC_iSecSensed_Amps                             
+0     0000806a  CLLC_iSecSensed_pu                               
+0     0000806c  CLLC_iSecSensedOffset_pu                         
+0     0000806e  CLLC_iSecSensedCalIntercept_pu                   
+0     00008070  CLLC_iSecSensedCalXvariable_pu                   
+0     00008072  CLLC_iSecRef_Amps                                
+0     00008074  CLLC_iSecRef_pu                                  
+0     00008076  CLLC_iSecRefSlewed_pu                            
+0     00008078  CLLC_vSecSensed_Volts                            
+0     0000807a  CLLC_vSecSensed_pu                               
+0     0000807c  CLLC_vSecSensedOffset_pu                         
+0     0000807e  CLLC_vSecRef_Volts                               
+0     00008080  CLLC_vSecRef_pu                                  
+0     00008082  CLLC_vSecRefSlewed_pu                            
+0     00008084  CLLC_pwmDutySecRef_pu                            
+0     00008086  CLLC_pwmDutySec_pu                               
+0     00008088  CLLC_pwmDutyASec_ticks                           
+0     0000808a  CLLC_pwmDutyBSec_ticks                           
+0     0000808c  CLLC_pwmDeadBandREDSec_ns                        
+0     0000808e  CLLC_pwmDeadBandFEDSec_ns                        
+0     00008090  CLLC_pwmPhaseShiftPrimSecRef_ns                  
+0     00008092  CLLC_pwmPhaseShiftPrimSec_ns                     
+0     00008094  CLLC_pwmPhaseShiftPrimSec_ticks                  
+0     00008096  CLLC_cla_task_counter                            
+0     00008098  CLLC_precharge_count                             
+0     0000809a  CLLC_iPrimSensedAvg_pu                           
+0     0000809e  CLLC_iPrimTankSensedAvg_pu                       
+0     000080a2  CLLC_vPrimSensedAvg_pu                           
+0     000080a6  CLLC_iSecSensedAvg_pu                            
+0     000080aa  CLLC_vSecSensedAvg_pu                            
+0     000080c0  CLLC_gi                                          
+0     00008100  CLLC_gv                                          
+0     00009000  Cla1ProgLoadStart                                
+0     00009000  Cla1ProgRunStart                                 
+0     0000c000  CLLC_ISR2_secToPrimPowerFlow                     
+0     0000c23a  CLLC_ISR1                                        
+0     0000c292  CLLC_ISR1_second                                 
+0     0000c2c0  Flash_initModule                                 
+0     0000c30b  SysCtl_delay                                     
+0     0000c30f  CLLC_ISR3                                        
+0     0000e000  Alpha_State_Ptr                                  
+0     0000e002  A_Task_Ptr                                       
+0     0000e004  B_Task_Ptr                                       
+0     0000e006  C_Task_Ptr                                       
+0     0000e008  CLLC_countcheckISR1                              
+0     0000e00a  CLLC_countcheckISR2                              
+0     0000e00c  CLLC_countcheckISR3                              
+0     0000e00e  __TI_enable_exit_profile_output                  
+0     0000e010  __TI_cleanup_ptr                                 
+0     0000e012  __TI_dtors_ptr                                   
+0     0000e014  _lock                                            
+0     0000e016  _unlock                                          
+0     00080000  code_start                                       
+0     000810aa  __TI_Handler_Table_Base                          
+0     000810b0  __TI_Handler_Table_Limit                         
+0     000810b8  __TI_CINIT_Base                                  
+0     000810c4  __TI_CINIT_Limit                                 
+0     000810c4  __TI_CINIT_Warm                                  
+0     00082000  CLLC_HAL_setupSynchronousRectificationAction     
+0     0008237d  CLLC_initGlobalVariables                         
+0     00082592  CLLC_ISR2_primToSecPowerFlow                     
+0     00082784  CLLC_HAL_setupADC                                
+0     00082916  CLLC_HAL_setupPWM                                
+0     00082a6e  SysCtl_setClock                                  
+0     00082b9c  CLLC_runISR3                                     
+0     00082c7d  main                                             
+0     00082d5a  SysCtl_isPLLValid                                
+0     00082e34  Device_enableAllPeripherals                      
+0     00082f07  CLLC_HAL_setupHRPWMinUpDownCountModeWithDeadBand 
+0     00082fce  CLLC_HAL_setupPWMpins                            
+0     00083095  CLLC_HAL_setupHRPWMinUpDownCount2ChAsymmetricMode
+0     00083110  CLLC_HAL_setupDevice                             
+0     000831e3  Device_init                                      
+0     0008322c  SysCtl_selectXTAL                                
+0     00083274  GPIO_setAnalogMode                               
+0     000832b9  CLLC_HAL_setupTrigForADC                         
+0     000832fa  Interrupt_initModule                             
+0     0008333b  GPIO_setPadConfig                                
+0     0008337a  CLLC_HAL_setupSynchronousRectificationActionDebug
+0     000833b3  CLLC_updateBoardStatus                           
+0     000833eb  Interrupt_enable                                 
+0     00083421  CLLC_HAL_setupPWMinUpDownCountMode               
+0     00083455  SysCtl_selectOscSource                           
+0     00083486  GPIO_setPinConfig                                
+0     000834b6  XBAR_getInputFlagStatus                          
+0     000834e5  __TI_decompress_lzss                             
+0     00083513  XBAR_setEPWMMuxConfig                            
+0     0008353e  __TI_auto_init_nobinit_nopinit                   
+0     00083569  CLLC_HAL_setupECAPinPWMMode                      
+0     00083593  C$$EXIT                                          
+0     00083593  abort                                            
+0     00083595  exit                                             
+0     000835bc  XBAR_clearInputFlag                              
+0     000835e4  CLLC_HAL_setupProfilingGPIO                      
+0     00083609  XBAR_setOutputMuxConfig                          
+0     0008362e  GPIO_setQualificationMode                        
+0     00083650  SysCtl_selectXTALSingleEnded                     
+0     00083672  GPIO_setDirectionMode                            
+0     00083692  Interrupt_initVectorTable                        
+0     000836af  memcpy                                           
+0     000836cc  ADC_setOffsetTrimAll                             
+0     000836e6  ADC_setVREF                                      
+0     000836ff  CMPSS_configFilterHigh                           
+0     00083718  CMPSS_configFilterLow                            
+0     00083731  _c_int00                                         
+0     0008374a  CMPSS_configLatchOnPWMSYNC                       
+0     0008375f  Device_initGPIO                                  
+0     0008376f  __TI_zero_init_nomemset                          
+0     0008377c  Interrupt_defaultHandler                         
+0     00083788  _args_main                                       
+0     00083794  Interrupt_illegalOperationHandler                
+0     0008379e  Interrupt_nmiHandler                             
+0     000837a8  CLLC_HAL_disablePWMClkCounting                   
+0     000837b1  _register_unlock                                 
+0     000837b5  _register_lock                                   
+0     000837b9  _nop                                             
+0     000837ba  CLLC_HAL_enablePWMClkCounting                    
+0     000837c2  __TI_decompress_none                             
+0     000837d2  CPUTimer_setEmulationMode                        
+0     000837d8  CLLC_setBuildLevelIndicatorVariable              
+0     000837dc  _system_pre_init                                 
+0     000837de  _system_post_cinit                               
+abs   00000000  Cla1ConstLoadSize                                
+abs   00000000  Cla1ProgLoadSize                                 
+abs   000000a0  RamfuncsLoadSize                                 
+abs   000000a0  RamfuncsRunSize                                  
+abs   000002c0  isrcodefuncsLoadSize                             
+abs   000002c0  isrcodefuncsRunSize                              
+abs   000003f8  __TI_STACK_SIZE                                  
+abs   0000c000  isrcodefuncsRunStart                             
+abs   0000c2c0  RamfuncsRunStart                                 
+abs   0000c2c0  isrcodefuncsRunEnd                               
+abs   0000c360  RamfuncsRunEnd                                   
+abs   00081000  RamfuncsLoadStart                                
+abs   000810a0  RamfuncsLoadEnd                                  
+abs   00087000  isrcodefuncsLoadStart                            
+abs   000872c0  isrcodefuncsLoadEnd                              
+abs   ffffffff  __TI_pprof_out_hndl                              
+abs   ffffffff  __TI_prof_data_size                              
+abs   ffffffff  __TI_prof_data_start                             
+n/a   UNDEFED   __c_args__                                       
+
+[199 symbols]

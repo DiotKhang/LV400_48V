@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -69,6 +69,7 @@ Flash_initModule(uint32_t ctrlBase, uint32_t eccBase, uint16_t waitstates)
     //
     Flash_setBankPowerMode(ctrlBase, FLASH_BANK0, FLASH_BANK_PWR_ACTIVE);
     Flash_setBankPowerMode(ctrlBase, FLASH_BANK1, FLASH_BANK_PWR_ACTIVE);
+    Flash_setBankPowerMode(ctrlBase, FLASH_BANK2, FLASH_BANK_PWR_ACTIVE);
 
     //
     // Power up flash bank and pump and this also sets the fall back mode of
@@ -130,6 +131,7 @@ Flash_powerDown(uint32_t ctrlBase)
     //
     Flash_setBankPowerMode(ctrlBase, FLASH_BANK0, FLASH_BANK_PWR_SLEEP);
     Flash_setBankPowerMode(ctrlBase, FLASH_BANK1, FLASH_BANK_PWR_SLEEP);
+    Flash_setBankPowerMode(ctrlBase, FLASH_BANK2, FLASH_BANK_PWR_SLEEP);
 
     //
     // Power down the flash pump.
@@ -158,6 +160,7 @@ Flash_wakeFromLPM(uint32_t ctrlBase)
     //
     Flash_setBankPowerMode(ctrlBase, FLASH_BANK0, FLASH_BANK_PWR_ACTIVE);
     Flash_setBankPowerMode(ctrlBase, FLASH_BANK1, FLASH_BANK_PWR_ACTIVE);
+    Flash_setBankPowerMode(ctrlBase, FLASH_BANK2, FLASH_BANK_PWR_ACTIVE);
 
     //
     // Set the flash pump power mode to active.

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,17 +46,17 @@
 // The following are defines for the DCC register offsets
 //
 //*************************************************************************************************
-#define DCC_O_GCTRL        0x0U    // Global Control Register
-#define DCC_O_REV          0x4U    // DCC Revision Register
-#define DCC_O_CNTSEED0     0x8U    // Counter 0 Seed Value
-#define DCC_O_VALIDSEED0   0xCU    // Valid 0 Seed Value
-#define DCC_O_CNTSEED1     0x10U   // Counter 1 Seed Value
-#define DCC_O_STATUS       0x14U   // DCC Status
-#define DCC_O_CNT0         0x18U   // Counter 0 Value
-#define DCC_O_VALID0       0x1CU   // Valid Value 0
-#define DCC_O_CNT1         0x20U   // Counter 1 Value
-#define DCC_O_CLKSRC1      0x24U   // Clock Source 1
-#define DCC_O_CLKSRC0      0x28U   // Clock Source 0
+#define DCC_O_GCTRL        0x0U    // Starts / stops the counters. Clears the error signal.
+#define DCC_O_CNTSEED0     0x8U    // Seed value for the counter attached to Clock Source 0.
+#define DCC_O_VALIDSEED0   0xCU    // Seed value for the timeout counter attached to Clock Source
+                                   // 0.
+#define DCC_O_CNTSEED1     0x10U   // Seed value for the counter attached to Clock Source 1.
+#define DCC_O_STATUS       0x14U   // Specifies the status of the DCC Module.
+#define DCC_O_CNT0         0x18U   // Value of the counter attached to Clock Source 0.
+#define DCC_O_VALID0       0x1CU   // Value of the valid counter attached to Clock Source 0.
+#define DCC_O_CNT1         0x20U   // Value of the counter attached to Clock Source 1.
+#define DCC_O_CLKSRC1      0x24U   // Selects the clock source for Counter 1.
+#define DCC_O_CLKSRC0      0x28U   // Selects the clock source for Counter 0.
 
 
 //*************************************************************************************************
@@ -72,16 +72,6 @@
 #define DCC_GCTRL_SINGLESHOT_M   0xF00U    // Single-Shot Enable
 #define DCC_GCTRL_DONEENA_S      12U
 #define DCC_GCTRL_DONEENA_M      0xF000U   // DONE Enable
-
-//*************************************************************************************************
-//
-// The following are defines for the bit fields in the DCCREV register
-//
-//*************************************************************************************************
-#define DCC_REV_MINOR_S   0U
-#define DCC_REV_MINOR_M   0x3FU    // Minor Revision Number
-#define DCC_REV_MAJOR_S   8U
-#define DCC_REV_MAJOR_M   0x700U   // Major Revision Number
 
 //*************************************************************************************************
 //
@@ -145,7 +135,7 @@
 //
 //*************************************************************************************************
 #define DCC_CLKSRC1_CLKSRC1_S   0U
-#define DCC_CLKSRC1_CLKSRC1_M   0xFU      // Clock Source Select for Counter 1
+#define DCC_CLKSRC1_CLKSRC1_M   0x1FU     // Clock Source Select for Counter 1
 #define DCC_CLKSRC1_KEY_S       12U
 #define DCC_CLKSRC1_KEY_M       0xF000U   // Enables or Disables Clock Source Selection for COUNT1
 
@@ -155,7 +145,9 @@
 //
 //*************************************************************************************************
 #define DCC_CLKSRC0_CLKSRC0_S   0U
-#define DCC_CLKSRC0_CLKSRC0_M   0xFU   // Clock Source Select for Counter 0
+#define DCC_CLKSRC0_CLKSRC0_M   0xFU      // Clock Source Select for Counter 0
+#define DCC_CLKSRC0_KEY_S       12U
+#define DCC_CLKSRC0_KEY_M       0xF000U   // Enables or Disables Clock Source Selection for COUNT0
 
 
 

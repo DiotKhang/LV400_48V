@@ -6,7 +6,7 @@
 //
 //#############################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -234,12 +234,32 @@ typedef enum
     ECAP_INPUT_INPUTXBAR15 = 14,
     //! GPIO Input Crossbar output signal-16
     ECAP_INPUT_INPUTXBAR16 = 15,
+    //! CLB1 CLBOUT14 input for ECAP1 instance
+    ECAP_INPUT_ECAP1_CLB1_CLBOUT14 = 16,
+    //! CLB2 CLBOUT14 input for ECAP2 instance
+    ECAP_INPUT_ECAP2_CLB2_CLBOUT14 = 16,
+    //! CLB1 CLBOUT14 input for ECAP3 instance
+    ECAP_INPUT_ECAP3_CLB1_CLBOUT14 = 16,
+    //! CLB1 CLBOUT15 input for ECAP1 instance
+    ECAP_INPUT_ECAP1_CLB1_CLBOUT15 = 17,
+    //! CLB2 CLBOUT15 input for ECAP2 instance
+    ECAP_INPUT_ECAP2_CLB2_CLBOUT15 = 17,
+    //! CLB1 CLBOUT15 input for ECAP3 instance
+    ECAP_INPUT_ECAP3_CLB1_CLBOUT15 = 17,
+    //! CLB2 CLBOUT14 input for ECAP1 instance
+    ECAP_INPUT_ECAP1_CLB2_CLBOUT14 = 18,
+    //! CLB1 CLBOUT14 input for ECAP2 instance
+    ECAP_INPUT_ECAP2_CLB1_CLBOUT14 = 18,
+    //! CLB2 CLBOUT14 input for ECAP3 instance
+    ECAP_INPUT_ECAP3_CLB2_CLBOUT14 = 18,
+    //! CLB2 CLBOUT15 input for ECAP1 instance
+    ECAP_INPUT_ECAP1_CLB2_CLBOUT15 = 19,
+    //! CLB1 CLBOUT15 input for ECAP2 instance
+    ECAP_INPUT_ECAP2_CLB1_CLBOUT15 = 19,
+    //! CLB2 CLBOUT15 input for ECAP3 instance
+    ECAP_INPUT_ECAP3_CLB2_CLBOUT15 = 19,
     //! CANA INT0 Input
     ECAP_INPUT_CANA_INT0 = 20,
-    //! CANB INT0 Input
-    ECAP_INPUT_CANB_INT0 = 21,
-    //! Delay clock for measurement
-    ECAP_INPUT_ECAP_DELAY_CLOCK = 23,
     //! Output Xbar Output-1
     ECAP_INPUT_OUTPUTXBAR1 = 24,
     //! Output Xbar Output-2
@@ -280,6 +300,20 @@ typedef enum
     ECAP_INPUT_ADC_A_EVENT2 = 46,
     //! ADCA Event1
     ECAP_INPUT_ADC_A_EVENT1 = 47,
+    //! FSIA Rx MSR Line
+    ECAP_INPUT_FSIA_RX_MSR_LINE = 48,
+    //! FSIA Rx MSR Line Rise
+    ECAP_INPUT_FSIA_RX_MSR_LINE_RISE = 49,
+    //! FSIA Rx MSR Line Fall
+    ECAP_INPUT_FSIA_RX_MSR_LINE_FALL = 50,
+    //! SDFM-2 Filter-1 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT1_COMPARE_LOW = 60,
+    //! SDFM-2 Filter-2 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT2_COMPARE_LOW = 61,
+    //! SDFM-2 Filter-3 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT3_COMPARE_LOW = 62,
+    //! SDFM-2 Filter-4 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT4_COMPARE_LOW = 63,
     //! SDFM-1 Filter-1 Compare Low Trip
     ECAP_INPUT_SDFM1_FLT1_COMPARE_LOW = 64,
     //! SDFM-1 Filter-2 Compare Low Trip
@@ -288,6 +322,30 @@ typedef enum
     ECAP_INPUT_SDFM1_FLT3_COMPARE_LOW = 66,
     //! SDFM-1 Filter-4 Compare Low Trip
     ECAP_INPUT_SDFM1_FLT4_COMPARE_LOW = 67,
+    //! SDFM-2 Filter-1 Compare Z Trip
+    ECAP_INPUT_SDFM2_FLT1_COMPARE_Z = 68,
+    //! SDFM-2 Filter-2 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT2_COMPARE_Z = 69,
+    //! SDFM-2 Filter-3 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT3_COMPARE_Z = 70,
+    //! SDFM-2 Filter-4 Compare Low Trip
+    ECAP_INPUT_SDFM2_FLT4_COMPARE_Z = 71,
+    //! SDFM-1 Filter-1 Compare Z Trip
+    ECAP_INPUT_SDFM1_FLT1_COMPARE_Z = 72,
+    //! SDFM-1 Filter-2 Compare Low Trip
+    ECAP_INPUT_SDFM1_FLT2_COMPARE_Z = 73,
+    //! SDFM-1 Filter-3 Compare Low Trip
+    ECAP_INPUT_SDFM1_FLT3_COMPARE_Z = 74,
+    //! SDFM-1 Filter-4 Compare Low Trip
+    ECAP_INPUT_SDFM1_FLT4_COMPARE_Z = 75,
+    //! SDFM-2 Filter-1 Compare High Trip
+    ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH = 76,
+    //! SDFM-2 Filter-2 Compare High Trip
+    ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH = 77,
+    //! SDFM-2 Filter-3 Compare High Trip
+    ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH = 78,
+    //! SDFM-2 Filter-4 Compare High Trip
+    ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH = 79,
     //! SDFM-1 Filter-1 Compare High Trip
     ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH = 80,
     //! SDFM-1 Filter-2 Compare High Trip
@@ -296,6 +354,14 @@ typedef enum
     ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH = 82,
     //! SDFM-1 Filter-4 Compare High Trip
     ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH = 83,
+    //! SDFM-2 Filter-1 Compare High Trip or Low Trip
+    ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH_OR_LOW = 84,
+    //! SDFM-2 Filter-2 Compare High Trip or Low Trip
+    ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH_OR_LOW = 85,
+    //! SDFM-2 Filter-3 Compare High Trip or Low Trip
+    ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH_OR_LOW = 86,
+    //! SDFM-2 Filter-4 Compare High Trip or Low Trip
+    ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH_OR_LOW = 87,
     //! SDFM-1 Filter-1 Compare High Trip or Low Trip
     ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH_OR_LOW = 88,
     //! SDFM-1 Filter-2 Compare High Trip or Low Trip
@@ -312,12 +378,6 @@ typedef enum
     ECAP_INPUT_CMPSS3_CTRIP_LOW = 98,
     //! Compare Subsystem-4 Low Trip
     ECAP_INPUT_CMPSS4_CTRIP_LOW = 99,
-    //! Compare Subsystem-5 Low Trip
-    ECAP_INPUT_CMPSS5_CTRIP_LOW = 100,
-    //! Compare Subsystem-6 Low Trip
-    ECAP_INPUT_CMPSS6_CTRIP_LOW = 101,
-    //! Compare Subsystem-7 Low Trip
-    ECAP_INPUT_CMPSS7_CTRIP_LOW = 102,
     //! Compare Subsystem-1 High Trip
     ECAP_INPUT_CMPSS1_CTRIP_HIGH = 108,
     //! Compare Subsystem-2 High Trip
@@ -326,12 +386,14 @@ typedef enum
     ECAP_INPUT_CMPSS3_CTRIP_HIGH = 110,
     //! Compare Subsystem-4 High Trip
     ECAP_INPUT_CMPSS4_CTRIP_HIGH = 111,
-    //! Compare Subsystem-5 High Trip
-    ECAP_INPUT_CMPSS5_CTRIP_HIGH = 112,
-    //! Compare Subsystem-6 High Trip
-    ECAP_INPUT_CMPSS6_CTRIP_HIGH = 113,
-    //! Compare Subsystem-7 High Trip
-    ECAP_INPUT_CMPSS7_CTRIP_HIGH = 114,
+    //! GPIO8
+    ECAP_INPUT_GPIO8 = 115,
+    //! GPIO9
+    ECAP_INPUT_GPIO9 = 116,
+    //! GPIO22
+    ECAP_INPUT_GPIO22 = 117,
+    //! GPIO23
+    ECAP_INPUT_GPIO23 = 118,
     //! Compare Subsystem-1 High Trip or Low Trip
     ECAP_INPUT_CMPSS1_CTRIP_HIGH_OR_LOW = 120,
     //! Compare Subsystem-2 High Trip or Low Trip
@@ -340,15 +402,53 @@ typedef enum
     ECAP_INPUT_CMPSS3_CTRIP_HIGH_OR_LOW = 122,
     //! Compare Subsystem-4 High Trip or Low Trip
     ECAP_INPUT_CMPSS4_CTRIP_HIGH_OR_LOW = 123,
-    //! Compare Subsystem-5 High Trip or Low Trip
-    ECAP_INPUT_CMPSS5_CTRIP_HIGH_OR_LOW = 124,
-    //! Compare Subsystem-6 High Trip or Low Trip
-    ECAP_INPUT_CMPSS6_CTRIP_HIGH_OR_LOW = 125,
-    //! Compare Subsystem-7 High Trip or Low Trip
-    ECAP_INPUT_CMPSS7_CTRIP_HIGH_OR_LOW = 126,
-    //! Default Reserved Input
-    ECAP_INPUT_RESERVED = 127,
+    //! GPTRIP7 input for instance ECAP1
+    ECAP_INPUT_ECAP1_GPTRIP7 = 127,
+    //! GPTRIP8 input for instance ECAP2
+    ECAP_INPUT_ECAP2_GPTRIP8 = 127,
+    //! GPTRIP9 input for instance ECAP3
+    ECAP_INPUT_ECAP3_GPTRIP9 = 127,
 }ECAP_InputCaptureSignals;
+
+//*****************************************************************************
+//
+//! Values that can be passed to ECAP_setSyncInPulseSource() as the \e mode
+//! parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    //! Disable Sync-in
+    ECAP_SYNC_IN_PULSE_SRC_DISABLE         = 0x0,
+    //! Sync-in source is EPWM1 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM1   = 0x1,
+    //! Sync-in source is EPWM2 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM2   = 0x2,
+    //! Sync-in source is EPWM3 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM3   = 0x3,
+    //! Sync-in source is EPWM4 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM4   = 0x4,
+    //! Sync-in source is EPWM5 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM5   = 0x5,
+    //! Sync-in source is EPWM6 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM6   = 0x6,
+    //! Sync-in source is EPWM7 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM7   = 0x7,
+    //! Sync-in source is EPWM8 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWM8   = 0x8,
+    //! Sync-in source is ECAP1 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP1   = 0x11,
+    //! Sync-in source is ECAP2 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP2   = 0x12,
+    //! Sync-in source is ECAP3 sync-out signal
+    ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_ECAP3   = 0x13,
+    //! Sync-in source is Input XBAR out5 signal
+    ECAP_SYNC_IN_PULSE_SRC_INPUTXBAR_OUT5 = 0x18,
+    //! Sync-in source is Input XBAR out6 signal
+    ECAP_SYNC_IN_PULSE_SRC_INPUTXBAR_OUT6 = 0x19,
+    //! Sync-in source is FSI RXA RX signal
+    ECAP_SYNC_IN_PULSE_SRC_FSIRXA_RX_TRIG1 = 0x1F,
+}ECAP_SyncInPulseSource;
 
 //*****************************************************************************
 //
@@ -369,11 +469,7 @@ static inline bool ECAP_isBaseValid(uint32_t base)
     return(
            (base == ECAP1_BASE) ||
            (base == ECAP2_BASE) ||
-           (base == ECAP3_BASE) ||
-           (base == ECAP4_BASE) ||
-           (base == ECAP5_BASE) ||
-           (base == ECAP6_BASE) ||
-           (base == ECAP7_BASE)
+           (base == ECAP3_BASE)
           );
 }
 #endif
@@ -941,6 +1037,50 @@ static inline void ECAP_setPhaseShiftCount(uint32_t base, uint32_t shiftCount)
     // Write to CTRPHS
     //
     HWREG(base + ECAP_O_CTRPHS) = shiftCount;
+}
+
+//*****************************************************************************
+//
+//! Set up the source for sync-in pulse.
+//!
+//! \param base is the base address of the ECAP module.
+//! \param source is the sync-in pulse source.
+//!
+//! This function set the sync out pulse mode.
+//! Valid values for mode are:
+//!  - ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_EPWMx - sync-in pulse source can be
+//!                                           any of the EPWMx sync-out
+//!                                           signal
+//!  - ECAP_SYNC_IN_PULSE_SRC_SYNCOUT_ECAPx - sync-in pulse source can be
+//!                                           selected as any of the ECAPx
+//!                                           sync-out signal
+//!  - ECAP_SYNC_IN_PULSE_SRC_INPUTXBAR_OUT5-6 - sync-in pulse source can be
+//!                                              selected as any of the Input
+//!                                              xbar out5-6 signal
+//!  - ECAP_SYNC_IN_PULSE_SRC_FSI_RXA_RX_TRIG1 - sync-in pulse source can be
+//!                                              selected as FSI RXA RX trig
+//!                                              signal
+//!  - ECAP_SYNC_IN_PULSE_SRC_DISABLE - sync-in pulse is disabled for the
+//!                                     ECAP module
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ECAP_setSyncInPulseSource(uint32_t base, ECAP_SyncInPulseSource source)
+{
+    ASSERT(ECAP_isBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Set ECAP Sync-In Source Mode.
+    //
+    HWREGH(base + ECAP_O_SYNCINSEL) =
+            (HWREGH(base + ECAP_O_SYNCINSEL) & (~ECAP_SYNCINSEL_SEL_M)) |
+            ((uint16_t)source & ECAP_SYNCINSEL_SEL_M);
+
+    EDIS;
 }
 
 //*****************************************************************************

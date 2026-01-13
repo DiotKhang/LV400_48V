@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -113,7 +113,7 @@ extern "C"
 //! \brief Maximum number of external input for triggering frame-transmission
 //
 //*****************************************************************************
-#define FSI_TX_MAX_NUM_EXT_TRIGGERS (0x0020U)
+#define FSI_TX_MAX_NUM_EXT_TRIGGERS (0x0040U)
 
 //*****************************************************************************
 //
@@ -135,7 +135,7 @@ extern "C"
 // Values that can be passed to APIs to enable/disable interrupts and
 // also to set/get/clear event status on FSI Rx operation.
 //
-// There are 12 supported interrupts related to Rx events.
+// There are 15 supported interrupts related to Rx events.
 // All are available as event status as well.
 //
 //*****************************************************************************
@@ -151,13 +151,16 @@ extern "C"
 #define FSI_RX_EVT_PING_FRAME            (0x0200U) //!< Received ping frame
 #define FSI_RX_EVT_FRAME_OVERRUN         (0x0400U) //!< FRAME_DONE not cleared on receiving new frame
 #define FSI_RX_EVT_DATA_FRAME            (0x0800U) //!< Received data frame
+#define FSI_RX_EVT_PING_FRAME_TAG_MATCH  (0x1000U) //!< Recieved ping frame with matched tag
+#define FSI_RX_EVT_DATA_FRAME_TAG_MATCH  (0x2000U) //!< Recieved data frame with matched tag
+#define FSI_RX_EVT_ERR_FRAME_TAG_MATCH   (0x4000U) //!< Recieved error frame with tag match
 
 //*****************************************************************************
 //
 //! \brief Mask of all Rx Events, ORing all event defines
 //
 //*****************************************************************************
-#define FSI_RX_EVTMASK              (0x0FFFU)
+#define FSI_RX_EVTMASK              (0x7FFFU)
 
 //*****************************************************************************
 //
@@ -382,9 +385,6 @@ typedef enum
 //
 //! \brief Indexes of available EPWM SOC triggers
 //!
-//! \details There are 16 ePWM SOC events as external triggers for FSI frame
-//!          transfers. Indexes 24:31 are reserved out of total 32
-//!          muxed external triggers.
 //
 //*****************************************************************************
 typedef enum
@@ -413,6 +413,15 @@ typedef enum
     FSI_EXT_TRIGSRC_EPWM7_SOCB       = 21U,
     FSI_EXT_TRIGSRC_EPWM8_SOCA       = 22U,
     FSI_EXT_TRIGSRC_EPWM8_SOCB       = 23U,
+    FSI_EXT_TRIGSRC_CLB1_CLBOUT30    = 40U,
+    FSI_EXT_TRIGSRC_CLB1_CLBOUT31    = 41U,
+    FSI_EXT_TRIGSRC_CLB2_CLBOUT30    = 42U,
+    FSI_EXT_TRIGSRC_CLB2_CLBOUT31    = 43U,
+    FSI_EXT_TRIGSRC_ADC_SOCA         = 52U,
+    FSI_EXT_TRIGSRC_ADC_SOCB         = 53U,
+    FSI_EXT_TRIGSRC_CPU1_TIMER0INT   = 54U,
+    FSI_EXT_TRIGSRC_CPU1_TIMER1INT   = 55U,
+    FSI_EXT_TRIGSRC_CPU1_TIMER2INT   = 56U
 } FSI_ExtFrameTriggerSrc;
 
 //*****************************************************************************
@@ -749,13 +758,109 @@ FSI_setTxPingTimeoutMode(uint32_t base, FSI_PingTimeoutMode pingTimeoutMode)
     EDIS;
 }
 
+//*****************************************************************************
+//
+//! \brief Enables the Tx TDM mode for multi-node configuration
+//!
+//! \param[in] base is the FSI Tx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_enableTxTDMMode(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isTxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Enable Tx TDM Mode
+    //
+    HWREGH(base + FSI_O_TX_OPER_CTRL_LO) |= FSI_TX_OPER_CTRL_LO_TDM_ENABLE;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables the Tx TDM mode.
+//!
+//! \param[in] base is the FSI Tx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_disableTxTDMMode(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isTxBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + FSI_O_TX_OPER_CTRL_LO) &= ~FSI_TX_OPER_CTRL_LO_TDM_ENABLE;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Enables RX TDM as TDM source.
+//!
+//! \param[in] base is the FSI Tx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_enableRxTDMMode(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isTxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Enable Tx TDM Mode
+    //
+    HWREGH(base + FSI_O_TX_OPER_CTRL_LO) |= FSI_TX_OPER_CTRL_LO_SEL_TDM_IN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables the Rx TDM mode.
+//!
+//! \param[in] base is the FSI Tx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_disableRxTDMMode(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isTxBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + FSI_O_TX_OPER_CTRL_LO) &= ~FSI_TX_OPER_CTRL_LO_SEL_TDM_IN;
+    EDIS;
+}
 
 //*****************************************************************************
 //
 //! \brief Sets a particular external input to trigger transmission
 //!
 //! \param[in] base is the FSI Tx module base address
-//! \param[in] extInputNum can be one of ports from 0 to 31
+//! \param[in] extInputNum can be one of ports from 0 to 63. See also
+//! FSI_ExtFrameTriggerSrc enum members for valid external triggers.
 //!
 //! \return None.
 //
@@ -1131,7 +1236,7 @@ FSI_disableTxPingTimer(uint32_t base)
 //! \brief Enables external trigger to transmit a ping frame
 //!
 //! \param[in] base is the FSI Tx module base address
-//! \param[in] extTrigSel can be one of the external inputs from 0 to 31.
+//! \param[in] extTrigSel can be one of the external inputs from 0 to 63.
 //!
 //! \return None.
 //
@@ -2575,6 +2680,464 @@ FSI_getRxBufferAddress(uint32_t base)
     return(base + FSI_O_RX_BUF_BASE(0U));
 }
 
+//*****************************************************************************
+//
+//! \brief Sets the Rx Frame Reference Tag Value
+//!
+//! \details The reference tag is used to check against when comparing the
+//! TAG_MASK and the incoming frame tag.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//! \param[in]  refVal is the Rx frame reference tag value to be set
+//!
+//! \return Rx data buffer address
+//
+//*****************************************************************************
+static inline void
+FSI_setRxFrameTagRef(uint32_t base, uint16_t refVal)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Sets the Rx frame tag reference.
+    //
+    HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) =
+          ((HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) &
+           ~((uint16_t)FSI_RX_FRAME_TAG_CMP_TAG_REF_M)) |
+           (refVal << FSI_RX_FRAME_TAG_CMP_TAG_REF_S));
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Returns the Rx Frame Reference Tag Value
+//!
+//! \details The reference tag is used to check against when comparing the
+//! TAG_MASK and the incoming frame tag.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//!
+//! \return Rx frame reference tag
+//
+//*****************************************************************************
+static inline uint16_t
+FSI_getRxFrameTagRef(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    //
+    // Returns the Rx frame tag reference.
+    //
+    return((HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) &
+           FSI_RX_FRAME_TAG_CMP_TAG_REF_M) >> FSI_RX_FRAME_TAG_CMP_TAG_REF_S);
+}
+
+//*****************************************************************************
+//
+//! \brief Sets the Rx Frame Tag Mask Value
+//!
+//! \details Any bit position set to 0 will be used in the comparison of
+//! incoming tag & the reference tag. A bit position set to 1 will be ignored
+//! in the tag comparison.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//! \param[in]  maskVal is the Rx frame tag mask value to be set
+//!
+//! \return Rx frame tag mask
+//
+//*****************************************************************************
+static inline void
+FSI_setRxFrameTagMask(uint32_t base, uint16_t maskVal)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Sets the Rx frame tag mask.
+    //
+    HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) =
+          ((HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) &
+           ~((uint16_t)FSI_RX_FRAME_TAG_CMP_TAG_MASK_M)) |
+           (maskVal << FSI_RX_FRAME_TAG_CMP_TAG_MASK_S));
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Returns the Rx Frame Tag Mask Value
+//!
+//! \details Any bit position set to 0 will be used in the comparison of
+//! incoming tag & the reference tag. A bit position set to 1 will be ignored
+//! in the tag comparison.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//!
+//! \return Rx frame reference tag
+//
+//*****************************************************************************
+static inline uint16_t
+FSI_getRxFrameTagMask(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    //
+    // Returns the frame tag mask.
+    //
+    return((HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) &
+          FSI_RX_FRAME_TAG_CMP_TAG_MASK_M) >> FSI_RX_FRAME_TAG_CMP_TAG_MASK_S);
+}
+
+//*****************************************************************************
+//
+//! \brief Enables the Rx Frame Compare Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_enableRxFrameTagCompare(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Enables the frame tag compare mode.
+    //
+    HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) |= FSI_RX_FRAME_TAG_CMP_CMP_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables the Rx Frame Compare Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_disableRxFrameTagCompare(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Disables the Rx frame tag compare mode.
+    //
+    HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) &=
+                                   ~(uint16_t)FSI_RX_FRAME_TAG_CMP_CMP_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Enables the Rx Frame Broadcast Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_enableRxFrameBroadcast(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Enables Rx frame broadcast mode.
+    //
+    HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) |= FSI_RX_FRAME_TAG_CMP_BROADCAST_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables the Rx Frame Broadcast Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_disableRxFrameBroadcast(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Disables Rx frame broadcast mode.
+    //
+    HWREGH(base + FSI_O_RX_FRAME_TAG_CMP) &=
+                                  ~(uint16_t)FSI_RX_FRAME_TAG_CMP_BROADCAST_EN;
+    EDIS;
+}
+
+//
+// ping frame related APIs
+//
+//*****************************************************************************
+//
+//! \brief Sets the Rx Ping Tag Reference Value
+//!
+//! \details The reference tag is used to check against when comparing the
+//! TAG_MASK and the incoming ping tag.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//! \param[in]  refVal is the Rx frame reference tag value to be set
+//!
+//! \return Rx data buffer address
+//
+//*****************************************************************************
+static inline void
+FSI_setRxPingTagRef(uint32_t base, uint16_t refVal)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Set Rx ping tag reference value.
+    //
+    HWREGH(base + FSI_O_RX_PING_TAG_CMP) =
+          ((HWREGH(base + FSI_O_RX_PING_TAG_CMP) &
+           ~((uint16_t)FSI_RX_PING_TAG_CMP_TAG_REF_M)) |
+           (refVal << FSI_RX_PING_TAG_CMP_TAG_REF_S));
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Returns the Rx Ping Reference Tag Value
+//!
+//! \details The reference tag is used to check against when comparing the
+//! TAG_MASK and the incoming ping tag.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//!
+//! \return Rx frame reference tag
+//
+//*****************************************************************************
+static inline uint16_t
+FSI_getRxPingTagRef(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    //
+    // Returns Rx ping tag reference.
+    //
+    return((HWREGH(base + FSI_O_RX_PING_TAG_CMP) &
+            FSI_RX_PING_TAG_CMP_TAG_REF_M) >> FSI_RX_PING_TAG_CMP_TAG_REF_S);
+}
+
+//*****************************************************************************
+//
+//! \brief Sets the Rx Ping Tag Mask Value
+//!
+//! \details Any bit position set to 0 will be used in the comparison of
+//! incoming tag & the reference tag. A bit position set to 1 will be ignored
+//! in the tag comparison.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//! \param[in]  maskVal is the Rx frame tag mask value to be set
+//!
+//! \return Rx ping tag mask
+//
+//*****************************************************************************
+static inline void
+FSI_setRxPingTagMask(uint32_t base, uint16_t maskVal)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Set Rx ping tag mask.
+    //
+    HWREGH(base + FSI_O_RX_PING_TAG_CMP) =
+          ((HWREGH(base + FSI_O_RX_PING_TAG_CMP) &
+           ~((uint16_t)FSI_RX_PING_TAG_CMP_TAG_MASK_M)) |
+           (maskVal << FSI_RX_PING_TAG_CMP_TAG_MASK_S));
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Returns the Rx Ping Tag Mask Value
+//!
+//! \details Any bit position set to 0 will be used in the comparison of
+//! incoming tag & the reference tag. A bit position set to 1 will be ignored
+//! in the tag comparison.
+//!
+//! \param[in]  base is the FSI Rx module base address
+//!
+//! \return Rx ping reference tag
+//
+//*****************************************************************************
+static inline uint16_t
+FSI_getRxPingTagMask(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    //
+    // Returns ping tag mask.
+    //
+    return((HWREGH(base + FSI_O_RX_PING_TAG_CMP) &
+            FSI_RX_PING_TAG_CMP_TAG_MASK_M) >> FSI_RX_PING_TAG_CMP_TAG_MASK_S);
+}
+
+//*****************************************************************************
+//
+//! \brief Enables the Rx Ping Compare Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_enableRxPingTagCompare(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Enables the Rx ping tag compare mode.
+    //
+    HWREGH(base + FSI_O_RX_PING_TAG_CMP) |= FSI_RX_PING_TAG_CMP_CMP_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables the Rx Ping Compare Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_disableRxPingTagCompare(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Disables Rx ping tag compare mode.
+    //
+    HWREGH(base + FSI_O_RX_PING_TAG_CMP) &=
+                                   ~(uint16_t)FSI_RX_PING_TAG_CMP_CMP_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Enables the Rx Ping Broadcast Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_enableRxPingBroadcast(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Enables the Rx ping broadcast mode.
+    //
+    HWREGH(base + FSI_O_RX_PING_TAG_CMP) |= FSI_RX_PING_TAG_CMP_BROADCAST_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables the Rx Ping Broadcast Mode
+//!
+//! \param[in] base is the FSI Rx module base address
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+FSI_disableRxPingBroadcast(uint32_t base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(FSI_isRxBaseValid(base));
+
+    EALLOW;
+
+    //
+    // Disables the Rx ping broadcast.
+    //
+    HWREGH(base + FSI_O_RX_PING_TAG_CMP) &=
+                                  ~(uint16_t)FSI_RX_PING_TAG_CMP_BROADCAST_EN;
+    EDIS;
+}
 
 //*****************************************************************************
 //

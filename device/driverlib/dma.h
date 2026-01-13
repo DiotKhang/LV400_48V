@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -144,15 +144,15 @@ typedef enum
     DMA_TRIGGER_ECAP1      = 75,
     DMA_TRIGGER_ECAP2      = 76,
     DMA_TRIGGER_ECAP3      = 77,
-    DMA_TRIGGER_ECAP4      = 78,
-    DMA_TRIGGER_ECAP5      = 79,
-    DMA_TRIGGER_ECAP6      = 80,
-    DMA_TRIGGER_ECAP7      = 81,
 
     DMA_TRIGGER_SDFM1FLT1  = 96,
     DMA_TRIGGER_SDFM1FLT2  = 97,
     DMA_TRIGGER_SDFM1FLT3  = 98,
     DMA_TRIGGER_SDFM1FLT4  = 99,
+    DMA_TRIGGER_SDFM2FLT1  = 101,
+    DMA_TRIGGER_SDFM2FLT2  = 102,
+    DMA_TRIGGER_SDFM2FLT3  = 103,
+    DMA_TRIGGER_SDFM2FLT4  = 104,
 
     DMA_TRIGGER_SPIATX     = 109,
     DMA_TRIGGER_SPIARX     = 110,
@@ -161,9 +161,13 @@ typedef enum
 
     DMA_TRIGGER_LINATX     = 117,
     DMA_TRIGGER_LINARX     = 118,
+    DMA_TRIGGER_LINBTX     = 119,
+    DMA_TRIGGER_LINBRX     = 120,
 
     DMA_TRIGGER_FSITXA     = 123,
+    DMA_TRIGGER_FSI_DATA_TAG_MATCH  = 124,
     DMA_TRIGGER_FSIRXA     = 125,
+    DMA_TRIGGER_FSI_PING_DATA_MATCH = 126,
 
     DMA_TRIGGER_CLB1INT    = 127,
     DMA_TRIGGER_CLB2INT    = 128,
@@ -173,9 +177,15 @@ typedef enum
     DMA_TRIGGER_CANAIF1    = 167,
     DMA_TRIGGER_CANAIF2    = 168,
     DMA_TRIGGER_CANAIF3    = 169,
-    DMA_TRIGGER_CANBIF1    = 170,
-    DMA_TRIGGER_CANBIF2    = 171,
-    DMA_TRIGGER_CANBIF3    = 172
+
+    DMA_TRIGGER_HICA       = 179,
+
+    DMA_TRIGGER_AESA_CONTEXTIN  = 180,
+    DMA_TRIGGER_AESA_DATAIN     = 181,
+    DMA_TRIGGER_AESA_CONTEXTOUT = 182,
+    DMA_TRIGGER_AESA_DATAOUT    = 183,
+
+    DMA_TRIGGER_EPG1       = 184
 } DMA_Trigger;
 
 //*****************************************************************************

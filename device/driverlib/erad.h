@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -90,6 +90,7 @@ extern "C"
 //
 #define ERAD_getBusCompInstance(base) (1UL << ((base >> 3U) & 0x7U))
 #define ERAD_getCounterInstance(base) ((1UL << ((base >> 4U) & 0x3U)) << 8U)
+#define ERAD_getCRCInstance(base) (1U << (((base >> 4U) & 0xFU) - 1U))
 
 //
 // Macro function to get the HWBP event number from the base address
@@ -115,6 +116,26 @@ extern "C"
 #define ERAD_INST_COUNTER2  0x00000200UL   //!< Instance for counter 2
 #define ERAD_INST_COUNTER3  0x00000400UL   //!< Instance for counter 3
 #define ERAD_INST_COUNTER4  0x00000800UL   //!< Instance for counter 4
+#define ERAD_INST_CRC1      0x00000001UL   //!< Instance for CRC unit 1
+#define ERAD_INST_CRC2      0x00000002UL   //!< Instance for CRC unit 2
+#define ERAD_INST_CRC3      0x00000004UL   //!< Instance for CRC unit 3
+#define ERAD_INST_CRC4      0x00000008UL   //!< Instance for CRC unit 4
+#define ERAD_INST_CRC5      0x00000010UL   //!< Instance for CRC unit 5
+#define ERAD_INST_CRC6      0x00000020UL   //!< Instance for CRC unit 6
+#define ERAD_INST_CRC7      0x00000040UL   //!< Instance for CRC unit 7
+#define ERAD_INST_CRC8      0x00000080UL   //!< Instance for CRC unit 8
+
+//*****************************************************************************
+//
+//! Values that can be passed to ERAD_setCounterInputConditioning() as options
+//! parameter.
+//
+//*****************************************************************************
+#define ERAD_INPUT_INVERT_DISABLE 0x00U   //!< Do not invert the input
+#define ERAD_INPUT_INVERT_ENABLE  0x01U   //!< Invert the input
+#define ERAD_INPUT_SYNC_DISABLE   0x00U   //!< Disable 2-stage synchronizer
+#define ERAD_INPUT_SYNC_ENABLE    0x02U   //!< Enable 2-stage synchronizer
+
 //*****************************************************************************
 //
 //! Values that can be passed to ERAD_initModule() as \e owner parameter to
@@ -153,7 +174,12 @@ typedef enum
     ERAD_BUSCOMP_BUS_VPC            = 1,  //!< Use the Virtual Program Counter
     ERAD_BUSCOMP_BUS_DWAB           = 2,  //!< Use the Data Write Address Bus
     ERAD_BUSCOMP_BUS_DRAB           = 3,  //!< Use the Data Read Address Bus
-    ERAD_BUSCOMP_BUS_DWDB           = 4   //!< Use the Data Write Data Bus
+    ERAD_BUSCOMP_BUS_DWDB           = 4,  //!< Use the Data Write Data Bus
+    ERAD_BUSCOMP_BUS_DRDB           = 5,  //!< Use the Data Read Data Bus
+    ERAD_BUSCOMP_BUS_VPC_I_ALIGNED  = 6,  //!< Use VPC Instruction aligned match
+    ERAD_BUSCOMP_BUS_VPC_R1_ALIGNED = 7,  //!< Use VPC R1 aligned match
+    ERAD_BUSCOMP_BUS_VPC_R2_ALIGNED = 8,  //!< Use VPC R2 aligned match
+    ERAD_BUSCOMP_BUS_VPC_W_ALIGNED  = 9,  //!< Use VPC Word aligned match
 } ERAD_BusComp_Bus_Select;
 
 //*****************************************************************************
@@ -211,30 +237,169 @@ typedef enum
     ERAD_EVENT_COUNTER2_EVENT          = 9,
     ERAD_EVENT_COUNTER3_EVENT          = 10,
     ERAD_EVENT_COUNTER4_EVENT          = 11,
-    ERAD_EVENT_PIE_INT1                = 12,
-    ERAD_EVENT_PIE_INT2                = 13,
-    ERAD_EVENT_PIE_INT3                = 14,
-    ERAD_EVENT_PIE_INT4                = 15,
-    ERAD_EVENT_PIE_INT5                = 16,
-    ERAD_EVENT_PIE_INT6                = 17,
-    ERAD_EVENT_PIE_INT7                = 18,
-    ERAD_EVENT_PIE_INT8                = 19,
-    ERAD_EVENT_PIE_INT9                = 20,
-    ERAD_EVENT_PIE_INT10               = 21,
-    ERAD_EVENT_PIE_INT11               = 22,
-    ERAD_EVENT_PIE_INT12               = 23,
-    ERAD_EVENT_TIMER1_TINT1            = 24,
-    ERAD_EVENT_TIMER2_TINT2            = 25,
-    ERAD_EVENT_CLA_INTERRUPT1          = 26,
-    ERAD_EVENT_CLA_INTERRUPT2          = 27,
-    ERAD_EVENT_CLA_INTERRUPT3          = 28,
-    ERAD_EVENT_CLA_INTERRUPT4          = 29,
-    ERAD_EVENT_CLA_INTERRUPT5          = 30,
-    ERAD_EVENT_CLA_INTERRUPT8          = 31,
+    ERAD_EVENT_ERAD_OR_MASK0           = 12,
+    ERAD_EVENT_ERAD_OR_MASK1           = 13,
+    ERAD_EVENT_ERAD_OR_MASK2           = 14,
+    ERAD_EVENT_ERAD_OR_MASK3           = 15,
+    ERAD_EVENT_ERAD_AND_MASK0          = 16,
+    ERAD_EVENT_ERAD_AND_MASK1          = 17,
+    ERAD_EVENT_ERAD_AND_MASK2          = 18,
+    ERAD_EVENT_ERAD_AND_MASK3          = 19,
+    ERAD_EVENT_PIE_INT1                = 20,
+    ERAD_EVENT_PIE_INT2                = 21,
+    ERAD_EVENT_PIE_INT3                = 22,
+    ERAD_EVENT_PIE_INT4                = 23,
+    ERAD_EVENT_PIE_INT5                = 24,
+    ERAD_EVENT_PIE_INT6                = 25,
+    ERAD_EVENT_PIE_INT7                = 26,
+    ERAD_EVENT_PIE_INT8                = 27,
+    ERAD_EVENT_PIE_INT9                = 28,
+    ERAD_EVENT_PIE_INT10               = 29,
+    ERAD_EVENT_PIE_INT11               = 30,
+    ERAD_EVENT_PIE_INT12               = 31,
+    ERAD_EVENT_TIMER0_TINT0            = 32,
+    ERAD_EVENT_TIMER1_TINT1            = 33,
+    ERAD_EVENT_TIMER2_TINT2            = 34,
+    ERAD_EVENT_DMACH1INT               = 35,
+    ERAD_EVENT_DMACH2INT               = 36,
+    ERAD_EVENT_DMACH3INT               = 37,
+    ERAD_EVENT_DMACH4INT               = 38,
+    ERAD_EVENT_DMACH5INT               = 39,
+    ERAD_EVENT_DMACH6INT               = 40,
+    ERAD_EVENT_FSI_DATA_PKT_RCVD          = 41,
+    ERAD_EVENT_FSI_ERROR_PKT_RCVD         = 42,
+    ERAD_EVENT_FSI_PING_PKT_RCVD          = 43,
+    ERAD_EVENT_FSI_PING_FRAME_TAG_MATCH   = 44,
+    ERAD_EVENT_FSI_DATA_FRAME_TAG_MATCH   = 45,
+    ERAD_EVENT_FSI_ERROR_FRAME_TAG_MATCH  = 46,
+    ERAD_EVENT_FSI_FRAME_DONE             = 47,
+    ERAD_EVENT_ADCAEVTINT              = 48,
+    ERAD_EVENT_ADCCEVTINT              = 49,
+    ERAD_EVENT_MCANA_EVT0              = 50,
+    ERAD_EVENT_MCANA_EVT1              = 51,
+    ERAD_EVENT_MCANA_EVT2              = 52,
+    ERAD_EVENT_ADCSOCA                 = 53,
+    ERAD_EVENT_ADCSOCB                 = 54,
+    ERAD_EVENT_CLATASKRUN1             = 55,
+    ERAD_EVENT_CLATASKRUN2             = 56,
+    ERAD_EVENT_CLATASKRUN3             = 57,
+    ERAD_EVENT_CLATASKRUN4             = 58,
+    ERAD_EVENT_CLATASKRUN5             = 59,
+    ERAD_EVENT_CLATASKRUN6             = 60,
+    ERAD_EVENT_CLATASKRUN7             = 61,
+    ERAD_EVENT_CLATASKRUN8             = 62,
+    ERAD_EVENT_EPWMXBAR_OUT1           = 63,
+    ERAD_EVENT_EPWMXBAR_OUT2           = 64,
+    ERAD_EVENT_EPWMXBAR_OUT3           = 65,
+    ERAD_EVENT_EPWMXBAR_OUT4           = 66,
+    ERAD_EVENT_EPWMXBAR_OUT5           = 67,
+    ERAD_EVENT_EPWMXBAR_OUT6           = 68,
+    ERAD_EVENT_EPWMXBAR_OUT7           = 69,
+    ERAD_EVENT_EPWMXBAR_OUT8           = 70,
+    ERAD_EVENT_INPUTXBAR0              = 71,
+    ERAD_EVENT_INPUTXBAR1              = 72,
+    ERAD_EVENT_INPUTXBAR2              = 73,
+    ERAD_EVENT_INPUTXBAR3              = 74,
+    ERAD_EVENT_INPUTXBAR4              = 75,
+    ERAD_EVENT_INPUTXBAR5              = 76,
+    ERAD_EVENT_INPUTXBAR6              = 77,
+    ERAD_EVENT_INPUTXBAR7              = 78,
+    ERAD_EVENT_INPUTXBAR8              = 79,
+    ERAD_EVENT_INPUTXBAR9              = 80,
+    ERAD_EVENT_INPUTXBAR10             = 81,
+    ERAD_EVENT_INPUTXBAR11             = 82,
+    ERAD_EVENT_INPUTXBAR12             = 83,
+    ERAD_EVENT_INPUTXBAR13             = 84,
+    ERAD_EVENT_INPUTXBAR14             = 85,
+    ERAD_EVENT_INPUTXBAR15             = 86,
+    ERAD_EVENT_CPUx_CPUSTAT            = 87,
+    ERAD_EVENT_CPUx_DBGACK             = 88,
+    ERAD_EVENT_CPUx_NMI                = 89,
+    ERAD_EVENT_CMPSS1_CTRIPH_OR_CTRIPL = 90,
+    ERAD_EVENT_CMPSS2_CTRIPH_OR_CTRIPL = 91,
+    ERAD_EVENT_CMPSS3_CTRIPH_OR_CTRIPL = 92,
+    ERAD_EVENT_CMPSS4_CTRIPH_OR_CTRIPL = 93,
+    ERAD_EVENT_SD1FLT1_COMPH_OR_COMPL  = 98,
+    ERAD_EVENT_SD1FLT2_COMPH_OR_COMPL  = 99,
+    ERAD_EVENT_SD1FLT3_COMPH_OR_COMPL  = 100,
+    ERAD_EVENT_SD1FLT4_COMPH_OR_COMPL  = 101,
+    ERAD_EVENT_SD2FLT1_COMPH_OR_COMPL  = 102,
+    ERAD_EVENT_SD2FLT2_COMPH_OR_COMPL  = 103,
+    ERAD_EVENT_SD2FLT3_COMPH_OR_COMPL  = 104,
+    ERAD_EVENT_SD2FLT4_COMPH_OR_COMPL  = 105,
+    ERAD_EVENT_ADCAINT1                = 106,
+    ERAD_EVENT_ADCAINT2                = 107,
+    ERAD_EVENT_ADCAINT3                = 108,
+    ERAD_EVENT_ADCAINT4                = 109,
+    ERAD_EVENT_ADCBINT1                = 110,
+    ERAD_EVENT_ADCBINT2                = 111,
+    ERAD_EVENT_ADCBINT3                = 112,
+    ERAD_EVENT_ADCBINT4                = 113,
+    ERAD_EVENT_ADCCINT1                = 114,
+    ERAD_EVENT_ADCCINT2                = 115,
+    ERAD_EVENT_ADCCINT3                = 116,
+    ERAD_EVENT_ADCCINT4                = 117,
+    ERAD_EVENT_HIC_nOE                 = 122,
+    ERAD_EVENT_HIC_nWE                 = 123,
+    ERAD_EVENT_HIC_nRDY                = 124,
+    ERAD_EVENT_ADCBEVTINT            = 125,
 
     ERAD_EVENT_NO_EVENT                = 256
 } ERAD_Counter_Input_Event;
 
+typedef enum
+{
+    ERAD_AND_MASK1 = 0,
+    ERAD_AND_MASK2 = 1,
+    ERAD_AND_MASK3 = 2,
+    ERAD_AND_MASK4 = 3,
+    ERAD_OR_MASK1  = 4,
+    ERAD_OR_MASK2  = 5,
+    ERAD_OR_MASK3  = 6,
+    ERAD_OR_MASK4  = 7
+} ERAD_Mask;
+
+//*****************************************************************************
+//
+//! Values that can be passed to ERAD_setCRCQualifier() as the \e qualifier
+//! paramter to specify which events to set as the qualifier for the CRC unit.
+//
+//*****************************************************************************
+typedef enum
+{
+    ERAD_CRC_QUAL_NONE      = 0,  //!< Use every valid event as qualifier
+                                  //!< for CRC computation
+    ERAD_CRC_QUAL_HWBP1     = 1,  //!< CRC Compute Qualified by HWBP_EVENT1
+    ERAD_CRC_QUAL_HWBP2     = 2,  //!< CRC Compute Qualified by HWBP_EVENT2
+    ERAD_CRC_QUAL_HWBP3     = 3,  //!< CRC Compute Qualified by HWBP_EVENT3
+    ERAD_CRC_QUAL_HWBP4     = 4,  //!< CRC Compute Qualified by HWBP_EVENT4
+    ERAD_CRC_QUAL_HWBP5     = 5,  //!< CRC Compute Qualified by HWBP_EVENT5
+    ERAD_CRC_QUAL_HWBP6     = 6,  //!< CRC Compute Qualified by HWBP_EVENT6
+    ERAD_CRC_QUAL_HWBP7     = 7,  //!< CRC Compute Qualified by HWBP_EVENT7
+    ERAD_CRC_QUAL_HWBP8     = 8,  //!< CRC Compute Qualified by HWBP_EVENT8
+    ERAD_CRC_QUAL_HWBP_OR1  = 9,  //!< CRC Compute Qualified by HWBP_EVENT_OR1
+    ERAD_CRC_QUAL_HWBP_OR2  = 10, //!< CRC Compute Qualified by HWBP_EVENT_OR1
+    ERAD_CRC_QUAL_HWBP_OR3  = 11, //!< CRC Compute Qualified by HWBP_EVENT_OR1
+    ERAD_CRC_QUAL_HWBP_OR4  = 12, //!< CRC Compute Qualified by HWBP_EVENT_OR1
+    ERAD_CRC_QUAL_HWBP_AND1 = 13, //!< CRC Compute Qualified by HWBP_EVENT_AND2
+    ERAD_CRC_QUAL_HWBP_AND2 = 14, //!< CRC Compute Qualified by HWBP_EVENT_AND2
+    ERAD_CRC_QUAL_HWBP_AND3 = 15, //!< CRC Compute Qualified by HWBP_EVENT_AND2
+    ERAD_CRC_QUAL_HWBP_AND4 = 16  //!< CRC Compute Qualified by HWBP_EVENT_AND2
+} ERAD_CRC_Qualifiers;
+
+//*****************************************************************************
+//
+//! Values that can be passed to ERAD_setCounterInputConditioning() as
+//! \e input_type parameter. To specify which input to condition.
+//
+//*****************************************************************************
+typedef enum
+{
+    ERAD_COUNTER_COUNT_INPUT = 0,
+    ERAD_COUNTER_START_INPUT = 1,
+    ERAD_COUNTER_STOP_INPUT  = 2,
+    ERAD_COUNTER_RESET_INPUT = 3
+} ERAD_Counter_Input_Type;
 
 //*****************************************************************************
 //
@@ -357,6 +522,31 @@ ERAD_isValidCounterBase(uint32_t base)
            (base == ERAD_COUNTER4_BASE));
 }
 
+//*****************************************************************************
+//
+//! \internal
+//! Checks a CRC base address.
+//!
+//! \param base specifies the CRC base address.
+//!
+//! This function determines if a CRC base address is valid.
+//!
+//! \return Returns \b true if the base address is valid and \b false
+//! otherwise.
+//
+//*****************************************************************************
+static inline bool
+ERAD_isValidCRCBase(uint32_t base)
+{
+    return((base == ERAD_CRC1_BASE) ||
+           (base == ERAD_CRC2_BASE) ||
+           (base == ERAD_CRC3_BASE) ||
+           (base == ERAD_CRC4_BASE) ||
+           (base == ERAD_CRC5_BASE) ||
+           (base == ERAD_CRC6_BASE) ||
+           (base == ERAD_CRC7_BASE) ||
+           (base == ERAD_CRC8_BASE));
+}
 
 #endif
 
@@ -589,6 +779,74 @@ ERAD_getEventStatus(void)
 
 //*****************************************************************************
 //
+//! Enables an NMI for the specified modules.
+//!
+//! \param instances is the OR'd value of the instances of the counters and
+//! bus comparator units that need to have an NMI enabled. Following macros can
+//! be used:
+//! - \b ERAD_INST_BUSCOMP1
+//! - \b ERAD_INST_BUSCOMP2
+//! - \b ERAD_INST_BUSCOMP3
+//! - \b ERAD_INST_BUSCOMP4
+//! - \b ERAD_INST_BUSCOMP5
+//! - \b ERAD_INST_BUSCOMP6
+//! - \b ERAD_INST_BUSCOMP7
+//! - \b ERAD_INST_BUSCOMP8
+//! - \b ERAD_INST_COUNTER1
+//! - \b ERAD_INST_COUNTER2
+//! - \b ERAD_INST_COUNTER3
+//! - \b ERAD_INST_COUNTER4
+//!
+//! This function enables an NMI to be generated whenever any of the specified
+//! counters or bus comparator units generate and event.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_enableNMI(uint16_t instances)
+{
+    EALLOW;
+    HWREGH(ERAD_GLOBAL_BASE + ERAD_O_GLBL_NMI_CTL) |= instances;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Disables an NMI for the specified modules.
+//!
+//! \param instances is the OR'd value of the instances of the counters and
+//! bus comparator units that need to have an NMI disabled. Following macros can
+//! be used:
+//! - \b ERAD_INST_BUSCOMP1
+//! - \b ERAD_INST_BUSCOMP2
+//! - \b ERAD_INST_BUSCOMP3
+//! - \b ERAD_INST_BUSCOMP4
+//! - \b ERAD_INST_BUSCOMP5
+//! - \b ERAD_INST_BUSCOMP6
+//! - \b ERAD_INST_BUSCOMP7
+//! - \b ERAD_INST_BUSCOMP8
+//! - \b ERAD_INST_COUNTER1
+//! - \b ERAD_INST_COUNTER2
+//! - \b ERAD_INST_COUNTER3
+//! - \b ERAD_INST_COUNTER4
+//!
+//! This function disables the NMI for the specified counters and bus
+//! comparator units.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_disableNMI(uint16_t instances)
+{
+    EALLOW;
+    HWREGH(ERAD_GLOBAL_BASE + ERAD_O_GLBL_NMI_CTL) &= (~instances);
+    EDIS;
+}
+
+//*****************************************************************************
+//
 //! Returns the status of a bus comparator.
 //!
 //! \param base is the base of the bus comparator.
@@ -736,6 +994,68 @@ ERAD_configCounterInStartStopMode(uint32_t base,
 
 //*****************************************************************************
 //
+//! Configures the counter in Start-Stop Cumulative mode.
+//!
+//! \param base is the base of the counter to be configured.
+//! \param config_params are the configuration parameters to be used to
+//! configure the counter.
+//! \param start_event is the event that starts the counter
+//! \param stop_event is the event which stops that counter
+//!
+//! This function configures the counter with the given parameters. The counter
+//! is setup in Cumulative mode, which means counting will happen only between
+//! two specified events and the counter will not reset on \b stop_event. The
+//! event that will be counted can be any of the \b ERAD_Counter_Input_Event
+//! and not only CPU cycles.
+//! NOTE: \b ERAD_EVENT_NO_EVENT causes the counter to use the CPU cycles.
+//! NOTE: This function does not enable the counter. The counter must be
+//! enabled using the \b ERAD_enableModules method to begin counting.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+ERAD_configCounterInCumulativeMode(uint32_t base,
+                                   ERAD_Counter_Config config_params,
+                                   ERAD_Counter_Input_Event start_event,
+                                   ERAD_Counter_Input_Event stop_event);
+
+//*****************************************************************************
+//
+//! Configures the AND and OR masks
+//!
+//! \param mask is the Mask to be used.
+//!
+//! \param instances is the OR'd value of the instances of the  bus comparator
+//!  units whose events need to be used for the mask. Following macros can be
+//!  used:
+//! - \b ERAD_INST_BUSCOMP1
+//! - \b ERAD_INST_BUSCOMP2
+//! - \b ERAD_INST_BUSCOMP3
+//! - \b ERAD_INST_BUSCOMP4
+//! - \b ERAD_INST_BUSCOMP5
+//! - \b ERAD_INST_BUSCOMP6
+//! - \b ERAD_INST_BUSCOMP7
+//! - \b ERAD_INST_BUSCOMP8
+//! - \b ERAD_INST_COUNTER1
+//! - \b ERAD_INST_COUNTER2
+//! - \b ERAD_INST_COUNTER3
+//! - \b ERAD_INST_COUNTER4
+//!
+//! \param enable_int True if interrupt needs to be enabled, False if not
+//!
+//! This function enables the event generated from the specified bus comparator
+//! units to be used for the specified Mask. It also configures the interrupt
+//! generation when the mask event occurs.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+ERAD_configMask(ERAD_Mask mask, uint32_t instances, bool enable_int);
+
+//*****************************************************************************
+//
 //! Configures the reset event of the counter.
 //!
 //! \param base is the base of the counter to be configured.
@@ -760,10 +1080,11 @@ ERAD_enableCounterResetInput(uint32_t base,
     // Setup up the counter such that the reset event is set and enabled
     //
     EALLOW;
-    HWREGH(base + ERAD_O_CTM_CNTL) =
-            (HWREGH(base + ERAD_O_CTM_CNTL) & ~(ERAD_CTM_CNTL_RST_INP_SEL_M)) |
-            (reset_event << ERAD_CTM_CNTL_RST_INP_SEL_S) | ERAD_CTM_CNTL_RST_EN;
-
+    HWREG(base + ERAD_O_CTM_CNTL) |= ERAD_CTM_CNTL_RST_EN;
+    HWREG(base + ERAD_O_CTM_INPUT_SEL_2) =
+                (HWREG(base + ERAD_O_CTM_INPUT_SEL_2) &
+                ~ERAD_CTM_INPUT_SEL_2_RST_INP_SEL_M) |
+                ((uint16_t)reset_event << ERAD_CTM_INPUT_SEL_2_RST_INP_SEL_S);
     EDIS;
 }
 
@@ -970,6 +1291,230 @@ ERAD_setMaxCount(uint32_t base, uint32_t value)
     //
     EALLOW;
     HWREG(base + ERAD_O_CTM_MAX_COUNT) = value;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Sets conditioning on the inputs to the counter.
+//!
+//! \param base is the base value of the counter to be configured
+//! \param input_type defines which input needs to be conditioned
+//! \param options is the kind of conditioning that needs to applied. This will
+//! be an OR'd value of \b ERAD_INVERT_ENABLE, \b ERAD_INVERT_DISABLE,
+//! \b ERAD_SYNC_ENABLE or \b ERAD_SYNC_DISABLE.
+//!
+//! This function conditions the inputs to the counter specified. This includes
+//! inverting the input and enabling a 2-stage synchronizer for any 4 of the
+//! inputs: \e reset, \e stop, \e start, \e count_input.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_setCounterInputConditioning(uint32_t base,
+                                 ERAD_Counter_Input_Type input_type,
+                                 uint16_t options)
+{
+    //
+    // Write into the Input Conditioning register
+    //
+    EALLOW;
+    HWREGH(base + ERAD_O_CTM_INPUT_COND) =
+                    (HWREGH(base + ERAD_O_CTM_INPUT_COND) &
+                     ~(0x03U << (uint16_t)input_type)) |
+                    (options << (uint16_t)input_type);
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Initialises the CRC unit.
+//!
+//! \param instances is the OR'd value of CRC instances. Following macros can
+//!  be used:
+//!  - \b ERAD_INST_CRC1
+//!  - \b ERAD_INST_CRC2
+//!  - \b ERAD_INST_CRC3
+//!  - \b ERAD_INST_CRC4
+//!  - \b ERAD_INST_CRC5
+//!  - \b ERAD_INST_CRC6
+//!  - \b ERAD_INST_CRC7
+//!  - \b ERAD_INST_CRC8
+//!
+//! This function initialises the specified CRC units.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_initCRC(uint16_t instances)
+{
+    //
+    // Write into the CRC GLOBAL CTRL register
+    //
+    EALLOW;
+    HWREGH(ERAD_CRC_GLOBAL_BASE + ERAD_O_CRC_GLOBAL_CTRL) |= instances;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Enables the CRC unit.
+//!
+//! \param instances is the OR'd value of CRC instances. Following macros can
+//!  be used:
+//!  - \b ERAD_INST_CRC1
+//!  - \b ERAD_INST_CRC2
+//!  - \b ERAD_INST_CRC3
+//!  - \b ERAD_INST_CRC4
+//!  - \b ERAD_INST_CRC5
+//!  - \b ERAD_INST_CRC6
+//!  - \b ERAD_INST_CRC7
+//!  - \b ERAD_INST_CRC8
+//!
+//! This function enables the specified CRC units.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_enableCRC(uint16_t instances)
+{
+    //
+    // Write into the CRC GLOBAL CTRL register
+    //
+    EALLOW;
+    HWREGH(ERAD_CRC_GLOBAL_BASE + ERAD_O_CRC_GLOBAL_CTRL) |= instances << 8;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Disables the CRC unit.
+//!
+//! \param instances is the OR'd value of CRC instances. Following macros can
+//!  be used:
+//!  - \b ERAD_INST_CRC1
+//!  - \b ERAD_INST_CRC2
+//!  - \b ERAD_INST_CRC3
+//!  - \b ERAD_INST_CRC4
+//!  - \b ERAD_INST_CRC5
+//!  - \b ERAD_INST_CRC6
+//!  - \b ERAD_INST_CRC7
+//!  - \b ERAD_INST_CRC8
+//!
+//! This function disables the specified CRC units.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_disableCRC(uint16_t instances)
+{
+    //
+    // Write into the CRC GLOBAL CTRL register
+    //
+    EALLOW;
+    HWREGH(ERAD_CRC_GLOBAL_BASE + ERAD_O_CRC_GLOBAL_CTRL) &= ~(instances << 8);
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Gets the current value of the CRC unit.
+//!
+//! \param base is the base value of CRC unit
+//!
+//! This function returns the current value of te specified CRC unit.
+//!
+//! \return Current CRC value.
+//
+//*****************************************************************************
+static inline uint32_t
+ERAD_getCurrentCRC(uint32_t base)
+{
+    //
+    // Check if base is valid
+    //
+    ASSERT(ERAD_isValidCRCBase(base));
+
+    //
+    // Read from the current value register of the specified CRC unit
+    //
+    return(HWREG(base + ERAD_O_CRC_CURRENT));
+}
+
+//*****************************************************************************
+//
+//! Sets the seed value of the CRC unit
+//!
+//! \param base is the base value of the CRC unit
+//! \param seed is the value of seed to be set
+//!
+//! This function sets a seed value of the CRC unit.
+//! Note: The corresponding CRC unit must be disabled before setting the seed
+//! value.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_setSeed(uint32_t base, uint32_t seed)
+{
+    //
+    // Check if base is valid
+    //
+    ASSERT(ERAD_isValidCRCBase(base));
+
+    //
+    // Check if the unit is disabled
+    //
+    ASSERT((HWREGH(ERAD_CRC_GLOBAL_BASE + ERAD_O_CRC_GLOBAL_CTRL) &
+            ERAD_getCRCInstance(base)) == 0U);
+
+    //
+    // Write into the CRC SEED register
+    //
+    EALLOW;
+    HWREGH(base + ERAD_O_CRC_SEED) = seed;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Sets the qualifier event of the CRC unit
+//!
+//! \param base is the base value of the CRC unit
+//! \param qualifier is the type of qualifier to be set
+//!
+//! This function sets a qualifier to decide which events require a CRC
+//! computation.
+//! Note: The corresponding CRC unit must be disabled before setting the
+//! qualifier.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+ERAD_setCRCQualifier(uint32_t base, ERAD_CRC_Qualifiers qualifier)
+{
+    //
+    // Check if base is valid
+    //
+    ASSERT(ERAD_isValidCRCBase(base));
+
+    //
+    // Check if the unit is disabled
+    //
+    ASSERT((HWREGH(ERAD_CRC_GLOBAL_BASE + ERAD_O_CRC_GLOBAL_CTRL) &
+            ERAD_getCRCInstance(base)) == 0U);
+
+    //
+    // Write into the CRC Qualifier register
+    //
+    EALLOW;
+    HWREGH(base + ERAD_O_CRC_QUALIFIER) = qualifier;
     EDIS;
 }
 

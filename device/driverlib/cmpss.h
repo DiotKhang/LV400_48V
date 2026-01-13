@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -223,10 +223,7 @@ CMPSS_isBaseValid(uint32_t base)
            (base == CMPSS1_BASE) ||
            (base == CMPSS2_BASE) ||
            (base == CMPSS3_BASE) ||
-           (base == CMPSS4_BASE) ||
-           (base == CMPSS5_BASE) ||
-           (base == CMPSS6_BASE) ||
-           (base == CMPSS7_BASE)
+           (base == CMPSS4_BASE)
           );
 }
 #endif
@@ -1248,7 +1245,7 @@ CMPSS_disableBlanking(uint32_t base)
 //! comparator.
 //!
 //! The \e samplePrescale parameter specifies the number of system clock cycles
-//! between samples. It is a 10-bit value so a number higher than 1023 should
+//! between samples. It is a 16-bit value so a number higher than 65535 should
 //! not be passed as this parameter. The prescaler used by digital filter is 1
 //! more than \e samplePrescale value. So, the input provided should be 1 less
 //! than the expected prescaler.
@@ -1296,7 +1293,7 @@ CMPSS_configFilterHigh(uint32_t base, uint16_t samplePrescale,
 //! comparator.
 //!
 //! The \e samplePrescale parameter specifies the number of system clock cycles
-//! between samples. It is a 10-bit value so a number higher than 1023 should
+//! between samples. It is a 16-bit value so a number higher than 65535 should
 //! not be passed as this parameter. The prescaler used by digital filter is 1
 //! more than \e samplePrescale value. So, the input provided should be 1 less
 //! than the expected prescaler.

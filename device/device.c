@@ -5,23 +5,34 @@
 // TITLE:  Device setup for examples.
 //
 //#############################################################################
+// $TI Release: obc_7_4kw_ttplpfc_clllc v2.00.03.00 $
+// $Release Date: Tue Aug 26 14:08:13 CDT 2025 $
+// $Copyright:
+// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+//
+// ALL RIGHTS RESERVED
+// $
+//#############################################################################
 
 //
 // Included Files
 //
 #include "device.h"
 #include "driverlib.h"
-
-// comment below line if not using DC-DC
-//#define USE_DC_DC
-// comment below line if not using INTOSC
-//#define USE_INTOSC
+#ifdef __cplusplus
+using std::memcpy;
+#endif
 
 //*****************************************************************************
 //
 // Function to initialize the device. Primarily initializes system control to a
 // known state by disabling the watchdog, setting up the SYSCLKOUT frequency,
 // and enabling the clocks to the peripherals.
+// The function also configures the GPIO pins 20 and 21 in digital mode.
+// To configure these pins as analog pins, use the function GPIO_setAnalogMode
+//
+// Note : In case XTAL is used as the PLL source, it is recommended to invoke
+// the Device_verifyXTAL() before configuring PLL
 //
 //*****************************************************************************
 void Device_init(void)
@@ -41,6 +52,13 @@ void Device_init(void)
     //
     memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (size_t)&RamfuncsLoadSize);
 
+    //
+    // Call Flash Initialization to setup flash waitstates. This function must
+    // reside in RAM.
+    //
+    Flash_initModule(FLASH0CTRL_BASE, FLASH0ECC_BASE, DEVICE_FLASH_WAITSTATES);
+
+    // now copy any additional code that needs to be copied from flash to ram
     memcpy(&isrcodefuncsRunStart, &isrcodefuncsLoadStart,
            (size_t)&isrcodefuncsLoadSize);
 #endif
@@ -53,7 +71,7 @@ void Device_init(void)
     //
     // Make sure the LSPCLK divider is set to the default (divide by 4)
     //
-    SysCtl_setLowSpeedClock(SYSCTL_LSPCLK_PRESCALE_2);
+    SysCtl_setLowSpeedClock(SYSCTL_LSPCLK_PRESCALE_4);
 
     //
     // These asserts will check that the #defines for the clock rates in
@@ -65,12 +83,16 @@ void Device_init(void)
     ASSERT(SysCtl_getClock(DEVICE_OSCSRC_FREQ) == DEVICE_SYSCLK_FREQ);
     ASSERT(SysCtl_getLowSpeedClock(DEVICE_OSCSRC_FREQ) == DEVICE_LSPCLK_FREQ);
 
-#ifdef _FLASH
+#ifndef _FLASH
     //
-    // Call Flash Initialization to setup flash waitstates. This function must
-    // reside in RAM.
+    // Call Device_cal function when run using debugger
+    // This function is called as part of the Boot code. The function is called
+    // in the Device_init function since during debug time resets, the boot code
+    // will not be executed and the gel script will reinitialize all the
+    // registers and the calibrated values will be lost.
+	// Sysctl_deviceCal is a wrapper function for Device_Cal
     //
-    Flash_initModule(FLASH0CTRL_BASE, FLASH0ECC_BASE, DEVICE_FLASH_WAITSTATES);
+    SysCtl_deviceCal();
 #endif
 
     //
@@ -78,24 +100,18 @@ void Device_init(void)
     //
     Device_enableAllPeripherals();
 
+    //
+    // Lock VREGCTL Register
+    // The register VREGCTL is not supported in this device. It is locked to
+    // prevent any writes to this register
+    //
+    ASysCtl_lockVREG();
 
-#ifdef USE_DC_DC
-
-    ASysCtl_enableDCDC();
-
-    while(!ASysCtl_getSwitchSequenceStatus())
-    {
-        DEVICE_DELAY_US(80);
-    }
-
-
-    while(!ASysCtl_getInductorFaultStatus())
-     {
-         DEVICE_DELAY_US(80);
-     }
-
-    DEVICE_DELAY_US(80);
-#endif
+    //
+    // Configure GPIO20 and GPIO21 as digital pins
+    //
+    GPIO_setAnalogMode(20U, GPIO_ANALOG_DISABLED);
+    GPIO_setAnalogMode(21U, GPIO_ANALOG_DISABLED);
 }
 
 //*****************************************************************************
@@ -113,8 +129,11 @@ void Device_enableAllPeripherals(void)
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TIMER0);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TIMER1);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TIMER2);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_HRPWM);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CPUBGCRC);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CLA1BGCRC);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_HRCAL);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ERAD);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM1);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM2);
@@ -128,15 +147,12 @@ void Device_enableAllPeripherals(void)
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP1);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP2);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP3);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP4);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP5);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP6);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP7);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EQEP1);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EQEP2);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SD1);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SD2);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SCIA);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SCIB);
@@ -145,9 +161,10 @@ void Device_enableAllPeripherals(void)
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SPIB);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_I2CA);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_I2CB);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CANA);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CANB);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_MCANA);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ADCA);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ADCB);
@@ -157,26 +174,29 @@ void Device_enableAllPeripherals(void)
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CMPSS2);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CMPSS3);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CMPSS4);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CMPSS5);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CMPSS6);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CMPSS7);
-
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA1);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA2);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA3);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA4);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA5);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA6);
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PGA7);
 
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DACA);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DACB);
 
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_LINA);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CLB1);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CLB2);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CLB3);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CLB4);
 
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PMBUSA);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_FSITXA);
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_FSIRXA);
+
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_LINA);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_LINB);
+
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_PMBUSA);
+
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DCC0);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DCC1);
+
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_HICA);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_AESA);
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPG1);
 }
 
 //*****************************************************************************
@@ -192,6 +212,59 @@ void Device_initGPIO(void)
     GPIO_unlockPortConfig(GPIO_PORT_A, 0xFFFFFFFF);
     GPIO_unlockPortConfig(GPIO_PORT_B, 0xFFFFFFFF);
     GPIO_unlockPortConfig(GPIO_PORT_H, 0xFFFFFFFF);
+}
+
+//*****************************************************************************
+//
+// Function to verify the XTAL frequency
+// freq is the XTAL frequency in MHz
+// The function return true if the the actual XTAL frequency matches with the
+// input value
+//
+// Note that this function assumes that the PLL is not already configured and
+// hence uses SysClk freq = 10MHz for DCC calculation
+//
+//*****************************************************************************
+bool Device_verifyXTAL(float freq)
+{
+    //
+    // Use DCC to verify the XTAL frequency using INTOSC2 as reference clock
+    //
+
+    //
+    // Turn on XTAL and wait for it to power up using X1CNT
+    //
+    SysCtl_turnOnOsc(SYSCTL_OSCSRC_XTAL);
+    SysCtl_clearExternalOscCounterValue();
+    while(SysCtl_getExternalOscCounterValue() != SYSCTL_X1CNT_X1CNT_M);
+
+    //
+    // Enable DCC0 clock
+    //
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DCC0);
+
+    //
+    // Insert atleast 5 cycles delay after enabling the peripheral clock
+    //
+    asm(" RPT #5 || NOP");
+
+    //
+    // Configures XTAL as CLKSRC0 and INTOSC2 as CLKSRC1
+    // Fclk0 = XTAL frequency (input parameter)
+    // Fclk1 = INTOSC2 frequency = 10MHz
+    //
+    // Configuring DCC error tolerance of +/-1%
+    // INTOSC2 can have a variance in frequency of +/-10%
+    //
+    // Assuming PLL is not already configured, SysClk freq = 10MHz
+    //
+    // Note : Update the tolerance and INTOSC2 frequency variance as necessary.
+    //
+    return (DCC_verifyClockFrequency(DCC0_BASE,
+                                     DCC_COUNT1SRC_INTOSC2, 10.0F,
+                                     DCC_COUNT0SRC_XTAL, freq,
+                                     1.0F, 10.0F, 10.0F));
+
 }
 
 //*****************************************************************************
