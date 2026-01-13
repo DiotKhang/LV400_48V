@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,90 +46,96 @@
 // The following are defines for the HRPWM register offsets
 //
 //*************************************************************************************************
-#define HRPWM_O_TBCTL          0x0U    // Time Base Control Register
-#define HRPWM_O_TBCTL2         0x1U    // Time Base Control Register 2
-#define HRPWM_O_TBCTR          0x4U    // Time Base Counter Register
-#define HRPWM_O_TBSTS          0x5U    // Time Base Status Register
-#define HRPWM_O_CMPCTL         0x8U    // Counter Compare Control Register
-#define HRPWM_O_CMPCTL2        0x9U    // Counter Compare Control Register 2
-#define HRPWM_O_DBCTL          0xCU    // Dead-Band Generator Control Register
-#define HRPWM_O_DBCTL2         0xDU    // Dead-Band Generator Control Register 2
-#define HRPWM_O_AQCTL          0x10U   // Action Qualifier Control Register
-#define HRPWM_O_AQTSRCSEL      0x11U   // Action Qualifier Trigger Event Source Select Register
-#define HRPWM_O_PCCTL          0x14U   // PWM Chopper Control Register
-#define HRPWM_O_VCAPCTL        0x18U   // Valley Capture Control Register
-#define HRPWM_O_VCNTCFG        0x19U   // Valley Counter Config Register
-#define HRPWM_O_HRCNFG         0x20U   // HRPWM Configuration Register
-#define HRPWM_O_HRPWR          0x21U   // HRPWM Power Register
-#define HRPWM_O_HRMSTEP        0x26U   // HRPWM MEP Step Register
-#define HRPWM_O_HRCNFG2        0x27U   // HRPWM Configuration 2 Register
-#define HRPWM_O_HRPCTL         0x2DU   // High Resolution Period Control Register
-#define HRPWM_O_TRREM          0x2EU   // HRPWM High Resolution Remainder Register
-#define HRPWM_O_GLDCTL         0x34U   // Global PWM Load Control Register
-#define HRPWM_O_GLDCFG         0x35U   // Global PWM Load Config Register
-#define HRPWM_O_EPWMXLINK      0x38U   // EPWMx Link Register
-#define HRPWM_O_AQCTLA         0x40U   // Action Qualifier Control Register For Output A
-#define HRPWM_O_AQCTLA2        0x41U   // Additional Action Qualifier Control Register For Output A
-#define HRPWM_O_AQCTLB         0x42U   // Action Qualifier Control Register For Output B
-#define HRPWM_O_AQCTLB2        0x43U   // Additional Action Qualifier Control Register For Output B
-#define HRPWM_O_AQSFRC         0x47U   // Action Qualifier Software Force Register
-#define HRPWM_O_AQCSFRC        0x49U   // Action Qualifier Continuous S/W Force Register
-#define HRPWM_O_DBREDHR        0x50U   // Dead-Band Generator Rising Edge Delay High Resolution
-                                       // Mirror Register
-#define HRPWM_O_DBRED          0x51U   // Dead-Band Generator Rising Edge Delay High Resolution
-                                       // Mirror Register
-#define HRPWM_O_DBFEDHR        0x52U   // Dead-Band Generator Falling Edge Delay High Resolution
-                                       // Register
-#define HRPWM_O_DBFED          0x53U   // Dead-Band Generator Falling Edge Delay Count Register
-#define HRPWM_O_TBPHS          0x60U   // Time Base Phase High
-#define HRPWM_O_TBPRDHR        0x62U   // Time Base Period High Resolution Register
-#define HRPWM_O_TBPRD          0x63U   // Time Base Period Register
-#define HRPWM_O_CMPA           0x6AU   // Counter Compare A Register
-#define HRPWM_O_CMPB           0x6CU   // Compare B Register
-#define HRPWM_O_CMPC           0x6FU   // Counter Compare C Register
-#define HRPWM_O_CMPD           0x71U   // Counter Compare D Register
-#define HRPWM_O_GLDCTL2        0x74U   // Global PWM Load Control Register 2
-#define HRPWM_O_SWVDELVAL      0x77U   // Software Valley Mode Delay Register
-#define HRPWM_O_TZSEL          0x80U   // Trip Zone Select Register
-#define HRPWM_O_TZDCSEL        0x82U   // Trip Zone Digital Comparator Select Register
-#define HRPWM_O_TZCTL          0x84U   // Trip Zone Control Register
-#define HRPWM_O_TZCTL2         0x85U   // Additional Trip Zone Control Register
-#define HRPWM_O_TZCTLDCA       0x86U   // Trip Zone Control Register Digital Compare A
-#define HRPWM_O_TZCTLDCB       0x87U   // Trip Zone Control Register Digital Compare B
-#define HRPWM_O_TZEINT         0x8DU   // Trip Zone Enable Interrupt Register
-#define HRPWM_O_TZFLG          0x93U   // Trip Zone Flag Register
-#define HRPWM_O_TZCBCFLG       0x94U   // Trip Zone CBC Flag Register
-#define HRPWM_O_TZOSTFLG       0x95U   // Trip Zone OST Flag Register
-#define HRPWM_O_TZCLR          0x97U   // Trip Zone Clear Register
-#define HRPWM_O_TZCBCCLR       0x98U   // Trip Zone CBC Clear Register
-#define HRPWM_O_TZOSTCLR       0x99U   // Trip Zone OST Clear Register
-#define HRPWM_O_TZFRC          0x9BU   // Trip Zone Force Register
-#define HRPWM_O_ETSEL          0xA4U   // Event Trigger Selection Register
-#define HRPWM_O_ETPS           0xA6U   // Event Trigger Pre-Scale Register
-#define HRPWM_O_ETFLG          0xA8U   // Event Trigger Flag Register
-#define HRPWM_O_ETCLR          0xAAU   // Event Trigger Clear Register
-#define HRPWM_O_ETFRC          0xACU   // Event Trigger Force Register
-#define HRPWM_O_ETINTPS        0xAEU   // Event-Trigger Interrupt Pre-Scale Register
-#define HRPWM_O_ETSOCPS        0xB0U   // Event-Trigger SOC Pre-Scale Register
-#define HRPWM_O_ETCNTINITCTL   0xB2U   // Event-Trigger Counter Initialization Control Register
-#define HRPWM_O_ETCNTINIT      0xB4U   // Event-Trigger Counter Initialization Register
-#define HRPWM_O_DCTRIPSEL      0xC0U   // Digital Compare Trip Select Register
-#define HRPWM_O_DCACTL         0xC3U   // Digital Compare A Control Register
-#define HRPWM_O_DCBCTL         0xC4U   // Digital Compare B Control Register
-#define HRPWM_O_DCFCTL         0xC7U   // Digital Compare Filter Control Register
-#define HRPWM_O_DCCAPCTL       0xC8U   // Digital Compare Capture Control Register
-#define HRPWM_O_DCFOFFSET      0xC9U   // Digital Compare Filter Offset Register
-#define HRPWM_O_DCFOFFSETCNT   0xCAU   // Digital Compare Filter Offset Counter Register
-#define HRPWM_O_DCFWINDOW      0xCBU   // Digital Compare Filter Window Register
-#define HRPWM_O_DCFWINDOWCNT   0xCCU   // Digital Compare Filter Window Counter Register
-#define HRPWM_O_DCCAP          0xCFU   // Digital Compare Counter Capture Register
-#define HRPWM_O_DCAHTRIPSEL    0xD2U   // Digital Compare AH Trip Select
-#define HRPWM_O_DCALTRIPSEL    0xD3U   // Digital Compare AL Trip Select
-#define HRPWM_O_DCBHTRIPSEL    0xD4U   // Digital Compare BH Trip Select
-#define HRPWM_O_DCBLTRIPSEL    0xD5U   // Digital Compare BL Trip Select
-#define HRPWM_O_EPWMLOCK       0xFAU   // EPWM Lock Register
-#define HRPWM_O_HWVDELVAL      0xFDU   // Hardware Valley Mode Delay Register
-#define HRPWM_O_VCNTVAL        0xFEU   // Hardware Valley Counter Register
+#define HRPWM_O_TBCTL              0x0U    // Time Base Control Register
+#define HRPWM_O_TBCTL2             0x1U    // Time Base Control Register 2
+#define HRPWM_O_EPWMSYNCINSEL      0x3U    // EPWMxSYNCIN Source Select Register
+#define HRPWM_O_TBCTR              0x4U    // Time Base Counter Register
+#define HRPWM_O_TBSTS              0x5U    // Time Base Status Register
+#define HRPWM_O_EPWMSYNCOUTEN      0x6U    // EPWMxSYNCOUT Source Enable Register
+#define HRPWM_O_TBCTL3             0x7U    // Time Base Control Register 3
+#define HRPWM_O_CMPCTL             0x8U    // Counter Compare Control Register
+#define HRPWM_O_CMPCTL2            0x9U    // Counter Compare Control Register 2
+#define HRPWM_O_DBCTL              0xCU    // Dead-Band Generator Control Register
+#define HRPWM_O_DBCTL2             0xDU    // Dead-Band Generator Control Register 2
+#define HRPWM_O_AQCTL              0x10U   // Action Qualifier Control Register
+#define HRPWM_O_AQTSRCSEL          0x11U   // Action Qualifier Trigger Event Source Select Register
+#define HRPWM_O_PCCTL              0x14U   // PWM Chopper Control Register
+#define HRPWM_O_VCAPCTL            0x18U   // Valley Capture Control Register
+#define HRPWM_O_VCNTCFG            0x19U   // Valley Counter Config Register
+#define HRPWM_O_HRCNFG             0x20U   // HRPWM Configuration Register
+#define HRPWM_O_HRPWR              0x21U   // HRPWM Power Register
+#define HRPWM_O_HRMSTEP            0x26U   // HRPWM MEP Step Register
+#define HRPWM_O_HRCNFG2            0x27U   // HRPWM Configuration 2 Register
+#define HRPWM_O_HRPCTL             0x2DU   // High Resolution Period Control Register
+#define HRPWM_O_TRREM              0x2EU   // HRPWM High Resolution Remainder Register
+#define HRPWM_O_GLDCTL             0x34U   // Global PWM Load Control Register
+#define HRPWM_O_GLDCFG             0x35U   // Global PWM Load Config Register
+#define HRPWM_O_EPWMXLINK          0x38U   // EPWMx Link Register
+#define HRPWM_O_AQCTLA             0x40U   // Action Qualifier Control Register For Output A
+#define HRPWM_O_AQCTLA2            0x41U   // Additional Action Qualifier Control Register For
+                                           // Output A
+#define HRPWM_O_AQCTLB             0x42U   // Action Qualifier Control Register For Output B
+#define HRPWM_O_AQCTLB2            0x43U   // Additional Action Qualifier Control Register For
+                                           // Output B
+#define HRPWM_O_AQSFRC             0x47U   // Action Qualifier Software Force Register
+#define HRPWM_O_AQCSFRC            0x49U   // Action Qualifier Continuous S/W Force Register
+#define HRPWM_O_DBREDHR            0x50U   // Dead-Band Generator Rising Edge Delay High Resolution
+                                           // Mirror Register
+#define HRPWM_O_DBRED              0x51U   // Dead-Band Generator Rising Edge Delay High Resolution
+                                           // Mirror Register
+#define HRPWM_O_DBFEDHR            0x52U   // Dead-Band Generator Falling Edge Delay High
+                                           // Resolution Register
+#define HRPWM_O_DBFED              0x53U   // Dead-Band Generator Falling Edge Delay Count Register
+#define HRPWM_O_TBPHS              0x60U   // Time Base Phase High
+#define HRPWM_O_TBPRDHR            0x62U   // Time Base Period High Resolution Register
+#define HRPWM_O_TBPRD              0x63U   // Time Base Period Register
+#define HRPWM_O_CMPA               0x6AU   // Counter Compare A Register
+#define HRPWM_O_CMPB               0x6CU   // Compare B Register
+#define HRPWM_O_CMPC               0x6FU   // Counter Compare C Register
+#define HRPWM_O_CMPD               0x71U   // Counter Compare D Register
+#define HRPWM_O_GLDCTL2            0x74U   // Global PWM Load Control Register 2
+#define HRPWM_O_SWVDELVAL          0x77U   // Software Valley Mode Delay Register
+#define HRPWM_O_TZSEL              0x80U   // Trip Zone Select Register
+#define HRPWM_O_TZDCSEL            0x82U   // Trip Zone Digital Comparator Select Register
+#define HRPWM_O_TZCTL              0x84U   // Trip Zone Control Register
+#define HRPWM_O_TZCTL2             0x85U   // Additional Trip Zone Control Register
+#define HRPWM_O_TZCTLDCA           0x86U   // Trip Zone Control Register Digital Compare A
+#define HRPWM_O_TZCTLDCB           0x87U   // Trip Zone Control Register Digital Compare B
+#define HRPWM_O_TZEINT             0x8DU   // Trip Zone Enable Interrupt Register
+#define HRPWM_O_TZFLG              0x93U   // Trip Zone Flag Register
+#define HRPWM_O_TZCBCFLG           0x94U   // Trip Zone CBC Flag Register
+#define HRPWM_O_TZOSTFLG           0x95U   // Trip Zone OST Flag Register
+#define HRPWM_O_TZCLR              0x97U   // Trip Zone Clear Register
+#define HRPWM_O_TZCBCCLR           0x98U   // Trip Zone CBC Clear Register
+#define HRPWM_O_TZOSTCLR           0x99U   // Trip Zone OST Clear Register
+#define HRPWM_O_TZFRC              0x9BU   // Trip Zone Force Register
+#define HRPWM_O_ETSEL              0xA4U   // Event Trigger Selection Register
+#define HRPWM_O_ETPS               0xA6U   // Event Trigger Pre-Scale Register
+#define HRPWM_O_ETFLG              0xA8U   // Event Trigger Flag Register
+#define HRPWM_O_ETCLR              0xAAU   // Event Trigger Clear Register
+#define HRPWM_O_ETFRC              0xACU   // Event Trigger Force Register
+#define HRPWM_O_ETINTPS            0xAEU   // Event-Trigger Interrupt Pre-Scale Register
+#define HRPWM_O_ETSOCPS            0xB0U   // Event-Trigger SOC Pre-Scale Register
+#define HRPWM_O_ETCNTINITCTL       0xB2U   // Event-Trigger Counter Initialization Control Register
+#define HRPWM_O_ETCNTINIT          0xB4U   // Event-Trigger Counter Initialization Register
+#define HRPWM_O_DCTRIPSEL          0xC0U   // Digital Compare Trip Select Register
+#define HRPWM_O_DCACTL             0xC3U   // Digital Compare A Control Register
+#define HRPWM_O_DCBCTL             0xC4U   // Digital Compare B Control Register
+#define HRPWM_O_DCFCTL             0xC7U   // Digital Compare Filter Control Register
+#define HRPWM_O_DCCAPCTL           0xC8U   // Digital Compare Capture Control Register
+#define HRPWM_O_DCFOFFSET          0xC9U   // Digital Compare Filter Offset Register
+#define HRPWM_O_DCFOFFSETCNT       0xCAU   // Digital Compare Filter Offset Counter Register
+#define HRPWM_O_DCFWINDOW          0xCBU   // Digital Compare Filter Window Register
+#define HRPWM_O_DCFWINDOWCNT       0xCCU   // Digital Compare Filter Window Counter Register
+#define HRPWM_O_BLANKPULSEMIXSEL   0xCDU   // Blanking window trigger pulse select register
+#define HRPWM_O_DCCAP              0xCFU   // Digital Compare Counter Capture Register
+#define HRPWM_O_DCAHTRIPSEL        0xD2U   // Digital Compare AH Trip Select
+#define HRPWM_O_DCALTRIPSEL        0xD3U   // Digital Compare AL Trip Select
+#define HRPWM_O_DCBHTRIPSEL        0xD4U   // Digital Compare BH Trip Select
+#define HRPWM_O_DCBLTRIPSEL        0xD5U   // Digital Compare BL Trip Select
+#define HRPWM_O_EPWMLOCK           0xFAU   // EPWM Lock Register
+#define HRPWM_O_HWVDELVAL          0xFDU   // Hardware Valley Mode Delay Register
+#define HRPWM_O_VCNTVAL            0xFEU   // Hardware Valley Counter Register
 
 
 //*************************************************************************************************
@@ -141,8 +147,6 @@
 #define HRPWM_TBCTL_CTRMODE_M     0x3U      // Counter Mode
 #define HRPWM_TBCTL_PHSEN         0x4U      // Phase Load Enable
 #define HRPWM_TBCTL_PRDLD         0x8U      // Active Period Load
-#define HRPWM_TBCTL_SYNCOSEL_S    4U
-#define HRPWM_TBCTL_SYNCOSEL_M    0x30U     // Sync Output Select
 #define HRPWM_TBCTL_SWFSYNC       0x40U     // Software Force Sync Pulse
 #define HRPWM_TBCTL_HSPCLKDIV_S   7U
 #define HRPWM_TBCTL_HSPCLKDIV_M   0x380U    // High Speed TBCLK Pre-scaler
@@ -159,10 +163,16 @@
 //*************************************************************************************************
 #define HRPWM_TBCTL2_OSHTSYNCMODE   0x40U     // One shot sync mode
 #define HRPWM_TBCTL2_OSHTSYNC       0x80U     // One shot sync
-#define HRPWM_TBCTL2_SYNCOSELX_S    12U
-#define HRPWM_TBCTL2_SYNCOSELX_M    0x3000U   // Syncout selection
 #define HRPWM_TBCTL2_PRDLDSYNC_S    14U
 #define HRPWM_TBCTL2_PRDLDSYNC_M    0xC000U   // PRD Shadow to Active Load on SYNC Event
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the EPWMSYNCINSEL register
+//
+//*************************************************************************************************
+#define HRPWM_EPWMSYNCINSEL_SEL_S   0U
+#define HRPWM_EPWMSYNCINSEL_SEL_M   0x1FU   // EPWMxSYNCI source select
 
 //*************************************************************************************************
 //
@@ -172,6 +182,26 @@
 #define HRPWM_TBSTS_CTRDIR   0x1U   // Counter Direction Status
 #define HRPWM_TBSTS_SYNCI    0x2U   // External Input Sync Status
 #define HRPWM_TBSTS_CTRMAX   0x4U   // Counter Max Latched Status
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the EPWMSYNCOUTEN register
+//
+//*************************************************************************************************
+#define HRPWM_EPWMSYNCOUTEN_SWEN        0x1U    // EPWMxSYNCO Software Force Enable
+#define HRPWM_EPWMSYNCOUTEN_ZEROEN      0x2U    // EPWMxSYNCO Zero Count Event Enable
+#define HRPWM_EPWMSYNCOUTEN_CMPBEN      0x4U    // EPWMxSYNCO Compare B Event Enable
+#define HRPWM_EPWMSYNCOUTEN_CMPCEN      0x8U    // EPWMxSYNCO Compare C Event Enable
+#define HRPWM_EPWMSYNCOUTEN_CMPDEN      0x10U   // EPWMxSYNCO Compare D Event Enable
+#define HRPWM_EPWMSYNCOUTEN_DCAEVT1EN   0x20U   // EPWMxSYNCO Digital Compare A Event 1 Sync Enable
+#define HRPWM_EPWMSYNCOUTEN_DCBEVT1EN   0x40U   // EPWMxSYNCO Digital Compare B Event 1 Sync Enable
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the TBCTL3 register
+//
+//*************************************************************************************************
+#define HRPWM_TBCTL3_OSSFRCEN   0x1U   // One Shot Sync Force Enable
 
 //*************************************************************************************************
 //
@@ -923,24 +953,40 @@
 // The following are defines for the bit fields in the DCACTL register
 //
 //*************************************************************************************************
-#define HRPWM_DCACTL_EVT1SRCSEL       0x1U     // DCAEVT1 Source Signal
-#define HRPWM_DCACTL_EVT1FRCSYNCSEL   0x2U     // DCAEVT1 Force Sync Signal
-#define HRPWM_DCACTL_EVT1SOCE         0x4U     // DCAEVT1 SOC Enable
-#define HRPWM_DCACTL_EVT1SYNCE        0x8U     // DCAEVT1 SYNC Enable
-#define HRPWM_DCACTL_EVT2SRCSEL       0x100U   // DCAEVT2 Source Signal
-#define HRPWM_DCACTL_EVT2FRCSYNCSEL   0x200U   // DCAEVT2 Force Sync Signal
+#define HRPWM_DCACTL_EVT1SRCSEL        0x1U      // DCAEVT1 Source Signal
+#define HRPWM_DCACTL_EVT1FRCSYNCSEL    0x2U      // DCAEVT1 Force Sync Signal
+#define HRPWM_DCACTL_EVT1SOCE          0x4U      // DCAEVT1 SOC Enable
+#define HRPWM_DCACTL_EVT1SYNCE         0x8U      // DCAEVT1 SYNC Enable
+#define HRPWM_DCACTL_EVT1LATSEL        0x10U     // DCAEVT1 Latched signal select
+#define HRPWM_DCACTL_EVT1LATCLRSEL_S   5U
+#define HRPWM_DCACTL_EVT1LATCLRSEL_M   0x60U     // DCAEVT1 Latched clear source select
+#define HRPWM_DCACTL_EVT1LAT           0x80U     // Indicates the status of DCAEVT1LAT signal.
+#define HRPWM_DCACTL_EVT2SRCSEL        0x100U    // DCAEVT2 Source Signal
+#define HRPWM_DCACTL_EVT2FRCSYNCSEL    0x200U    // DCAEVT2 Force Sync Signal
+#define HRPWM_DCACTL_EVT2LATSEL        0x1000U   // DCAEVT2 Latched signal select
+#define HRPWM_DCACTL_EVT2LATCLRSEL_S   13U
+#define HRPWM_DCACTL_EVT2LATCLRSEL_M   0x6000U   // DCAEVT2 Latched clear source select
+#define HRPWM_DCACTL_EVT2LAT           0x8000U   // Indicates the status of DCAEVT2LAT signal.
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the DCBCTL register
 //
 //*************************************************************************************************
-#define HRPWM_DCBCTL_EVT1SRCSEL       0x1U     // DCBEVT1 Source Signal
-#define HRPWM_DCBCTL_EVT1FRCSYNCSEL   0x2U     // DCBEVT1 Force Sync Signal
-#define HRPWM_DCBCTL_EVT1SOCE         0x4U     // DCBEVT1 SOC Enable
-#define HRPWM_DCBCTL_EVT1SYNCE        0x8U     // DCBEVT1 SYNC Enable
-#define HRPWM_DCBCTL_EVT2SRCSEL       0x100U   // DCBEVT2 Source Signal
-#define HRPWM_DCBCTL_EVT2FRCSYNCSEL   0x200U   // DCBEVT2 Force Sync Signal
+#define HRPWM_DCBCTL_EVT1SRCSEL        0x1U      // DCBEVT1 Source Signal
+#define HRPWM_DCBCTL_EVT1FRCSYNCSEL    0x2U      // DCBEVT1 Force Sync Signal
+#define HRPWM_DCBCTL_EVT1SOCE          0x4U      // DCBEVT1 SOC Enable
+#define HRPWM_DCBCTL_EVT1SYNCE         0x8U      // DCBEVT1 SYNC Enable
+#define HRPWM_DCBCTL_EVT1LATSEL        0x10U     // DCBEVT1 Latched signal select
+#define HRPWM_DCBCTL_EVT1LATCLRSEL_S   5U
+#define HRPWM_DCBCTL_EVT1LATCLRSEL_M   0x60U     // DCBEVT1 Latched clear source select
+#define HRPWM_DCBCTL_EVT1LAT           0x80U     // Indicates the status of DCBEVT1LAT signal.
+#define HRPWM_DCBCTL_EVT2SRCSEL        0x100U    // DCBEVT2 Source Signal
+#define HRPWM_DCBCTL_EVT2FRCSYNCSEL    0x200U    // DCBEVT2 Force Sync Signal
+#define HRPWM_DCBCTL_EVT2LATSEL        0x1000U   // DCBEVT2 Latched signal select
+#define HRPWM_DCBCTL_EVT2LATCLRSEL_S   13U
+#define HRPWM_DCBCTL_EVT2LATCLRSEL_M   0x6000U   // DCBEVT2 Latched clear source select
+#define HRPWM_DCBCTL_EVT2LAT           0x8000U   // Indicates the status of DCBEVT2LAT signal.
 
 //*************************************************************************************************
 //
@@ -971,6 +1017,22 @@
 #define HRPWM_DCCAPCTL_CAPSTS     0x2000U   // Latched Status Flag for Capture Event
 #define HRPWM_DCCAPCTL_CAPCLR     0x4000U   // DC Capture Latched Status Clear Flag
 #define HRPWM_DCCAPCTL_CAPMODE    0x8000U   // Counter Capture Mode
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the BLANKPULSEMIXSEL register
+//
+//*************************************************************************************************
+#define HRPWM_BLANKPULSEMIXSEL_ZRO   0x1U     // Zero match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_PRD   0x2U     // Period match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CAU   0x4U     // CMPA up-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CAD   0x8U     // CMPA down-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CBU   0x10U    // CMPB up-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CBD   0x20U    // CMPB down-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CCU   0x40U    // CMPC up-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CCD   0x80U    // CMPC down-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CDU   0x100U   // CMPD up-count match enable to BLANKPULSEMIX
+#define HRPWM_BLANKPULSEMIXSEL_CDD   0x200U   // CMPD down-count match enable to BLANKPULSEMIX
 
 //*************************************************************************************************
 //

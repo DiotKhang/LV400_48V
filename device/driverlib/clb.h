@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -73,7 +73,7 @@ extern "C"
 //
 //*****************************************************************************
 #define CLB_LOGICCTL                0x0100U
-#define CLB_DATAEXCH                0x0200U
+#define CLB_DATAEXCH                0x0180U
 
 //*****************************************************************************
 //
@@ -340,11 +340,45 @@ typedef enum
     CLB_LOCAL_IN_MUX_EQEP_EQEPS         = 21,  //!< EQEPx EQEPS
     CLB_LOCAL_IN_MUX_CPU1_TBCLKSYNC     = 22,  //!< CPU1.TBCLKSYNC
     CLB_LOCAL_IN_MUX_CPU1_HALT          = 24,  //!< CPU1.HALT
+    CLB_LOCAL_IN_MUX_SPIPICO_CONTROLLER = 25,  //!< SPIPICO Controller Output
     CLB_LOCAL_IN_MUX_SPICLK             = 26,  //!< SPI Clock
     CLB_LOCAL_IN_MUX_SPIPICO_PERIPHERAL = 27,  //!< SPIPICO Peripheral Input
     CLB_LOCAL_IN_MUX_SPIPTE             = 28,  //!< SPI PTE
     CLB_LOCAL_IN_MUX_SCI_TX             = 29,  //!< SCI TX
+    CLB_LOCAL_IN_MUX_SPIPOCI_OUT        = 30,  //!< SPIPOCI(OUT)
     CLB_LOCAL_IN_MUX_CLB_PSCLK          = 31,  //!< CLB prescaled clock
+    CLB_LOCAL_IN_MUX_EPWM5A             = 32,  //!< EPWM5A (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM5A_OE          = 33,  //!< EPWM5A trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM5B             = 34,  //!< EPWM5B (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM5B_OE          = 35,  //!< EPWM5B trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM6A             = 36,  //!< EPWM6A (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM6A_OE          = 37,  //!< EPWM6A trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM6B             = 38,  //!< EPWM6B (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM6B_OE          = 39,  //!< EPWM6B trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM7A             = 40,  //!< EPWM7A (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM7A_OE          = 41,  //!< EPWM7A trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM7B             = 42,  //!< EPWM7B (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM7B_OE          = 43,  //!< EPWM7B trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM8A             = 44,  //!< EPWM8A (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM8A_OE          = 45,  //!< EPWM8A trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM8B             = 46,  //!< EPWM8B (CLB 1-4)
+    CLB_LOCAL_IN_MUX_EPWM8B_OE          = 47,  //!< EPWM8B trip output (CLB 1-4)
+    CLB_LOCAL_IN_MUX_INPUT1             = 48,  //!< CLBINPUTXBAR INPUT1
+    CLB_LOCAL_IN_MUX_INPUT2             = 49,  //!< CLBINPUTXBAR INPUT2
+    CLB_LOCAL_IN_MUX_INPUT3             = 50,  //!< CLBINPUTXBAR INPUT3
+    CLB_LOCAL_IN_MUX_INPUT4             = 51,  //!< CLBINPUTXBAR INPUT4
+    CLB_LOCAL_IN_MUX_INPUT5             = 52,  //!< CLBINPUTXBAR INPUT5
+    CLB_LOCAL_IN_MUX_INPUT6             = 53,  //!< CLBINPUTXBAR INPUT6
+    CLB_LOCAL_IN_MUX_INPUT7             = 54,  //!< CLBINPUTXBAR INPUT7
+    CLB_LOCAL_IN_MUX_INPUT8             = 55,  //!< CLBINPUTXBAR INPUT8
+    CLB_LOCAL_IN_MUX_INPUT9             = 56,  //!< CLBINPUTXBAR INPUT9
+    CLB_LOCAL_IN_MUX_INPUT10            = 57,  //!< CLBINPUTXBAR INPUT10
+    CLB_LOCAL_IN_MUX_INPUT11            = 58,  //!< CLBINPUTXBAR INPUT11
+    CLB_LOCAL_IN_MUX_INPUT12            = 59,  //!< CLBINPUTXBAR INPUT12
+    CLB_LOCAL_IN_MUX_INPUT13            = 60,  //!< CLBINPUTXBAR INPUT13
+    CLB_LOCAL_IN_MUX_INPUT14            = 61,  //!< CLBINPUTXBAR INPUT14
+    CLB_LOCAL_IN_MUX_INPUT15            = 62,  //!< CLBINPUTXBAR INPUT15
+    CLB_LOCAL_IN_MUX_INPUT16            = 63   //!< CLBINPUTXBAR INPUT16
 } CLB_LocalInputMux;
 
 //*****************************************************************************
@@ -481,10 +515,10 @@ typedef enum
     CLB_GLOBAL_IN_MUX_FSIRXA_ERROR_PACKET_RCVD = 113,  //!< FSIRXA Error Packet Received
     CLB_GLOBAL_IN_MUX_FSIRXA_PING_PACKET_RCVD  = 114,  //!< FSIRXA PING Packet Received
     CLB_GLOBAL_IN_MUX_FSIRXA_OUTPUT_FRAME_DONE = 115,  //!< FSIRXA Output Frame Done
-    CLB_GLOBAL_IN_MUX_FSIRXA_PACKET_TAG0       = 116,  //!< FSIRXA Packet TAG0
-    CLB_GLOBAL_IN_MUX_FSIRXA_PACKET_TAG1       = 117,  //!< FSIRXA Packet TAG1
-    CLB_GLOBAL_IN_MUX_FSIRXA_PACKET_TAG2       = 118,  //!< FSIRXA Packet TAG2
-    CLB_GLOBAL_IN_MUX_FSIRXA_PACKET_TAG3       = 119,  //!< FSIRXA Packet TAG3
+    CLB_GLOBAL_IN_MUX_FSIRXA_PING_TAG_MATCH    = 116,  //!< FSIRXA PING TAG Match
+    CLB_GLOBAL_IN_MUX_FSIRXA_DATA_TAG_MATCH    = 117,  //!< FSIRXA DATA TAG Match
+    CLB_GLOBAL_IN_MUX_FSIRXA_ERROR_TAG_MATCH   = 118,  //!< FSIRXA ERROR TAG Match
+    CLB_GLOBAL_IN_MUX_FSIRXA_RX_TRIG2          = 119,  //!< FSIRXA RX Trig 2
 
     CLB_GLOBAL_IN_MUX_SPI1_SPICLK               = 120,  //!< SPI1 SPICLK OUT
     CLB_GLOBAL_IN_MUX_SPI1_SPIPOCI_CONTROLLER   = 121,  //!< SPI1 SPIPOCI Controller IN
@@ -492,6 +526,8 @@ typedef enum
     CLB_GLOBAL_IN_MUX_SPI2_SPICLK               = 123,  //!< SPI2 SPICLK OUT
     CLB_GLOBAL_IN_MUX_SPI2_SPIPOCI_CONTROLLER   = 124,  //!< SPI2 SPIPOCI Controller IN
     CLB_GLOBAL_IN_MUX_SPI2_SPIPTE               = 125,  //!< SPI2 SPIPTE OUT
+
+    CLB_GLOBAL_IN_MUX_FSIRXA_RX_TRIG3          = 127,  //!< FSIRXA RX Trig 3
 } CLB_GlobalInputMux;
 
 //*****************************************************************************
@@ -1004,6 +1040,7 @@ static inline void CLB_configLocalInputMux(uint32_t base, CLB_Inputs inID,
                                             CLB_LocalInputMux localMuxCfg)
 {
     uint16_t shiftVal;
+    uint32_t miscShiftVal, inputMuxSel;
 
     ASSERT(CLB_isBaseValid(base));
 
@@ -1013,23 +1050,66 @@ static inline void CLB_configLocalInputMux(uint32_t base, CLB_Inputs inID,
     //
     shiftVal = (uint16_t)inID * CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_1_S;
 
+    //
+    // If the local inputs are selected then only 5-bits are used in this
+    // register but if miscellaneous inputs are selected then another 1-bit is
+    // used along with the above 5. So we need to calculate this accordingly.
+    //
+
+    //
+    // Each miscellaneous input has a 1-bit field in this register so
+    // need to calculate shift amount accordingly.
+    //
+    miscShiftVal = (uint32_t)inID + CLB_LCL_MUX_SEL_MISC_INPUT_SEL_S;
+
+    //
+    // Check if input < input4
+    //
     if(inID < CLB_IN4)
     {
+        //
+        // Each miscellaneous input has an extra 1-bit to be set
+        // apart from the local input bits
+        //
+        inputMuxSel =
+       ((((uint32_t)localMuxCfg & CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_M) <<
+        shiftVal) |
+       ((((uint32_t)localMuxCfg & CLB_LCL_MUX_SEL_MISC_INPUT_SEL_M) >>
+        CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_1_S) << miscShiftVal));
+
+        //
+        //Update the local / misc input mux selections
+        //
         HWREG(base + CLB_LOGICCTL + CLB_O_LCL_MUX_SEL_1) =
-            (HWREG(base + CLB_LOGICCTL + CLB_O_LCL_MUX_SEL_1) &
-             ~((uint32_t)CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_M << shiftVal)) |
-            ((uint32_t)localMuxCfg << shiftVal);
+       (HWREG(base + CLB_LOGICCTL + CLB_O_LCL_MUX_SEL_1) &
+        ~(((uint32_t)CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_M << shiftVal) |
+         (CLB_LCL_MUX_SEL_MISC_INPUT_SEL_BITM << miscShiftVal))) |
+        inputMuxSel;
     }
     else
     {
         //
-        // Calculating shift amount for inputs > input3
+        //Adjust the previously calculated shifts for the inputs >3
         //
-        shiftVal -= 4U * CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_1_S;
+        shiftVal -= 4U * CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_5_S;
+        miscShiftVal -= 4U;
+
+        //
+        // Each miscellaneous input has an extra 1-bit to be set
+        // apart from the local input bits
+        //
+        inputMuxSel =
+        ((((uint32_t)localMuxCfg & CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_4_M) <<
+        shiftVal) |
+        ((((uint32_t)localMuxCfg & CLB_LCL_MUX_SEL_MISC_INPUT_SEL_M) >>
+        CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_5_S) << miscShiftVal));
+
         HWREG(base + CLB_LOGICCTL + CLB_O_LCL_MUX_SEL_2) =
-            (HWREG(base + CLB_LOGICCTL + CLB_O_LCL_MUX_SEL_2) &
-             ~((uint32_t)CLB_LCL_MUX_SEL_1_LCL_MUX_SEL_IN_0_M << shiftVal)) |
-            ((uint32_t)localMuxCfg << shiftVal);
+       (HWREG(base + CLB_LOGICCTL + CLB_O_LCL_MUX_SEL_2) &
+        ~(((uint32_t)CLB_LCL_MUX_SEL_2_LCL_MUX_SEL_IN_4_M << shiftVal) |
+         (CLB_LCL_MUX_SEL_MISC_INPUT_SEL_BITM << miscShiftVal))) |
+        inputMuxSel;
+
     }
 }
 
@@ -1103,6 +1183,12 @@ static inline void CLB_configGlobalInputMux(uint32_t base, CLB_Inputs inID,
 //! The \e enable parameter can have one of the values from:
 //! false: Disable the respective CLB outputs
 //! true: Enable the respective CLB outputs
+//!
+//! \note Note that the 8 CLB outputs are replicated to create more output
+//!  paths. See your technical reference manual for more details.
+//!  If no further modifications are expected, then it is advised to set the
+//!  block writes bit of the MISC_ACCESS_CTRL Register. This will prevent
+//!  accidental writes.
 //!
 //! \return None.
 //
@@ -1506,6 +1592,213 @@ static inline uint32_t CLB_getOutputStatus(uint32_t base)
     ASSERT(CLB_isBaseValid(base));
 
     return(HWREG(base + CLB_LOGICCTL + CLB_O_DBG_OUT));
+}
+
+//*****************************************************************************
+//
+//! Enable CLB Pipeline Mode.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function enables the CLB Pipeline Mode
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_enablePipelineMode(uint32_t base)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_LOGICCTL + CLB_O_LOAD_EN) |= CLB_LOAD_EN_PIPELINE_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Disable CLB Pipeline Mode.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function disables the CLB Pipeline Mode.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_disablePipelineMode(uint32_t base)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_LOGICCTL + CLB_O_LOAD_EN) &= ~CLB_LOAD_EN_PIPELINE_EN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Disable CLB Output Mask Updates.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function disables the CLB Output Mask updates
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_disableOutputMaskUpdates(uint32_t base)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_O_MISC_ACCESS_CTRL) |= CLB_MISC_ACCESS_CTRL_BLKEN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Enable CLB Output Mask Updates.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function enables the CLB Output Mask updates
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_enableOutputMaskUpdates(uint32_t base)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_O_MISC_ACCESS_CTRL) &= ~CLB_MISC_ACCESS_CTRL_BLKEN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Enable Input Pipeline Mode.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function enables the CLB Input Pipeline mode
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_enableInputPipelineMode(uint32_t base, CLB_Inputs inID)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    HWREG(base + CLB_LOGICCTL + CLB_O_INPUT_FILTER) |=
+            (CLB_INPUT_FILTER_PIPE0 << (uint32_t)inID);
+}
+
+//*****************************************************************************
+//
+//! Disable Input Pipeline Mode.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function disables the CLB Input Pipeline mode
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_disableInputPipelineMode(uint32_t base, CLB_Inputs inID)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    HWREG(base + CLB_LOGICCTL + CLB_O_INPUT_FILTER) &=
+            ~(CLB_INPUT_FILTER_PIPE0 << (uint32_t)inID);
+}
+
+//*****************************************************************************
+//
+//! Disable SPI RX Buffer Access.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function disables the CLB SPI RX Buffer access
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_disableSPIBufferAccess(uint32_t base)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_O_MISC_ACCESS_CTRL) &= ~CLB_MISC_ACCESS_CTRL_SPIEN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Enable SPI RX Buffer Access.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//!
+//! This function enables the CLB SPI RX Buffer access
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_enableSPIBufferAccess(uint32_t base)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_O_MISC_ACCESS_CTRL) |= CLB_MISC_ACCESS_CTRL_SPIEN;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Configures SPI RX Buffer Load Signal event selection.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//! \param eventSel is the value for HLC event selection. Generated by tool as
+//!        \b TILEx_SPI_BUF_EVENT_SEL.
+//!
+//! This function configures the event selection for the SPI RX Buffer.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_configSPIBufferLoadSignal(uint32_t base, uint16_t eventSel)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_O_SPI_DATA_CTRL_HI) =
+        (HWREGH(base + CLB_O_SPI_DATA_CTRL_HI) &
+         ~((uint16_t)CLB_SPI_DATA_CTRL_HI_STRB_M << CLB_SPI_DATA_CTRL_HI_STRB_S)) |
+        ((uint16_t)eventSel << CLB_SPI_DATA_CTRL_HI_STRB_S);
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Configures SPI Export HLC R0 Shift value.
+//!
+//! \param base is the base address of a CLB tile's logic config register.
+//! \param shiftVal is the value for SPI export HLC R0 bit range selection.
+//!
+//! This function configures the SPI Export HLC R0 Shift value.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void CLB_configSPIBufferShift(uint32_t base, uint16_t shiftVal)
+{
+    ASSERT(CLB_isBaseValid(base));
+
+    EALLOW;
+    HWREGH(base + CLB_O_SPI_DATA_CTRL_HI) =
+        (HWREGH(base + CLB_O_SPI_DATA_CTRL_HI) &
+         ~((uint16_t)CLB_SPI_DATA_CTRL_HI_SHIFT_M << CLB_SPI_DATA_CTRL_HI_SHIFT_S)) |
+        ((uint16_t)shiftVal << CLB_SPI_DATA_CTRL_HI_SHIFT_S);
+    EDIS;
 }
 
 //*****************************************************************************

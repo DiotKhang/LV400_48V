@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -39,37 +39,6 @@
 //###########################################################################
 
 #include "dcc.h"
-
-//*****************************************************************************
-//
-// DCC_getRevisionNumber
-//
-//*****************************************************************************
-uint16_t
-DCC_getRevisionNumber(uint32_t base, DCC_RevisionNumber identifier)
-{
-    uint16_t number;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT(DCC_isBaseValid(base));
-
-    //
-    //  Get specified revision number or scheme
-    //
-    if(identifier == DCC_REVISION_MINOR)
-    {
-        number = (HWREGH(base + DCC_O_REV) & DCC_REV_MINOR_M);
-    }
-    else if(identifier == DCC_REVISION_MAJOR)
-    {
-        number = (HWREGH(base + DCC_O_REV) & DCC_REV_MAJOR_M) >>
-                 DCC_REV_MAJOR_S;
-    }
-
-    return(number);
-}
 
 
 //*****************************************************************************

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -54,6 +54,11 @@
                                   " SUB    ACC,#1\n"                           \
                                   " BF     _SysCtl_delay, GEQ\n"               \
                                   " LRETR\n")
+
+//
+// Macro used to add wait cycles to allow load capacitors to charge
+//
+#define SYSCTL_XTAL_CHARGE_DELAY   asm(" RPT #5 || NOP");
 
 //*****************************************************************************
 //
@@ -179,30 +184,21 @@ SysCtl_getClock(uint32_t clockInHz)
             (SYSCTL_SYSPLLCTL1_PLLEN | SYSCTL_SYSPLLCTL1_PLLCLKEN)) == 3U)
         {
             //
-            // Calculate portion from fractional multiplier
-            //
-            temp = (clockInHz * ((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
-                                  SYSCTL_SYSPLLMULT_FMULT_M) >>
-                                 SYSCTL_SYSPLLMULT_FMULT_S)) / 4U;
-
-            //
-            // Calculate integer multiplier and fixed divide by 2
+            // Calculate integer multiplier
             //
             clockOut = clockOut * ((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
                                     SYSCTL_SYSPLLMULT_IMULT_M) >>
                                    SYSCTL_SYSPLLMULT_IMULT_S);
 
             //
-            // Add in fractional portion
-            //
-            clockOut += temp;
-
-            //
             // Calculate PLL divider
             //
-            temp = ((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
-                     SYSCTL_SYSPLLMULT_ODIV_M) >>
-                    SYSCTL_SYSPLLMULT_ODIV_S) + 1U;
+            temp = ((((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
+                       SYSCTL_SYSPLLMULT_REFDIV_M) >>
+                      SYSCTL_SYSPLLMULT_REFDIV_S) + 1U) *
+                    (((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
+                       SYSCTL_SYSPLLMULT_ODIV_M) >>
+                      SYSCTL_SYSPLLMULT_ODIV_S) + 1U));
 
             //
             //  Divide dividers
@@ -216,8 +212,16 @@ SysCtl_getClock(uint32_t clockInHz)
         if((HWREG(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
             SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_M) != 0U)
         {
-            clockOut /= (2U * (HWREG(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
-                               SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_M));
+            uint32_t divider = 2U *
+                               (HWREG(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
+                                SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_M);
+            if((HWREG(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
+                SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_LSB) != 0U)
+            {
+                divider++;
+            }
+
+            clockOut /= divider;
         }
     }
 
@@ -232,17 +236,18 @@ SysCtl_getClock(uint32_t clockInHz)
 bool
 SysCtl_setClock(uint32_t config)
 {
-    uint16_t divSel, pllLockStatus;
-    uint32_t pllMult;
-    uint32_t retries = 0U, oscSource;
-    uint32_t timeout;
+    uint16_t divSel, pllen, oscclksrcsel, pllLockStatus, xtalval;
+    uint32_t oscSource, pllMult, mult;
+    uint32_t timeout, refdiv;
     bool status = false;
-    uint32_t mult;
 
     //
     // Check the arguments.
     //
     ASSERT((config & SYSCTL_OSCSRC_M) <= SYSCTL_OSCSRC_M);
+    ASSERT(((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_ENABLE) ||
+           ((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_BYPASS) ||
+           ((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_DISABLE));
 
     //
     // Don't proceed to the PLL initialization if an MCD failure is detected.
@@ -258,12 +263,6 @@ SysCtl_setClock(uint32_t config)
     else
     {
         //
-        // Configure oscillator source
-        //
-        oscSource = config & SYSCTL_OSCSRC_M;
-        SysCtl_selectOscSource(oscSource);
-
-        //
         // Bypass PLL
         //
         EALLOW;
@@ -272,130 +271,190 @@ SysCtl_setClock(uint32_t config)
         EDIS;
 
         //
-        // Delay of at least 60 OSCCLK cycles required post PLL bypass
+        // Delay of at least 120 OSCCLK cycles required post PLL bypass
         //
-        SysCtl_delay(11U);
+        SysCtl_delay(23U);
 
         //
-        // Get the PLL multiplier settings from config
+        // Derive the current and previous oscillator clock source values
         //
-        pllMult  = ((config & SYSCTL_IMULT_M) << SYSCTL_SYSPLLMULT_IMULT_S);
+        oscclksrcsel = HWREGH(CLKCFG_BASE + SYSCTL_O_CLKSRCCTL1) &
+                      (uint16_t)SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M;
 
-        pllMult |= (((config & SYSCTL_FMULT_M) >> SYSCTL_FMULT_S) <<
-                              SYSCTL_SYSPLLMULT_FMULT_S);
+        xtalval = (HWREGH(CLKCFG_BASE + SYSCTL_O_XTALCR) &
+                  (uint16_t)SYSCTL_XTALCR_SE);
 
-        pllMult |= (((config & SYSCTL_ODIV_M) >> SYSCTL_ODIV_S) <<
-                              SYSCTL_SYSPLLMULT_ODIV_S);
-
-        //
-        // Get the PLL multipliers currently programmed
-        //
-        mult  = ((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
-                SYSCTL_SYSPLLMULT_IMULT_M) >> SYSCTL_SYSPLLMULT_IMULT_S);
-
-        mult |= (HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
-                 SYSCTL_SYSPLLMULT_FMULT_M);
-
-        mult |= (HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
-                           SYSCTL_SYSPLLMULT_ODIV_M);
+        oscSource = (config & SYSCTL_OSCSRC_M) >> SYSCTL_OSCSRC_S;
 
         //
-        // Lock PLL only if the multipliers need update
+        // Check if the oscillator clock source has changed
         //
-        if(mult !=  pllMult)
+        if((oscclksrcsel | xtalval) != oscSource)
         {
             //
-            // Configure PLL if enabled
+            // Turn off PLL
             //
-            if((config & SYSCTL_PLL_ENABLE) == SYSCTL_PLL_ENABLE)
+            EALLOW;
+            HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) &=
+                ~SYSCTL_SYSPLLCTL1_PLLEN;
+            EDIS;
+
+            //
+            // Delay of at least 66 OSCCLK cycles required between
+            // powerdown to powerup of PLL
+            //
+            SysCtl_delay(12U);
+
+            //
+            // Configure oscillator source
+            //
+            SysCtl_selectOscSource(config & SYSCTL_OSCSRC_M);
+
+            //
+            // Delay of at least 60 OSCCLK cycles
+            //
+            SysCtl_delay(11U);
+        }
+
+        //
+        // Set dividers to /1 to ensure the fastest PLL configuration
+        //
+        SysCtl_setPLLSysClk(1U);
+
+        //
+        // Configure PLL if PLL usage is enabled or bypassed in config
+        //
+        if(((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_ENABLE) ||
+           ((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_BYPASS))
+        {
+            //
+            // Get the PLL multiplier settings from config
+            //
+            pllMult  = ((config & SYSCTL_IMULT_M) <<
+                         SYSCTL_SYSPLLMULT_IMULT_S);
+
+            pllMult |= (((config & SYSCTL_REFDIV_M) >>
+                        SYSCTL_REFDIV_S) <<
+                        SYSCTL_SYSPLLMULT_REFDIV_S);
+
+            pllMult |= (((config & SYSCTL_ODIV_M) >>
+                          SYSCTL_ODIV_S) <<
+                          SYSCTL_SYSPLLMULT_ODIV_S);
+
+            //
+            // Get the PLL multipliers currently programmed
+            //
+            mult  = ((HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
+                      SYSCTL_SYSPLLMULT_IMULT_M) >>
+                      SYSCTL_SYSPLLMULT_IMULT_S);
+
+            mult |= (HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
+                     SYSCTL_SYSPLLMULT_REFDIV_M);
+
+            mult |= (HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) &
+                     SYSCTL_SYSPLLMULT_ODIV_M);
+
+            pllen = (HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) &
+                     SYSCTL_SYSPLLCTL1_PLLEN);
+
+            //
+            // Lock PLL only if the multipliers need an update or PLL needs
+            // to be powered on / enabled
+            //
+            if((mult !=  pllMult) || (pllen != 1U))
             {
                 //
-                // Set dividers to /1
+                // Turn off PLL
                 //
                 EALLOW;
-                HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) = 0U;
+                HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) &=
+                    ~SYSCTL_SYSPLLCTL1_PLLEN;
                 EDIS;
 
                 //
-                // Loop to retry locking the PLL should the DCC module
-                // indicate that it was not successful.
+                // Delay of at least 66 OSCCLK cycles required between
+                // powerdown to powerup of PLL
                 //
-                // If a maximum retry count is required at the system level 
-                // it can be added here according to the maximum system allowed 
-                // time for PLL locking.  In this case there should be an error 
-                // handler at the system level for PLL lock failure. The largest 
-                // possible timeout should be used.
-                // Uncomment the while loop to have a limit for retry count and
-                // comment the for loop.
-                //while(retries < SYSCTL_PLL_RETRIES)
-                for(;;)
+                SysCtl_delay(12U);
+
+                //
+                // Write multiplier, which automatically turns on the PLL
+                //
+                EALLOW;
+                HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) = pllMult;
+
+                //
+                // Enable/ turn on PLL
+                //
+                HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) |=
+                       SYSCTL_SYSPLLCTL1_PLLEN;
+
+                //
+                // Wait for the SYSPLL lock counter or a timeout
+                // This timeout needs to be computed based on OSCCLK
+                // with a factor of REFDIV.
+                // Lock time is 1024 OSCCLK * (REFDIV+1)
+                //
+                refdiv  = ((config & SYSCTL_REFDIV_M) >> SYSCTL_REFDIV_S);
+
+                timeout = (1024U * (refdiv + 1U));
+                pllLockStatus = HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLSTS) &
+                                SYSCTL_SYSPLLSTS_LOCKS;
+
+                while((pllLockStatus != 1U) && (timeout != 0U))
                 {
-                    //
-                    // Turn off PLL
-                    //
-                    EALLOW;
-                    HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) &=
-                        ~SYSCTL_SYSPLLCTL1_PLLEN;
-
-                    //
-                    // Delay of at least 60 OSCCLK cycles required between
-                    // powerdown to powerup of PLL
-                    //
-                    SysCtl_delay(11U);
-
-                    //
-                    // Write multiplier, which automatically turns on the PLL
-                    //
-                    HWREG(CLKCFG_BASE + SYSCTL_O_SYSPLLMULT) = pllMult;
-
-                    //
-                    // Wait for the SYSPLL lock counter or a timeout
-                    //
-                    timeout = SYSCTL_PLLLOCK_TIMEOUT;
                     pllLockStatus = HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLSTS) &
                                     SYSCTL_SYSPLLSTS_LOCKS;
-
-                    while((pllLockStatus != 1U) && (timeout != 0U))
-                    {
-                        pllLockStatus = HWREGH(CLKCFG_BASE +
-                                               SYSCTL_O_SYSPLLSTS) &
-                                        SYSCTL_SYSPLLSTS_LOCKS;
-                        timeout--;
-                    }
-                    EDIS;
-
-                    //
-                    // Check PLL Frequency using DCC
-                    //
-                    status = SysCtl_isPLLValid(oscSource,
-                                              (config &
-                                              (SYSCTL_IMULT_M |
-                                               SYSCTL_FMULT_M |
-                                               SYSCTL_ODIV_M)));
-
-                    //
-                    // Check DCC Status, if no error break the loop
-                    //
-                    if(status)
-                    {
-                        break;
-                    }
-                    retries++;
+                    timeout--;
                 }
+                EDIS;
+
+                //
+                // Check PLL Frequency using DCC
+                //
+               status = SysCtl_isPLLValid(
+                        (config & SYSCTL_DCC_BASE_M ),
+                        (config & SYSCTL_OSCSRC_M),
+                        (config & (SYSCTL_IMULT_M | SYSCTL_ODIV_M |
+                                   SYSCTL_REFDIV_M)));
+
             }
             else
             {
+                //
+                // Re-Lock of PLL not needed since the multipliers
+                // are not updated
+                //
                 status = true;
             }
         }
-      else
+        else if((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_DISABLE)
         {
+            //
+            // Turn off PLL when the PLL is disabled in config
+            //
+            EALLOW;
+            HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) &=
+                   ~SYSCTL_SYSPLLCTL1_PLLEN;
+            SYSCTL_REGWRITE_DELAY;
+            EDIS;
+
+            //
+            // PLL is bypassed and not in use
+            // Status is updated to true to allow configuring the dividers later
+            //
             status = true;
         }
-
+        else
+        {
+            //
+            // Empty
+            //
+        }
 
         //
         // If PLL locked successfully, configure the dividers
+        // Or if PLL is bypassed, only configure the dividers
         //
         if(status)
         {
@@ -405,32 +464,30 @@ SysCtl_setClock(uint32_t config)
             //
             divSel = (uint16_t)(config & SYSCTL_SYSDIV_M) >> SYSCTL_SYSDIV_S;
 
-            EALLOW;
-            if(divSel != (126U / 2U))
+            if(divSel == 126U)
             {
-                HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) =
-                    (HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
-                     ~(uint16_t)SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_M) |
-                    (divSel + 1U);
-                SYSCTL_REGWRITE_DELAY;
+                SysCtl_setPLLSysClk(divSel);
             }
             else
             {
-                HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) =
-                    (HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
-                     ~(uint16_t)SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_M) | divSel;
-                SYSCTL_REGWRITE_DELAY;
+                SysCtl_setPLLSysClk(divSel + 2U);
             }
 
-            EDIS;
+            //
+            // Feed system clock from SYSPLL only if PLL usage is enabled
+            //
+            if((config & SYSCTL_PLL_CONFIG_M) == SYSCTL_PLL_ENABLE)
+            {
 
-            //
-            // Enable PLLSYSCLK is fed from system PLL clock
-            //
-            EALLOW;
-            HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) |=
-                SYSCTL_SYSPLLCTL1_PLLCLKEN;
-            EDIS;
+                //
+                // Enable PLLSYSCLK is fed from system PLL clock
+                //
+                EALLOW;
+                HWREGH(CLKCFG_BASE + SYSCTL_O_SYSPLLCTL1) |=
+                       SYSCTL_SYSPLLCTL1_PLLCLKEN;
+                EDIS;
+
+            }
 
             //
             // ~200 PLLSYSCLK delay to allow voltage regulator to stabilize
@@ -441,12 +498,11 @@ SysCtl_setClock(uint32_t config)
             //
             // Set the divider to user value
             //
-            EALLOW;
-            HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) =
-                (HWREGH(CLKCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) &
-                 ~SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_M) | divSel;
-            SYSCTL_REGWRITE_DELAY;
-            EDIS;
+            SysCtl_setPLLSysClk(divSel);
+        }
+        else
+        {
+            ESTOP0; // If the frequency is out of range, stop here.
         }
     }
 
@@ -465,6 +521,17 @@ SysCtl_selectXTAL(void)
     uint16_t loopCount = 0U;
 
     EALLOW;
+
+    //
+    // Enable XOSC pads initialization and set X1, X2 high
+    //
+    HWREGH(CLKCFG_BASE + SYSCTL_O_XTALCR2) |= SYSCTL_XTALCR2_FEN |
+                                              SYSCTL_XTALCR2_XIF |
+                                              SYSCTL_XTALCR2_XOF;
+    //
+    // Wait for few cycles to allow load capacitors to charge
+    //
+    SYSCTL_XTAL_CHARGE_DELAY;
 
     //
     // Turn on XTAL and select crystal mode
@@ -495,7 +562,7 @@ SysCtl_selectXTAL(void)
     // If a missing clock failure was detected, try waiting for the X1 counter
     // to saturate again. Consider modifying this code to add a 10ms timeout.
     //
-    while(SysCtl_isMCDClockFailureDetected() && (status == (bool)FALSE) &&
+    while(SysCtl_isMCDClockFailureDetected() && (status == FALSE) &&
           (loopCount < 4U))
     {
         //
@@ -519,7 +586,7 @@ SysCtl_selectXTAL(void)
         EDIS;
         loopCount ++;
     }
-    while(status == (bool)FALSE)
+    while(status == FALSE)
     {         
         // If code is stuck here, it means crystal has not started.  
         //Replace crystal or update code below to take necessary actions if 
@@ -567,7 +634,7 @@ SysCtl_selectXTALSingleEnded(void)
     // Something is wrong with the oscillator module. Replace the ESTOP0 with
     // an appropriate error-handling routine.
     //
-    while(SysCtl_isMCDClockFailureDetected() && (status == (bool)FALSE))
+    while(SysCtl_isMCDClockFailureDetected() && (status == FALSE))
     {
         // If code is stuck here, it means crystal has not started.  
         //Replace crystal or update code below to take necessary actions if 
@@ -766,9 +833,14 @@ SysCtl_getDeviceParametric(SysCtl_DeviceParametric parametric)
 //
 //*****************************************************************************
 bool
-SysCtl_isPLLValid(uint32_t oscSource, uint32_t pllMultDiv)
+SysCtl_isPLLValid(uint32_t base, uint32_t oscSource,
+                  uint32_t pllMultDiv)
 {
-    uint32_t imult, fmult, odiv, base;
+    uint32_t imult, odiv, refdiv;
+    float  fclk1_0ratio, fclk0_1ratio;
+    float32_t total_error, window;
+
+    ASSERT((base == SYSCTL_DCC_BASE_0) || (base == SYSCTL_DCC_BASE_1));
 
     DCC_Count0ClockSource dccClkSrc0;
     DCC_Count1ClockSource dccClkSrc1;
@@ -804,69 +876,74 @@ SysCtl_isPLLValid(uint32_t oscSource, uint32_t pllMultDiv)
     }
 
     //
-    // Setting Counter0 & Valid Seed Value with +/-12% tolerance
-    //
-    dccCounterSeed0 = (uint32_t)SYSCTL_DCC_COUNTER0_WINDOW - 12U;
-    dccValidSeed0 = 24U;
-
-    //
-    // Select DCC0 for PLL validation
-    //
-    base = DCC0_BASE;
-
-    //
     // Select DCC Clk Src1 as SYSPLL
     //
     dccClkSrc1 = DCC_COUNT1SRC_PLL;
 
-    imult = pllMultDiv & SYSCTL_IMULT_M;
-    fmult = pllMultDiv & SYSCTL_FMULT_M;
-    odiv = (pllMultDiv & SYSCTL_ODIV_M) >> SYSCTL_ODIV_S;
-
     //
-    // Multiplying Counter-0 window with PLL Integer Multiplier
+    // Assigning DCC for PLL validation
     //
-    dccCounterSeed1 = SYSCTL_DCC_COUNTER0_WINDOW * imult / (odiv + 1U);
-
-    //
-    // Multiplying Counter-0 window with PLL Fractional Multiplier
-    //
-    switch(fmult)
+    if(base == SYSCTL_DCC_BASE_0)
     {
-        case SYSCTL_FMULT_1_4:
-            //
-            // FMULT * CNTR0 Window = 0.25 * 100 = 25, gets added to cntr0
-            // seed value
-            //
-            dccCounterSeed1 = dccCounterSeed1 + 25U;
-            break;
-        case SYSCTL_FMULT_1_2:
-            //
-            // FMULT * CNTR0 Window = 0.5 * 100 = 50, gets added to cntr0
-            // seed value
-            //
-            dccCounterSeed1 = dccCounterSeed1 + 50U;
-            break;
-        case SYSCTL_FMULT_3_4:
-            //
-            // FMULT * CNTR0 Window = 0.75 * 100 = 75, gets added to cntr0
-            // seed value
-            //
-            dccCounterSeed1 = dccCounterSeed1 + 75U;
-            break;
-        default:
-            //
-            // No fractional multiplier
-            //
-            dccCounterSeed1 = dccCounterSeed1;
-            break;
+        base = DCC0_BASE;
+    }
+    else
+    {
+        base = DCC1_BASE;
     }
 
 
     //
+    // Retrieving PLL parameters
+    //
+    imult = pllMultDiv & SYSCTL_IMULT_M;
+    odiv = (pllMultDiv & SYSCTL_ODIV_M) >> SYSCTL_ODIV_S;
+    refdiv = (pllMultDiv & SYSCTL_REFDIV_M) >> SYSCTL_REFDIV_S;
+
+    fclk1_0ratio = (float)imult / (((float)odiv + 1.0F) *
+                   ((float)refdiv + 1.0F));
+    fclk0_1ratio = (((float)refdiv + 1.0F) *
+                   ((float)odiv + 1.0F)) / (float)imult;
+
+    if(fclk1_0ratio >= 1.0F)
+    {
+        //
+        // Setting Counter0 & Valid Seed Value with +/-1% tolerance
+        // Total error is 12
+        //
+        window = (12U * 100U) / ((uint32_t)SYSCTL_DCC_COUNTER0_TOLERANCE);
+        dccCounterSeed0 = (uint32_t)window - 12U;
+        dccValidSeed0 = 24U;
+    }
+    else
+    {
+        total_error = ((2.0F * fclk0_1ratio) + 10.0F);
+        window = (total_error * 100.0F) /
+                 ((float32_t)SYSCTL_DCC_COUNTER0_TOLERANCE);
+
+        //
+        // Setting Counter0 & Valid Seed Value with +/-1% tolerance
+        //
+        dccCounterSeed0 = window - total_error;
+        dccValidSeed0 = 2U * (uint32_t)total_error;
+    }
+
+    //
+    // Multiplying Counter-0 window with PLL Integer Multiplier
+    //
+    dccCounterSeed1 = (window * fclk1_0ratio);
+
+    //
     // Enable peripheral clock to DCC
     //
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DCC0);
+    if(base == DCC0_BASE)
+    {
+        SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DCC0);
+    }
+    else
+    {
+        SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_DCC1);
+    }
 
     //
     // Clear Error & Done Flag
@@ -910,15 +987,6 @@ SysCtl_isPLLValid(uint32_t oscSource, uint32_t pllMultDiv)
     //
     DCC_enableSingleShotMode(base, DCC_MODE_COUNTER_ZERO);
 
-    //
-    // Enable Error Signal
-    //
-    DCC_enableErrorSignal(base);
-
-    //
-    // Enable Done Signal
-    //
-    DCC_enableDoneSignal(base);
 
     //
     // Enable DCC to start counting
@@ -926,29 +994,135 @@ SysCtl_isPLLValid(uint32_t oscSource, uint32_t pllMultDiv)
     DCC_enableModule(base);
 
     //
-    // Timeout for the loop
-    //
-    uint32_t timeout = dccCounterSeed1;
-
-    //
     // Wait until Error or Done Flag is generated
     //
-    while(((HWREGH(base + DCC_O_STATUS) &
-            (DCC_STATUS_ERR | DCC_STATUS_DONE)) == 0U) && (timeout != 0U))
-
+    while((HWREGH(base + DCC_O_STATUS) &
+           (DCC_STATUS_ERR | DCC_STATUS_DONE)) == 0U)
     {
-        timeout--;
     }
-
 
     //
     // Returns true if DCC completes without error
     //
-
-    return(((HWREGH(base + DCC_O_STATUS) &
-             (DCC_STATUS_ERR | DCC_STATUS_DONE)) == DCC_STATUS_DONE) &&
-            (HWREGH(base + DCC_O_CNT0) == 0U) &&
-            (HWREGH(base + DCC_O_VALID0) == 0U) &&
-            (HWREGH(base + DCC_O_CNT1) == 0U));
+    return((HWREGH(base + DCC_O_STATUS) &
+            (DCC_STATUS_ERR | DCC_STATUS_DONE)) == DCC_STATUS_DONE);
 }
+//*****************************************************************************
+//
+// SysCtl_configureType()
+//
+//*****************************************************************************
+void
+SysCtl_configureType(SysCtl_SelType type , uint16_t config, uint16_t lock)
+{
+    ASSERT(lock <= 1U);
+
+    EALLOW;
+
+    //
+    // Check which type needs to be configured , the type would be enabled /
+    // disabled along with making the configurations unalterable as per input.
+    //
+    switch(type)
+    {
+        case SYSCTL_ECAPTYPE:
+            HWREGH(DEVCFG_BASE + SYSCTL_O_ECAPTYPE) =
+                                config | (lock << SYSCTL_TYPE_LOCK_S);
+            break;
+
+        case SYSCTL_SDFMTYPE:
+            HWREGH(DEVCFG_BASE + SYSCTL_O_SDFMTYPE) =
+                                config | (lock << SYSCTL_TYPE_LOCK_S);
+            break;
+
+        default:
+            break;
+    }
+    EDIS;
+
+}
+
+//*****************************************************************************
+//
+// SysCtl_isConfigTypeLocked()
+//
+//*****************************************************************************
+bool
+SysCtl_isConfigTypeLocked(SysCtl_SelType type)
+{
+    bool lock = false;
+
+    //
+    // Check if the provided type registers can be modified or not.
+    //
+    switch(type)
+    {
+        case SYSCTL_ECAPTYPE:
+            lock = ((HWREGH(DEVCFG_BASE + SYSCTL_O_ECAPTYPE) &
+                     SYSCTL_ECAPTYPE_LOCK) != 0U);
+            break;
+
+        case SYSCTL_SDFMTYPE:
+            lock = ((HWREGH(DEVCFG_BASE + SYSCTL_O_SDFMTYPE) &
+                     SYSCTL_SDFMTYPE_LOCK) != 0U);
+            break;
+
+        default:
+            break;
+    }
+
+  return(lock);
+}
+
+//*****************************************************************************
+//
+// SysCtl_lockClkConfig()
+//
+//*****************************************************************************
+void
+SysCtl_lockClkConfig(SysCtl_ClkRegSel registerName)
+{
+    uint16_t bitIndex;
+
+    //
+    // Decode the register variable.
+    //
+    bitIndex = ((uint16_t)registerName & SYSCTL_PERIPH_BIT_M) >>
+                SYSCTL_PERIPH_BIT_S;
+
+    //
+    // Locks the particular clock configuration register
+    //
+    EALLOW;
+    HWREG(CLKCFG_BASE + SYSCTL_O_CLKCFGLOCK1) |= (1UL << bitIndex);
+    EDIS;
+}
+
+//*****************************************************************************
+//
+// SysCtl_lockSysConfig()
+//
+//*****************************************************************************
+void
+SysCtl_lockSysConfig (SysCtl_CpuRegSel registerName)
+{
+    uint16_t regIndex;
+    uint16_t bitIndex;
+
+    //
+    // Decode the register variable.
+    //
+    regIndex = 2U * ((uint16_t)registerName & SYSCTL_PERIPH_REG_M);
+    bitIndex = ((uint16_t)registerName & SYSCTL_PERIPH_BIT_M) >>
+                 SYSCTL_PERIPH_BIT_S;
+
+    //
+    // Locks the particular System configuration register
+    //
+    EALLOW;
+    HWREG(CPUSYS_BASE + SYSCTL_O_CPUSYSLOCK1 + regIndex) |=
+                                            (1UL << bitIndex);
+    EDIS;
+}
+
 

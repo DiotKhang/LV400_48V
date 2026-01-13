@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -88,7 +88,8 @@ extern "C"
 typedef enum
 {
     FLASH_BANK0 = 0x0, //!< Bank 0
-    FLASH_BANK1 = 0x1  //!< Bank 1
+    FLASH_BANK1 = 0x1, //!< Bank 1
+    FLASH_BANK2 = 0x2  //!< Bank 2
 } Flash_BankNumber;
 
 //*****************************************************************************
@@ -1046,6 +1047,53 @@ Flash_getHighErrorType(uint32_t eccBase)
     }
 
     return(errorType);
+}
+//*****************************************************************************
+//
+//! Clears the error type bit of the lower 64-bits for a single bit error.
+//!
+//! \param eccBase is the base address of the flash wrapper ECC registers.
+//!
+//! This function clears the error type bit of the lower 64-bits.
+//!
+//! \return None
+//
+//*****************************************************************************
+static inline void
+Flash_clearLowErrorType(uint32_t eccBase)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(Flash_isECCBaseValid(eccBase));
+
+    EALLOW;
+    HWREG(eccBase + FLASH_O_ERR_POS) &= ~(uint32_t)FLASH_ERR_POS_ERR_TYPE_L;
+    EDIS;
+}
+
+//*****************************************************************************
+//
+//! Clears the error type of the upper 64-bits for a single bit error.
+//!
+//! \param eccBase is the base address of the flash wrapper ECC registers.
+//!
+//! This function clears the error type bit of the upper 64-bits.
+//!
+//! \return None.
+//
+//*****************************************************************************
+static inline void
+Flash_clearHighErrorType(uint32_t eccBase)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(Flash_isECCBaseValid(eccBase));
+
+    EALLOW;
+    HWREG(eccBase + FLASH_O_ERR_POS) &= ~(uint32_t)FLASH_ERR_POS_ERR_TYPE_H;
+    EDIS;
 }
 //*****************************************************************************
 //

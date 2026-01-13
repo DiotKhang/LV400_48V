@@ -1,0 +1,237 @@
+[
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc_main.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/device.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\"",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/f28003x_codestartbranch.asm"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/adc.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/aes.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/asysctl.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/bgcrc.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/can.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/cla.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/clb.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/cmpss.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/cputimer.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/dac.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/dcc.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/dcsm.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/dma.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/ecap.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/epg.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/epwm.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/eqep.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/erad.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/flash.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/fsi.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/gpio.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/hic.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/hrcap.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/hrpwm.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/i2c.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/interrupt.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/lin.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/mcan.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/memcfg.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/pmbus.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/sci.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/sdfm.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/spi.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/sysctl.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/version.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib/xbar.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\"",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/DCL/DCL_DF22_C1.asm"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\"",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/DCL/DCL_PI_C1.asm"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\"",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/DCL/DCL_PI_C4.asm"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\"",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/DCL/DCL_PI_L1.asm"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/sfra/sfra_gui_scicomms_driverlib.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc/cllc.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc/cllc_hal.c"
+   },
+   {
+      "directory" : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH",
+      "command"   : "clang++ -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/libraries/CLAmath\" -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/device/driverlib\" -I\"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -D_DEBUG -D_FLASH -D_TI_EABI_ -DLARGE_MODEL -DCPU1 -DF28X_DEVICE -DCLA_DEBUG=0 -I\"C:/Users/nimdu/workspace_ccstheia/LV400_48V/CPU1_FLASH/syscfg\" -xc",
+      "file"      : "C:/Users/nimdu/workspace_ccstheia/LV400_48V/cllc/cllc_clatasks.cla"
+   }
+]

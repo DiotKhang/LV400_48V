@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -139,6 +139,66 @@ void SDFM_configComparator(uint32_t base, uint16_t config1, uint32_t config2,
     }
 }
 
+//*****************************************************************************
+//
+// SDFM_configEnhancedComparator
+//
+//*****************************************************************************
+void SDFM_configEnhancedComparator(uint32_t base, uint16_t filterConfig,
+                                   uint32_t highLowThreshold1,
+                                   uint32_t highLowThreshold2,
+                                   uint16_t zeroCrossThreshold)
+{
+    SDFM_FilterNumber filter;
+    uint16_t ratio;
+    SDFM_FilterType filterType;
+
+    filter = (SDFM_FilterNumber)(SDFM_GET_FILTER_NUMBER(filterConfig));
+    ratio = SDFM_GET_OSR(filterConfig);
+    filterType = (SDFM_FilterType)SDFM_GET_FILTER_TYPE(filterConfig);
+
+    //
+    // Limit the oversampling ratio
+    //
+    if(ratio > SDFM_MAX_COMP_FILTER_OSR)
+    {
+        ratio = SDFM_MAX_COMP_FILTER_OSR;
+    }
+
+    //
+    // Set the comparator filter type
+    //
+    SDFM_setComparatorFilterType(base, filter, filterType);
+
+    //
+    // Set the comparator filter over sampling ratio
+    //
+    SDFM_setCompFilterOverSamplingRatio(base, filter, ratio);
+
+    //
+    // Set the comparator high threshold value
+    //
+    SDFM_setCompFilterHighThreshold(base, filter,
+                            SDFM_GET_HIGH_THRESHOLD_BOTH(highLowThreshold1,
+                                                         highLowThreshold2));
+
+    //
+    // Set the comparator low threshold value
+    //
+    SDFM_setCompFilterLowThreshold(base, filter,
+                            SDFM_GET_LOW_THRESHOLD_BOTH(highLowThreshold1,
+                                                         highLowThreshold2));
+
+    //
+    // If requested, enable and set the zero-cross high threshold value
+    //
+    if((zeroCrossThreshold & SDFM_ZHIGH_ENABLE_MASK) != 0U)
+    {
+        SDFM_setCompFilterZeroCrossThreshold(base, filter,
+                                  SDFM_GET_ZHIGH_THRESHOLD(zeroCrossThreshold);
+        SDFM_enableZeroCrossEdgeDetect(base, filter);
+    }
+}
 //*****************************************************************************
 //
 // SDFM_configDataFilter
@@ -306,6 +366,86 @@ void SDFM_configDataFilterFIFO(uint32_t base, uint16_t config1,
     //
     SDFM_setFIFOInterruptLevel(base, filter, fifoLevel);
     SDFM_enableFIFOBuffer(base, filter);
+}
+
+//*****************************************************************************
+//
+// SDFM_configCompEventLowFilter
+//
+//*****************************************************************************
+void
+SDFM_configCompEventLowFilter(uint32_t base, SDFM_FilterNumber filterNumber,
+                              const SDFM_CompEventFilterConfig *config)
+{
+    uint32_t address;
+    ASSERT(SDFM_isBaseValid(base));
+    ASSERT(config->clkPrescale <= SDFM_SDCOMP1EVT2FLTCLKCTL_CLKPRESCALE_M);
+    ASSERT((config->sampleWindow - 1U) <= (SDFM_SDCOMP1EVT2FLTCTL_SAMPWIN_M >>
+                                           SDFM_SDCOMP1EVT2FLTCTL_SAMPWIN_S));
+    ASSERT(config->threshold <= (SDFM_SDCOMP1EVT2FLTCTL_THRESH_M >>
+                                 SDFM_SDCOMP1EVT2FLTCTL_THRESH_S));
+    ASSERT(config->threshold > ((config->sampleWindow - 1U) / 2U));
+
+    address = base + SDFM_O_SDCOMP1EVT2FLTCTL +
+              ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET);
+
+    //
+    // Configure sample window & threshold.
+    //
+    EALLOW;
+    HWREGH(address) = (HWREGH(address) & ~(SDFM_COMPEVT_FILTER_CONFIG_M)) |
+           (((config->sampleWindow - 1U) << SDFM_SDCOMP1EVT2FLTCTL_SAMPWIN_S) |
+            (config->threshold << SDFM_SDCOMP1EVT2FLTCTL_THRESH_S));
+
+    //
+    // Configure clock pre-scale.
+    //
+    address = base + SDFM_O_SDCOMP1EVT2FLTCLKCTL +
+              ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET);
+    HWREGH(address) = (HWREGH(address) &
+                       ~(SDFM_SDCOMP1EVT2FLTCLKCTL_CLKPRESCALE_M)) |
+                      (config->clkPrescale);
+    EDIS;
+}
+
+//*****************************************************************************
+//
+// SDFM_configCompEventHighFilter
+//
+//*****************************************************************************
+void
+SDFM_configCompEventHighFilter(uint32_t base, SDFM_FilterNumber filterNumber,
+                               const SDFM_CompEventFilterConfig *config)
+{
+    uint32_t address;
+    ASSERT(SDFM_isBaseValid(base));
+    ASSERT(config->clkPrescale <= SDFM_SDCOMP1EVT1FLTCLKCTL_CLKPRESCALE_M);
+    ASSERT((config->sampleWindow - 1U) <= (SDFM_SDCOMP1EVT1FLTCTL_SAMPWIN_M >>
+                                           SDFM_SDCOMP1EVT1FLTCTL_SAMPWIN_S));
+    ASSERT(config->threshold <= (SDFM_SDCOMP1EVT1FLTCTL_THRESH_M >>
+                                 SDFM_SDCOMP1EVT1FLTCTL_THRESH_S));
+    ASSERT(config->threshold > ((config->sampleWindow - 1U) / 2U));
+
+    address = base + SDFM_O_SDCOMP1EVT1FLTCTL +
+              ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET);
+
+    //
+    // Configure sample window & threshold.
+    //
+    EALLOW;
+    HWREGH(address) = (HWREGH(address) & ~(SDFM_COMPEVT_FILTER_CONFIG_M)) |
+           (((config->sampleWindow - 1U) << SDFM_SDCOMP1EVT1FLTCTL_SAMPWIN_S) |
+            (config->threshold << SDFM_SDCOMP1EVT1FLTCTL_THRESH_S));
+
+    //
+    // Configure clock pre-scale.
+    //
+    address = base + SDFM_O_SDCOMP1EVT1FLTCLKCTL +
+              ((uint32_t)filterNumber * SDFM_DIGFIL_OFFSET);
+    HWREGH(address) =
+              (HWREGH(address) & ~(SDFM_SDCOMP1EVT1FLTCLKCTL_CLKPRESCALE_M)) |
+                   (config->clkPrescale);
+    EDIS;
 }
 
 

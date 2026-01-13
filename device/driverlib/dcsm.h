@@ -6,7 +6,7 @@
 //
 //#############################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -75,14 +75,15 @@ extern "C"
 // These are not intended for application code.
 //
 //*****************************************************************************
-#define DCSM_O_Z1_CSMPSWD0              0x08U //!< Z1 CSMPSWD0 offset
-#define DCSM_O_Z1_CSMPSWD1              0x0AU //!< Z1 CSMPSWD1 offset
-#define DCSM_O_Z1_CSMPSWD2              0x0CU //!< Z1 CSMPSWD2 offset
-#define DCSM_O_Z1_CSMPSWD3              0x0EU //!< Z1 CSMPSWD3 offset
-#define DCSM_O_Z2_CSMPSWD0              0x08U //!< Z2 CSMPSWD0 offset
-#define DCSM_O_Z2_CSMPSWD1              0x0AU //!< Z2 CSMPSWD1 offset
-#define DCSM_O_Z2_CSMPSWD2              0x0CU //!< Z2 CSMPSWD2 offset
-#define DCSM_O_Z2_CSMPSWD3              0x0EU //!< Z2 CSMPSWD3 offset
+
+#define DCSM_O_Z1_CSMPSWD0              0x00U //!< Z1 CSMPSWD0 offset
+#define DCSM_O_Z1_CSMPSWD1              0x02U //!< Z1 CSMPSWD1 offset
+#define DCSM_O_Z1_CSMPSWD2              0x04U //!< Z1 CSMPSWD2 offset
+#define DCSM_O_Z1_CSMPSWD3              0x06U //!< Z1 CSMPSWD3 offset
+#define DCSM_O_Z2_CSMPSWD0              0x00U //!< Z2 CSMPSWD0 offset
+#define DCSM_O_Z2_CSMPSWD1              0x02U //!< Z2 CSMPSWD1 offset
+#define DCSM_O_Z2_CSMPSWD2              0x04U //!< Z2 CSMPSWD2 offset
+#define DCSM_O_Z2_CSMPSWD3              0x06U //!< Z2 CSMPSWD3 offset
 
 //*****************************************************************************
 //
@@ -90,6 +91,7 @@ extern "C"
 //
 //*****************************************************************************
 #define FLSEM_KEY                       0xA5U //!< Zone semaphore key
+#define DCSM_FORCE_SECERR_KEY                0x5A5AU
 
 //*****************************************************************************
 //
@@ -106,20 +108,6 @@ typedef struct
 
 //*****************************************************************************
 //
-//! Values to distinguish which bank.
-//! These values can be passed to DCSM_getZone1FlashEXEStatus(),
-//! DCSM_getZone2FlashEXEStatus(), DCSM_getFlashSectorZone(),
-//! DCSM_getZone1LinkPointerError(), DCSM_getZone2LinkPointerError().
-//
-//*****************************************************************************
-typedef enum
-{
-    DCSM_BANK0, //!< Bank 0
-    DCSM_BANK1  //!< Bank 1
-} DCSM_Bank;
-
-//*****************************************************************************
-//
 //! Values to distinguish the status of RAM or FLASH sectors. These values
 //! describe which zone the memory location belongs too.
 //! These values can be returned from DCSM_getRAMZone(),
@@ -128,10 +116,10 @@ typedef enum
 //*****************************************************************************
 typedef enum
 {
-    DCSM_MEMORY_INACCESSIBLE,  //!< Inaccessible
-    DCSM_MEMORY_ZONE1,         //!< Zone 1
-    DCSM_MEMORY_ZONE2,         //!< Zone 2
-    DCSM_MEMORY_FULL_ACCESS    //!< Full access
+    DCSM_MEMORY_INACCESSIBLE, //!< Inaccessible
+    DCSM_MEMORY_ZONE1,        //!< Zone 1
+    DCSM_MEMORY_ZONE2,        //!< Zone 2
+    DCSM_MEMORY_FULL_ACCESS   //!< Full access
 } DCSM_MemoryStatus;
 
 //*****************************************************************************
@@ -197,14 +185,18 @@ typedef enum
 //*****************************************************************************
 typedef enum
 {
-    DCSM_RAMLS0 = 0, //!< RAMLS0
-    DCSM_RAMLS1 = 1, //!< RAMLS1
-    DCSM_RAMLS2 = 2, //!< RAMLS2
-    DCSM_RAMLS3 = 3, //!< RAMLS3
-    DCSM_RAMLS4 = 4, //!< RAMLS4
-    DCSM_RAMLS5 = 5, //!< RAMLS5
-    DCSM_RAMLS6 = 6, //!< RAMLS6
-    DCSM_RAMLS7 = 7  //!< RAMLS7
+    //
+    //C28x RAMs
+    //
+    DCSM_RAMLS0, //!< RAMLS0
+    DCSM_RAMLS1, //!< RAMLS1
+    DCSM_RAMLS2, //!< RAMLS2
+    DCSM_RAMLS3, //!< RAMLS3
+    DCSM_RAMLS4, //!< RAMLS4
+    DCSM_RAMLS5, //!< RAMLS5
+    DCSM_RAMLS6, //!< RAMLS6
+    DCSM_RAMLS7, //!< RAMLS7
+    DCSM_CLA    = 14U //!<Offset of CLA field in in RAMSTAT divided by two
 } DCSM_RAMModule;
 
 //*****************************************************************************
@@ -214,6 +206,7 @@ typedef enum
 //! DCSM_getZone2FlashEXEStatus(), DCSM_getFlashSectorZone().
 //
 //*****************************************************************************
+
 typedef enum
 {
     DCSM_BANK0_SECTOR0,   //!< Bank 0 - Sector 0
@@ -247,8 +240,83 @@ typedef enum
     DCSM_BANK1_SECTOR12,  //!< Bank 1 - Sector 12
     DCSM_BANK1_SECTOR13,  //!< Bank 1 - Sector 13
     DCSM_BANK1_SECTOR14,  //!< Bank 1 - Sector 14
-    DCSM_BANK1_SECTOR15   //!< Bank 1 - Sector 15
+    DCSM_BANK1_SECTOR15,   //!< Bank 1 - Sector 15
+    DCSM_BANK2_SECTOR0,   //!< Bank 2 - Sector 0
+    DCSM_BANK2_SECTOR1,   //!< Bank 2 - Sector 1
+    DCSM_BANK2_SECTOR2,   //!< Bank 2 - Sector 2
+    DCSM_BANK2_SECTOR3,   //!< Bank 2 - Sector 3
+    DCSM_BANK2_SECTOR4,   //!< Bank 2 - Sector 4
+    DCSM_BANK2_SECTOR5,   //!< Bank 2 - Sector 5
+    DCSM_BANK2_SECTOR6,   //!< Bank 2 - Sector 6
+    DCSM_BANK2_SECTOR7,   //!< Bank 2 - Sector 7
+    DCSM_BANK2_SECTOR8,   //!< Bank 2 - Sector 8
+    DCSM_BANK2_SECTOR9,   //!< Bank 2 - Sector 9
+    DCSM_BANK2_SECTOR10,  //!< Bank 2 - Sector 10
+    DCSM_BANK2_SECTOR11,  //!< Bank 2 - Sector 11
+    DCSM_BANK2_SECTOR12,  //!< Bank 2 - Sector 12
+    DCSM_BANK2_SECTOR13,  //!< Bank 2 - Sector 13
+    DCSM_BANK2_SECTOR14,  //!< Bank 2 - Sector 14
+    DCSM_BANK2_SECTOR15   //!< Bank 2 - Sector 15
 } DCSM_Sector;
+
+//*****************************************************************************
+//
+//! The following are values that can be passed to DCSM_getRAMZone(),
+//! DCSM_getZone2FlashEXEStatus() ,DCSM_getZone1FlashEXEStatus() &
+//! DCSM_getFlashSectorZone() as \e cpuInst parameter.
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+//! The following are values that can be passed to
+//! DCSM_getZone1OTPSecureLockStatus() & DCSM_getZone2OTPSecureLockStatus()
+//! as \e lockType parameter.
+//
+//*****************************************************************************
+typedef enum
+{
+    //! JTAG Lock Status
+    DCSM_OTPSECLOCK_JTAG = 0x0U,
+    //! Zone Password Lock
+    DCSM_OTPSECLOCK_PSWDLOCK = 0x1U,
+    //! Zone CRC Lock
+    DCSM_OTPSECLOCK_CRCLOCK = 0x2U,
+
+} DCSM_OTPLock;
+
+//*****************************************************************************
+//
+// Defines for the EXEONLYSECTxR register.
+// These values can be used in the DCSM_getZone1FlashEXEStatus() &
+// DCSM_getZone2FlashEXEStatus().
+//
+//*****************************************************************************
+
+#define DCSM_EXEONLYSECTR_M             0x0000FFFFU
+#define DCSM_EXEONLYSECTR_S             16U
+
+//*****************************************************************************
+//
+// Defines for the Z1_CR  & Z2_CR register.
+// These values can be used in the DCSM_getZone1ControlStatus() &
+// DCSM_getZone2ControlStatus().
+//
+//*****************************************************************************
+
+#define DCSM_ZX_CR_S                    16U
+
+//*****************************************************************************
+//
+// Defines for the OTPSECLOCK register.
+// These values can be used in the DCSM_getZone1OTPSecureLockStatus()
+// & DCSM_getZone2OTPSecureLockStatus()
+//
+//*****************************************************************************
+
+#define DCSM_Z1_OTPSECLOCK_JTAGLOCK_M             0x1U
+#define DCSM_Z1_OTPSECLOCK_JTAGLOCK_S             0U
+#define DCSM_OTPSECLOCK_INVALID                   0xFFFFU
 
 //*****************************************************************************
 //
@@ -261,7 +329,7 @@ typedef enum
 //! Secures zone 1 by setting the FORCESEC bit of Z1_CR register
 //!
 //! This function resets the state of the zone. If the zone is unlocked,
-//! it will lock (secure) the zone and also reset all the bits in the
+//! it will lock(secure) the zone and also reset all the bits in the
 //! Control Register.
 //!
 //! \return None.
@@ -273,7 +341,7 @@ DCSM_secureZone1(void)
     //
     // Write to the FORCESEC bit.
     //
-    HWREGH(DCSMBANK0_Z1_BASE + DCSM_O_Z1_CR)|= DCSM_Z1_CR_FORCESEC;
+    HWREG(DCSM_Z1_BASE + DCSM_O_Z1_CR)|= DCSM_Z1_CR_FORCESEC;
 }
 
 //*****************************************************************************
@@ -281,7 +349,7 @@ DCSM_secureZone1(void)
 //! Secures zone 2 by setting the FORCESEC bit of Z2_CR register
 //!
 //! This function resets the state of the zone. If the zone is unlocked,
-//! it will lock (secure) the zone and also reset all the bits in the
+//! it will lock(secure) the zone and also reset all the bits in the
 //! Control Register.
 //!
 //! \return None.
@@ -293,7 +361,7 @@ DCSM_secureZone2(void)
     //
     // Write to the FORCESEC bit.
     //
-    HWREGH(DCSMBANK0_Z2_BASE + DCSM_O_Z2_CR)|= DCSM_Z2_CR_FORCESEC;
+    HWREG(DCSM_Z2_BASE + DCSM_O_Z2_CR)|= DCSM_Z2_CR_FORCESEC;
 }
 
 //*****************************************************************************
@@ -308,16 +376,16 @@ DCSM_secureZone2(void)
 static inline DCSM_SecurityStatus
 DCSM_getZone1CSMSecurityStatus(void)
 {
-    uint16_t status;
+    uint32_t status;
     DCSM_SecurityStatus returnStatus;
-    status = HWREGH(DCSMBANK0_Z1_BASE + DCSM_O_Z1_CR);
+    status = HWREG(DCSM_Z1_BASE + DCSM_O_Z1_CR);
 
     //
     // if ARMED bit is set and UNSECURED bit is set then CSM is unsecured.
     // Else it is secure.
     //
     if(((status & DCSM_Z1_CR_ARMED) != 0U) &&
-      ((status & DCSM_Z1_CR_UNSECURE) != 0U))
+       ((status & DCSM_Z1_CR_UNSECURE) != 0U))
     {
         returnStatus = DCSM_STATUS_UNSECURE;
     }
@@ -349,16 +417,16 @@ DCSM_getZone1CSMSecurityStatus(void)
 static inline DCSM_SecurityStatus
 DCSM_getZone2CSMSecurityStatus(void)
 {
-    uint16_t status;
+    uint32_t status;
     DCSM_SecurityStatus returnStatus;
-    status = HWREGH(DCSMBANK0_Z2_BASE + DCSM_O_Z2_CR);
+    status = HWREG(DCSM_Z2_BASE + DCSM_O_Z2_CR);
 
     //
     // if ARMED bit is set and UNSECURED bit is set then CSM is unsecured.
     // Else it is secure.
     //
     if(((status & DCSM_Z2_CR_ARMED) != 0U) &&
-      ((status & DCSM_Z2_CR_UNSECURE) != 0U))
+       ((status & DCSM_Z2_CR_UNSECURE) != 0U))
     {
         returnStatus = DCSM_STATUS_UNSECURE;
     }
@@ -391,10 +459,15 @@ DCSM_getZone2CSMSecurityStatus(void)
 static inline uint16_t
 DCSM_getZone1ControlStatus(void)
 {
+    uint32_t stat;
     //
     // Return the contents of the CR register.
     //
-    return(HWREGH(DCSMBANK0_Z1_BASE + DCSM_O_Z1_CR));
+
+    stat = ((HWREG(DCSM_Z1_BASE + DCSM_O_Z1_CR)) >> DCSM_ZX_CR_S);
+
+    return((uint16_t)stat);
+
 }
 
 //*****************************************************************************
@@ -410,10 +483,13 @@ DCSM_getZone1ControlStatus(void)
 static inline uint16_t
 DCSM_getZone2ControlStatus(void)
 {
+    uint32_t stat;
     //
     // Return the contents of the CR register.
     //
-    return(HWREGH(DCSMBANK0_Z2_BASE + DCSM_O_Z2_CR));
+    stat = ((HWREG(DCSM_Z2_BASE + DCSM_O_Z2_CR)) >> DCSM_ZX_CR_S);
+
+    return((uint16_t)stat);
 }
 
 //*****************************************************************************
@@ -421,6 +497,7 @@ DCSM_getZone2ControlStatus(void)
 //! Returns the security zone a RAM section belongs to
 //!
 //! \param module is the RAM module value. Valid values are type DCSM_RAMModule
+//! C28x RAMs :
 //! - \b DCSM_RAMLS0
 //! - \b DCSM_RAMLS1
 //! - \b DCSM_RAMLS2
@@ -442,12 +519,13 @@ static inline DCSM_MemoryStatus
 DCSM_getRAMZone(DCSM_RAMModule module)
 {
     uint16_t shift = (uint16_t)module * 2U;
-
+    uint32_t ramStatus;
     //
     //Read the RAMSTAT register for the specific RAM Module.
     //
-    return((DCSM_MemoryStatus)(uint32_t)((HWREG(DCSMCOMMON_BASE + DCSM_O_RAMSTAT) >>
-                                    shift) & 0x03U));
+    ramStatus = ((HWREG(DCSMCOMMON_BASE + DCSM_O_RAMSTAT1) >>
+                                shift) & 0x03U);
+    return((DCSM_MemoryStatus)ramStatus);
 }
 
 //*****************************************************************************
@@ -475,26 +553,29 @@ DCSM_getFlashSectorZone(DCSM_Sector sector)
     //
     if(sector <= DCSM_BANK0_SECTOR15)
     {
-        sectStat = HWREG(DCSMCOMMON_BASE + DCSM_O_B0_SECTSTAT);
+        sectStat = HWREG(DCSMCOMMON_BASE + DCSM_O_SECTSTAT1);
         shift = (uint16_t)sector * 2U;
+    }
+    else if(sector <= DCSM_BANK1_SECTOR15)
+    {
+        sectStat = HWREG(DCSMCOMMON_BASE + DCSM_O_SECTSTAT2);
+        shift = ((uint16_t)sector & 0xFU) * (uint16_t)2U;
     }
     else
     {
-        sectStat = HWREG(DCSMCOMMON_BASE + DCSM_O_B1_SECTSTAT);
+        sectStat = HWREG(DCSMCOMMON_BASE + DCSM_O_SECTSTAT3);
         shift = ((uint16_t)sector & 0xFU) * (uint16_t)2U;
     }
 
     //
     //Read the SECTSTAT register for the specific Flash Sector.
     //
-    return((DCSM_MemoryStatus)(uint32_t)((sectStat >> shift) & 0x3U));
+    return((DCSM_MemoryStatus)((uint16_t)((sectStat >> shift) & 0x3U)));
 }
 
 //*****************************************************************************
 //
 //! Read Zone 1 Link Pointer Error
-//!
-//! \param bank is the DCSM_Bank to operate on.
 //!
 //! A non-zero value indicates an error on the bit position that is set to 1.
 //!
@@ -502,30 +583,17 @@ DCSM_getFlashSectorZone(DCSM_Sector sector)
 //
 //*****************************************************************************
 static inline uint32_t
-DCSM_getZone1LinkPointerError(DCSM_Bank bank)
+DCSM_getZone1LinkPointerError(void)
 {
-    uint32_t tempReturn;
-
     //
     // Return the LinkPointer Error for specific bank
     //
-    if(bank == DCSM_BANK0)
-    {
-        tempReturn = HWREG(DCSMBANK0_Z1_BASE + DCSM_O_B0_Z1_LINKPOINTERERR);
-    }
-    else
-    {
-        tempReturn = HWREG(DCSMBANK1_Z1_BASE + DCSM_O_B1_Z1_LINKPOINTERERR);
-    }
-
-    return(tempReturn);
+    return(HWREG(DCSM_Z1_BASE + DCSM_O_Z1_LINKPOINTERERR));
 }
 
 //*****************************************************************************
 //
 //! Read Zone 2 Link Pointer Error
-//!
-//! \param bank is the DCSM_Bank to operate on.
 //!
 //! A non-zero value indicates an error on the bit position that is set to 1.
 //!
@@ -533,23 +601,12 @@ DCSM_getZone1LinkPointerError(DCSM_Bank bank)
 //
 //*****************************************************************************
 static inline uint32_t
-DCSM_getZone2LinkPointerError(DCSM_Bank bank)
+DCSM_getZone2LinkPointerError(void)
 {
-    uint32_t tempReturn;
-
     //
     // Return the LinkPointer Error for specific bank
     //
-    if(bank == DCSM_BANK0)
-    {
-        tempReturn = HWREG(DCSMBANK0_Z2_BASE + DCSM_O_B0_Z2_LINKPOINTERERR);
-    }
-    else
-    {
-        tempReturn = HWREG(DCSMBANK1_Z2_BASE + DCSM_O_B1_Z2_LINKPOINTERERR);
-    }
-
-    return(tempReturn);
+    return(HWREG(DCSM_Z2_BASE + DCSM_O_Z2_LINKPOINTERERR));
 }
 
 //*****************************************************************************
@@ -595,7 +652,127 @@ DCSM_clearFlashErrorStatus(void)
 static inline void
 DCSM_forceFlashErrorStatus(void)
 {
-    HWREG(DCSMCOMMON_BASE + DCSM_O_SECERRFRC) |= DCSM_SECERRFRC_ERR;
+    HWREG(DCSMCOMMON_BASE +
+          DCSM_O_SECERRFRC) = DCSM_SECERRFRC_ERR |
+                              ((uint32_t)DCSM_FORCE_SECERR_KEY
+                               << DCSM_SECERRFRC_KEY_S);
+}
+
+//*****************************************************************************
+//
+//! Returns the OTP secure Lock status of zone 1
+//!
+//! \param lockType is the  OTP secure Lock feature type .
+//!
+//! The \e lockType parameter can have one of the following values of the
+//! DCSM_CPUSel type:
+//! - \b DCSM_OTPSECLOCK_JTAG -  JTAG Lock Status
+//! - \b DCSM_OTPSECLOCK_CRCLOCK - Zone CRC Lock
+//! - \b DCSM_OTPSECLOCK_PSWDLOCK - Zone Password Lock
+//!
+//! This function takes in a valid OTP secure Lock feature type and
+//! returns the status of zone 1 lock feature
+//!
+//! \return Returns security lock status can be:
+//! For JTAG lock :  0 - JTAG is not locked , 1 - JTAG is locked
+//!
+//! For Zone Password Lock : 1111 - CSM Pwd locations in the OTP are not
+//! protected and can be read from the debugger as well as code running
+//! from anywhere.
+//! Other Value : CSM Pwd locations in the OTP are protected and can't be read
+//! without unlocking CSM of that zone.
+//!
+//! For Zone CRC Lock : 1111 : VCU has ability to calculate CRC
+//! on secure memories.
+//! Other Value : VCU doesn't have the ability to calculate CRC on
+//! secure memories.
+//
+//*****************************************************************************
+static inline uint32_t
+DCSM_getZone1OTPSecureLockStatus(DCSM_OTPLock lockType)
+{
+    uint32_t status, returnStatus;
+    status = HWREG(DCSM_Z1_BASE + DCSM_O_Z1_OTPSECLOCK);
+
+    //
+    // Reflects the state of the OTP Sec LOCK feature.
+    //
+    if(lockType == DCSM_OTPSECLOCK_JTAG)
+    {
+        returnStatus = (status & DCSM_Z1_OTPSECLOCK_JTAGLOCK_M) >>
+                        DCSM_Z1_OTPSECLOCK_JTAGLOCK_S;
+    }
+    else if(lockType == DCSM_OTPSECLOCK_CRCLOCK)
+    {
+        returnStatus = (status & DCSM_Z1_OTPSECLOCK_CRCLOCK_M) >>
+                        DCSM_Z1_OTPSECLOCK_CRCLOCK_S;
+    }
+    else if(lockType == DCSM_OTPSECLOCK_PSWDLOCK)
+    {
+        returnStatus = (status & DCSM_Z1_OTPSECLOCK_PSWDLOCK_M) >>
+                        DCSM_Z1_OTPSECLOCK_PSWDLOCK_S;
+    }
+    else
+    {
+        returnStatus = (uint32_t)DCSM_OTPSECLOCK_INVALID;
+    }
+
+    return(returnStatus);
+}
+
+//*****************************************************************************
+//
+//! Returns the OTP secure Lock status of zone 2
+//!
+//! \param lockType is the  OTP secure Lock feature type .
+//!
+//! The \e lockType parameter can have one of the following values of the
+//! DCSM_CPUSel type:
+//! - \b DCSM_OTPSECLOCK_CRCLOCK - Zone CRC Lock
+//! - \b DCSM_OTPSECLOCK_PSWDLOCK - Zone Password Lock
+//!
+//! This function takes in a valid OTP secure Lock feature type and
+//! returns the status of zone 2 lock feature
+//!
+//! \return Returns security lock status can be:
+//!
+//! For Zone Password Lock : 1111 - CSM Pwd locations in the OTP are not
+//! protected and can be read from the debugger as well as code running
+//! from anywhere.
+//! Other Value : CSM Pwd locations in the OTP are protected and can't be read
+//! without unlocking CSM of that zone.
+//!
+//! For Zone CRC Lock : 1111 : VCU has ability to calculate CRC
+//! on secure memories.
+//! Other Value : VCU doesn't have the ability to calculate CRC on
+//! secure memories.
+//
+//*****************************************************************************
+static inline uint32_t
+DCSM_getZone2OTPSecureLockStatus(DCSM_OTPLock lockType)
+{
+    uint32_t status, returnStatus;
+    status = HWREG(DCSM_Z2_BASE + DCSM_O_Z2_OTPSECLOCK);
+
+    //
+    // Reflects the state of the OTP Sec LOCK feature.
+    //
+    if(lockType == DCSM_OTPSECLOCK_CRCLOCK)
+    {
+        returnStatus = (status & DCSM_Z2_OTPSECLOCK_CRCLOCK_M) >>
+                        DCSM_Z2_OTPSECLOCK_CRCLOCK_S;
+    }
+    else if(lockType == DCSM_OTPSECLOCK_PSWDLOCK)
+    {
+        returnStatus = (status & DCSM_Z2_OTPSECLOCK_PSWDLOCK_M) >>
+                        DCSM_Z2_OTPSECLOCK_PSWDLOCK_S;
+    }
+    else
+    {
+        returnStatus = (uint32_t)DCSM_OTPSECLOCK_INVALID;
+    }
+
+    return(returnStatus);
 }
 
 //*****************************************************************************
@@ -641,7 +818,43 @@ DCSM_unlockZone1CSM(const DCSM_CSMPasswordKey * const psCMDKey);
 //*****************************************************************************
 extern void
 DCSM_unlockZone2CSM(const DCSM_CSMPasswordKey * const psCMDKey);
+//*****************************************************************************
+//
+//! Write Zone 1 CSM.
+//!
+//! \param psCMDKey is a pointer to the CSMPSWDKEY that has the CSM
+//!  password for zone 1.
+//!
+//! Password match flow is essentially a sequence of dummy reads
+//! from password locations (PWL) followed by writes to CSMKEY registers.
+//! This function helps writing the provided passwords into the CSM Key
+//! registers. The DCSM_readZone1CSMPwd() should be called
+//! by CPU1 before calling this API.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+DCSM_writeZone1CSM(const DCSM_CSMPasswordKey * const psCMDKey);
 
+//*****************************************************************************
+//
+//! Write Zone 2 CSM.
+//!
+//! \param psCMDKey is a pointer to the CSMPSWDKEY that has the CSM
+//!  password for zone 2.
+//!
+//! Password match flow is essentially a sequence of dummy reads
+//! from password locations (PWL) followed by writes to CSMKEY registers.
+//! This function helps writing the provided passwords into the CSM Key
+//! registers. The DCSM_readZone2CSMPwd() should be called
+//! by CPU1 before calling this API.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void
+DCSM_writeZone2CSM(const DCSM_CSMPasswordKey * const psCMDKey);
 //*****************************************************************************
 //
 //! Returns the EXE-ONLY status of zone 1 for a flash sector
@@ -654,10 +867,6 @@ DCSM_unlockZone2CSM(const DCSM_CSMPasswordKey * const psCMDKey);
 //! \return Returns DCSM_PROTECTED if the sector is EXE-ONLY protected,
 //! DCSM_UNPROTECTED if the sector is not EXE-ONLY protected,
 //! DCSM_INCORRECT_ZONE if sector does not belong to this zone.
-//!
-//! \note This function should not be called in an actual application,
-//! should only be used for debugging/development. Ensure flash data
-//! cache is disabled before calling this function(Flash_disableCache).
 //
 //*****************************************************************************
 extern DCSM_EXEOnlyStatus
@@ -668,6 +877,7 @@ DCSM_getZone1FlashEXEStatus(DCSM_Sector sector);
 //! Returns the EXE-ONLY status of zone 1 for a RAM module
 //!
 //! \param module is the RAM module value. Valid values are type DCSM_RAMModule
+//! C28x RAMs :
 //! - \b DCSM_RAMLS0
 //! - \b DCSM_RAMLS1
 //! - \b DCSM_RAMLS2
@@ -678,7 +888,8 @@ DCSM_getZone1FlashEXEStatus(DCSM_Sector sector);
 //! - \b DCSM_RAMLS7
 //!
 //! This function takes in a valid module value and returns the status of EXE
-//! ONLY security protection for that module.
+//! ONLY security protection for that module.  DCSM_CLA is an invalid module
+//! value.  There is no EXE-ONLY available for DCSM_CLA.
 //!
 //! \return Returns DCSM_PROTECTED if the module is EXE-ONLY protected,
 //! DCSM_UNPROTECTED if the module is not EXE-ONLY protected,
@@ -710,6 +921,7 @@ DCSM_getZone2FlashEXEStatus(DCSM_Sector sector);
 //! Returns the EXE-ONLY status of zone 2 for a RAM module
 //!
 //! \param module is the RAM module value. Valid values are type DCSM_RAMModule
+//! C28x RAMs :
 //! - \b DCSM_RAMLS0
 //! - \b DCSM_RAMLS1
 //! - \b DCSM_RAMLS2
@@ -720,7 +932,8 @@ DCSM_getZone2FlashEXEStatus(DCSM_Sector sector);
 //! - \b DCSM_RAMLS7
 //!
 //! This function takes in a valid module value and returns the status of EXE
-//! ONLY security protection for that module.
+//! ONLY security protection for that module.  DCSM_CLA is an invalid module
+//! value.  There is no EXE-ONLY available for DCSM_CLA.
 //!
 //! \return Returns DCSM_PROTECTED if the module is EXE-ONLY protected,
 //! DCSM_UNPROTECTED if the module is not EXE-ONLY protected,
@@ -749,8 +962,8 @@ DCSM_claimZoneSemaphore(DCSM_SemaphoreZone zone);
 //
 //! Releases the zone semaphore.
 //!
-//! \return Returns true if was successful in releasing the zone semaphore and
-//! false if it was unsuccessful in releasing the zone semaphore.
+//! \return Returns true if it was successful in releasing the zone semaphore
+//! and false if it was unsuccessful in releasing the zone semaphore.
 //!
 //! \note  If the calling function is not in the right zone to be able
 //!        to access this register, it will return a false.
@@ -758,6 +971,40 @@ DCSM_claimZoneSemaphore(DCSM_SemaphoreZone zone);
 //*****************************************************************************
 extern bool
 DCSM_releaseZoneSemaphore(void);
+
+//*****************************************************************************
+//
+//! Perform dummy reads on the 128-bit Zone 1 CSM password.
+//!
+//! This function reads the four password locations in the User OTP
+//! needed to be done as part of the Password Match Flow before
+//! writes to the CSMKEY registers.
+//! This would need to be done before a DCSM_writeZone1CSM().
+//!
+//! \return None.
+//!
+//! \note This API to be called from CPU1.
+//
+//*****************************************************************************
+extern void
+DCSM_readZone1CSMPwd(void);
+
+//*****************************************************************************
+//
+//! Perform dummy reads on the 128-bit Zone 2 CSM password.
+//!
+//! This function reads the four password locations in the User OTP
+//! needed to be done as part of the Password Match Flow before
+//! writes to the CSMKEY registers.
+//! This would need to be done before a DCSM_writeZone2CSM().
+//!
+//! \return None.
+//!
+//! \note This API to be called from CPU1.
+//
+//*****************************************************************************
+extern void
+DCSM_readZone2CSMPwd(void);
 
 //*****************************************************************************
 //

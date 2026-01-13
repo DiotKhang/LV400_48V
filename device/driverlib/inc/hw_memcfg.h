@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,49 +46,84 @@
 // The following are defines for the MEMCFG register offsets
 //
 //*************************************************************************************************
-#define MEMCFG_O_DXLOCK         0x0U    // Dedicated RAM Config Lock Register
-#define MEMCFG_O_DXCOMMIT       0x2U    // Dedicated RAM Config Lock Commit Register
-#define MEMCFG_O_DXTEST         0x10U   // Dedicated RAM TEST Register
-#define MEMCFG_O_DXINIT         0x12U   // Dedicated RAM Init Register
-#define MEMCFG_O_DXINITDONE     0x14U   // Dedicated RAM InitDone Status Register
-#define MEMCFG_O_LSXLOCK        0x20U   // Local Shared RAM Config Lock Register
-#define MEMCFG_O_LSXCOMMIT      0x22U   // Local Shared RAM Config Lock Commit Register
-#define MEMCFG_O_LSXMSEL        0x24U   // Local Shared RAM Master Sel Register
-#define MEMCFG_O_LSXCLAPGM      0x26U   // Local Shared RAM Prog/Exe control Register
-#define MEMCFG_O_LSXACCPROT0    0x28U   // Local Shared RAM Config Register 0
-#define MEMCFG_O_LSXACCPROT1    0x2AU   // Local Shared RAM Config Register 1
-#define MEMCFG_O_LSXTEST        0x30U   // Local Shared RAM TEST Register
-#define MEMCFG_O_LSXINIT        0x32U   // Local Shared RAM Init Register
-#define MEMCFG_O_LSXINITDONE    0x34U   // Local Shared RAM InitDone Status Register
-#define MEMCFG_O_GSXLOCK        0x40U   // Global Shared RAM Config Lock Register
-#define MEMCFG_O_GSXCOMMIT      0x42U   // Global Shared RAM Config Lock Commit Register
-#define MEMCFG_O_GSXACCPROT0    0x48U   // Global Shared RAM Config Register 0
-#define MEMCFG_O_GSXTEST        0x50U   // Global Shared RAM TEST Register
-#define MEMCFG_O_GSXINIT        0x52U   // Global Shared RAM Init Register
-#define MEMCFG_O_GSXINITDONE    0x54U   // Global Shared RAM InitDone Status Register
-#define MEMCFG_O_MSGXLOCK       0x60U   // Message RAM Config Lock Register
-#define MEMCFG_O_MSGXCOMMIT     0x62U   // Message RAM Config Lock Commit Register
-#define MEMCFG_O_MSGXTEST       0x70U   // Message RAM TEST Register
-#define MEMCFG_O_MSGXINIT       0x72U   // Message RAM Init Register
-#define MEMCFG_O_MSGXINITDONE   0x74U   // Message RAM InitDone Status Register
+#define MEMCFG_O_DXLOCK             0x0U    // Dedicated RAM Config Lock Register
+#define MEMCFG_O_DXCOMMIT           0x2U    // Dedicated RAM Config Lock Commit Register
+#define MEMCFG_O_DXACCPROT0         0x8U    // Dedicated RAM Config Register
+#define MEMCFG_O_DXTEST             0x10U   // Dedicated RAM TEST Register
+#define MEMCFG_O_DXINIT             0x12U   // Dedicated RAM Init Register
+#define MEMCFG_O_DXINITDONE         0x14U   // Dedicated RAM InitDone Status Register
+#define MEMCFG_O_DXRAMTEST_LOCK     0x16U   // Lock register to Dx RAM TEST registers
+#define MEMCFG_O_LSXLOCK            0x20U   // Local Shared RAM Config Lock Register
+#define MEMCFG_O_LSXCOMMIT          0x22U   // Local Shared RAM Config Lock Commit Register
+#define MEMCFG_O_LSXMSEL            0x24U   // Local Shared RAM Master Sel Register
+#define MEMCFG_O_LSXCLAPGM          0x26U   // Local Shared RAM Prog/Exe control Register
+#define MEMCFG_O_LSXACCPROT0        0x28U   // Local Shared RAM Config Register 0
+#define MEMCFG_O_LSXACCPROT1        0x2AU   // Local Shared RAM Config Register 1
+#define MEMCFG_O_LSXTEST            0x30U   // Local Shared RAM TEST Register
+#define MEMCFG_O_LSXINIT            0x32U   // Local Shared RAM Init Register
+#define MEMCFG_O_LSXINITDONE        0x34U   // Local Shared RAM InitDone Status Register
+#define MEMCFG_O_LSXRAMTEST_LOCK    0x36U   // Lock register to LSx RAM TEST registers
+#define MEMCFG_O_GSXLOCK            0x40U   // Global Shared RAM Config Lock Register
+#define MEMCFG_O_GSXCOMMIT          0x42U   // Global Shared RAM Config Lock Commit Register
+#define MEMCFG_O_GSXACCPROT0        0x48U   // Global Shared RAM Config Register 0
+#define MEMCFG_O_GSXTEST            0x50U   // Global Shared RAM TEST Register
+#define MEMCFG_O_GSXINIT            0x52U   // Global Shared RAM Init Register
+#define MEMCFG_O_GSXINITDONE        0x54U   // Global Shared RAM InitDone Status Register
+#define MEMCFG_O_GSXRAMTEST_LOCK    0x56U   // Lock register to GSx RAM TEST registers
+#define MEMCFG_O_MSGXLOCK           0x60U   // Message RAM Config Lock Register
+#define MEMCFG_O_MSGXCOMMIT         0x62U   // Message RAM Config Lock Commit Register
+#define MEMCFG_O_MSGXTEST           0x70U   // Message RAM TEST Register
+#define MEMCFG_O_MSGXINIT           0x72U   // Message RAM Init Register
+#define MEMCFG_O_MSGXINITDONE       0x74U   // Message RAM InitDone Status Register
+#define MEMCFG_O_MSGXRAMTEST_LOCK   0x76U   // Lock register for MSGx RAM TEST Register
+#define MEMCFG_O_ROM_LOCK           0xA0U   // ROM Config Lock Register
+#define MEMCFG_O_ROM_TEST           0xA2U   // ROM  TEST Register
+#define MEMCFG_O_ROM_FORCE_ERROR    0xA4U   // ROM Force Error register
 
-#define MEMCFG_O_NMAVFLG          0x0U    // Non-Master Access Violation Flag Register
-#define MEMCFG_O_NMAVSET          0x2U    // Non-Master Access Violation Flag Set Register
-#define MEMCFG_O_NMAVCLR          0x4U    // Non-Master Access Violation Flag Clear Register
-#define MEMCFG_O_NMAVINTEN        0x6U    // Non-Master Access Violation Interrupt Enable Register
-#define MEMCFG_O_NMCPURDAVADDR    0x8U    // Non-Master CPU Read Access Violation Address
-#define MEMCFG_O_NMCPUWRAVADDR    0xAU    // Non-Master CPU Write Access Violation Address
-#define MEMCFG_O_NMCPUFAVADDR     0xCU    // Non-Master CPU Fetch Access Violation Address
-#define MEMCFG_O_NMCLA1RDAVADDR   0x10U   // Non-Master CLA1 Read Access Violation Address
-#define MEMCFG_O_NMCLA1WRAVADDR   0x12U   // Non-Master CLA1 Write Access Violation Address
-#define MEMCFG_O_NMCLA1FAVADDR    0x14U   // Non-Master CLA1 Fetch Access Violation Address
-#define MEMCFG_O_MAVFLG           0x20U   // Master Access Violation Flag Register
-#define MEMCFG_O_MAVSET           0x22U   // Master Access Violation Flag Set Register
-#define MEMCFG_O_MAVCLR           0x24U   // Master Access Violation Flag Clear Register
-#define MEMCFG_O_MAVINTEN         0x26U   // Master Access Violation Interrupt Enable Register
-#define MEMCFG_O_MCPUFAVADDR      0x28U   // Master CPU Fetch Access Violation Address
-#define MEMCFG_O_MCPUWRAVADDR     0x2AU   // Master CPU Write Access Violation Address
-#define MEMCFG_O_MDMAWRAVADDR     0x2CU   // Master  DMA Write Access Violation Address
+#define MEMCFG_O_NMAVFLG           0x0U                     // Non-Master Access Violation Flag
+                                                            // Register
+#define MEMCFG_O_NMAVSET           0x2U                     // Non-Master Access Violation Flag Set
+                                                            // Register
+#define MEMCFG_O_NMAVCLR           0x4U                     // Non-Master Access Violation Flag
+                                                            // Clear Register
+#define MEMCFG_O_NMAVINTEN         0x6U                     // Non-Master Access Violation
+                                                            // Interrupt Enable Register
+#define MEMCFG_O_NMCPURDAVADDR     0x8U                     // Non-Master CPU Read Access Violation
+                                                            // Address
+#define MEMCFG_O_NMCPUWRAVADDR     0xAU                     // Non-Master CPU Write Access
+                                                            // Violation Address
+#define MEMCFG_O_NMCPUFAVADDR      0xCU                     // Non-Master CPU Fetch Access
+                                                            // Violation Address
+#define MEMCFG_O_NMDMAWRAVADDR     0xEU                     // Non-Master DMA Write Access
+                                                            // Violation Address
+#define MEMCFG_O_NMCLA1RDAVADDR    0x10U                    // Non-Master CLA1 Read Access
+                                                            // Violation Address
+#define MEMCFG_O_NMCLA1WRAVADDR    0x12U                    // Non-Master CLA1 Write Access
+                                                            // Violation Address
+#define MEMCFG_O_NMCLA1FAVADDR     0x14U                    // Non-Master CLA1 Fetch Access
+                                                            // Violation Address
+#define MEMCFG_O_NMDMARDAVADDR     0x1CU                    // Non-Master DMA Read Access Violation
+                                                            // Address
+#define MEMCFG_O_MAVFLG            0x20U                    // Master Access Violation Flag
+                                                            // Register
+#define MEMCFG_O_MAVSET            0x22U                    // Master Access Violation Flag Set
+                                                            // Register
+#define MEMCFG_O_MAVCLR            0x24U                    // Master Access Violation Flag Clear
+                                                            // Register
+#define MEMCFG_O_MAVINTEN          0x26U                    // Master Access Violation Interrupt
+                                                            // Enable Register
+#define MEMCFG_O_MCPUFAVADDR       0x28U                    // Master CPU Fetch Access Violation
+                                                            // Address
+#define MEMCFG_O_MCPUWRAVADDR      0x2AU                    // Master CPU Write Access Violation
+                                                            // Address
+#define MEMCFG_O_MDMAWRAVADDR      0x2CU                    // Master  DMA Write Access Violation
+                                                            // Address
+#define MEMCFG_O_MHICWRAVADDR(i)   (0x2EU + ((i) * 0x2U))   // (0 <= i < 2) Master  HIC Write
+                                                            // Access Violation Address
+#define MEMCFG_O_NMHICRDAVADDR     0x3CU                    // Non-Master HIC Read Access Violation
+                                                            // Address
+#define MEMCFG_O_NMHICWRAVADDR     0x3EU                    // Non-Master HIC Write Access
+                                                            // Violation Address
 
 #define MEMCFG_O_UCERRFLG       0x0U    // Uncorrectable Error Flag Register
 #define MEMCFG_O_UCERRSET       0x2U    // Uncorrectable Error Flag Set Register
@@ -96,16 +131,24 @@
 #define MEMCFG_O_UCCPUREADDR    0x6U    // Uncorrectable CPU Read Error Address
 #define MEMCFG_O_UCDMAREADDR    0x8U    // Uncorrectable DMA Read Error Address
 #define MEMCFG_O_UCCLA1READDR   0xAU    // Uncorrectable CLA1 Read Error Address
+#define MEMCFG_O_UCHICAREADDR   0x10U   // Uncorrectable HICA Read Error Address
 #define MEMCFG_O_CERRFLG        0x20U   // Correctable Error Flag Register
 #define MEMCFG_O_CERRSET        0x22U   // Correctable Error Flag Set Register
 #define MEMCFG_O_CERRCLR        0x24U   // Correctable Error Flag Clear Register
 #define MEMCFG_O_CCPUREADDR     0x26U   // Correctable CPU Read Error Address
+#define MEMCFG_O_CDMAREADDR     0x28U   // Correctable DMA Read Error Address
+#define MEMCFG_O_CCLA1READDR    0x2AU   // Correctable CLA1 Read Error Address
 #define MEMCFG_O_CERRCNT        0x2EU   // Correctable Error Count Register
 #define MEMCFG_O_CERRTHRES      0x30U   // Correctable Error Threshold Value Register
 #define MEMCFG_O_CEINTFLG       0x32U   // Correctable Error Interrupt Flag Status Register
 #define MEMCFG_O_CEINTCLR       0x34U   // Correctable Error Interrupt Flag Clear Register
 #define MEMCFG_O_CEINTSET       0x36U   // Correctable Error Interrupt Flag Set Register
 #define MEMCFG_O_CEINTEN        0x38U   // Correctable Error Interrupt Enable Register
+#define MEMCFG_O_CHICREADDR     0x3AU   // Correctable HIC Read Error Address
+
+#define MEMCFG_O_CPU_RAM_TEST_ERROR_STS       0x0U   // Ram Test: Error Status Register
+#define MEMCFG_O_CPU_RAM_TEST_ERROR_STS_CLR   0x2U   // Ram Test: Error Status Clear Register
+#define MEMCFG_O_CPU_RAM_TEST_ERROR_ADDR      0x4U   // Ram Test: Error address register
 
 
 //*************************************************************************************************
@@ -123,6 +166,16 @@
 //*************************************************************************************************
 #define MEMCFG_DXCOMMIT_COMMIT_M0   0x1U   // M0 RAM Permanent Lock bits
 #define MEMCFG_DXCOMMIT_COMMIT_M1   0x2U   // M1 RAM Permanent Lock bits
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the DxACCPROT0 register
+//
+//*************************************************************************************************
+#define MEMCFG_DXACCPROT0_FETCHPROT_M0   0x1U     // Fetch Protection For M0 RAM
+#define MEMCFG_DXACCPROT0_CPUWRPROT_M0   0x2U     // CPU WR Protection For M0 RAM
+#define MEMCFG_DXACCPROT0_FETCHPROT_M1   0x100U   // Fetch Protection For M1 RAM
+#define MEMCFG_DXACCPROT0_CPUWRPROT_M1   0x200U   // CPU WR Protection For M1 RAM
 
 //*************************************************************************************************
 //
@@ -149,6 +202,16 @@
 //*************************************************************************************************
 #define MEMCFG_DXINITDONE_INITDONE_M0   0x1U   // RAM Initialization status for M0 RAM.
 #define MEMCFG_DXINITDONE_INITDONE_M1   0x2U   // RAM Initialization status for M1 RAM.
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the DxRAMTEST_LOCK register
+//
+//*************************************************************************************************
+#define MEMCFG_DXRAMTEST_LOCK_M0      0x1U          // DxTEST.TEST_M0 LOCK
+#define MEMCFG_DXRAMTEST_LOCK_M1      0x2U          // DxTEST.TEST_M1 LOCK
+#define MEMCFG_DXRAMTEST_LOCK_KEY_S   16U
+#define MEMCFG_DXRAMTEST_LOCK_KEY_M   0xFFFF0000U   // Key for writing DxRAMTEST_LOCK
 
 //*************************************************************************************************
 //
@@ -294,6 +357,22 @@
 
 //*************************************************************************************************
 //
+// The following are defines for the bit fields in the LSxRAMTEST_LOCK register
+//
+//*************************************************************************************************
+#define MEMCFG_LSXRAMTEST_LOCK_LS0     0x1U          // LSxTEST.TEST_LS0 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS1     0x2U          // LSxTEST.TEST_LS1 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS2     0x4U          // LSxTEST.TEST_LS2 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS3     0x8U          // LSxTEST.TEST_LS3 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS4     0x10U         // LSxTEST.TEST_LS4 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS5     0x20U         // LSxTEST.TEST_LS5 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS6     0x40U         // LSxTEST.TEST_LS6 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_LS7     0x80U         // LSxTEST.TEST_LS7 LOCK
+#define MEMCFG_LSXRAMTEST_LOCK_KEY_S   16U
+#define MEMCFG_LSXRAMTEST_LOCK_KEY_M   0xFFFF0000U   // KEY to enable write to lock
+
+//*************************************************************************************************
+//
 // The following are defines for the bit fields in the GSxLOCK register
 //
 //*************************************************************************************************
@@ -320,15 +399,19 @@
 #define MEMCFG_GSXACCPROT0_FETCHPROT_GS0   0x1U         // Fetch Protection For GS0 RAM
 #define MEMCFG_GSXACCPROT0_CPUWRPROT_GS0   0x2U         // CPU WR Protection For GS0 RAM
 #define MEMCFG_GSXACCPROT0_DMAWRPROT_GS0   0x4U         // DMA WR Protection For GS0 RAM
+#define MEMCFG_GSXACCPROT0_HICWRPROT_GS0   0x8U         // HIC WR Protection For GS0 RAM
 #define MEMCFG_GSXACCPROT0_FETCHPROT_GS1   0x100U       // Fetch Protection For GS1 RAM
 #define MEMCFG_GSXACCPROT0_CPUWRPROT_GS1   0x200U       // CPU WR Protection For GS1 RAM
 #define MEMCFG_GSXACCPROT0_DMAWRPROT_GS1   0x400U       // DMA WR Protection For GS1 RAM
+#define MEMCFG_GSXACCPROT0_HICWRPROT_GS1   0x800U       // HIC WR Protection For GS0 RAM
 #define MEMCFG_GSXACCPROT0_FETCHPROT_GS2   0x10000U     // Fetch Protection For GS2 RAM
 #define MEMCFG_GSXACCPROT0_CPUWRPROT_GS2   0x20000U     // CPU WR Protection For GS2 RAM
 #define MEMCFG_GSXACCPROT0_DMAWRPROT_GS2   0x40000U     // DMA WR Protection For GS2 RAM
+#define MEMCFG_GSXACCPROT0_HICWRPROT_GS2   0x80000U     // HIC WR Protection For GS0 RAM
 #define MEMCFG_GSXACCPROT0_FETCHPROT_GS3   0x1000000U   // Fetch Protection For GS3 RAM
 #define MEMCFG_GSXACCPROT0_CPUWRPROT_GS3   0x2000000U   // CPU WR Protection For GS3 RAM
 #define MEMCFG_GSXACCPROT0_DMAWRPROT_GS3   0x4000000U   // DMA WR Protection For GS3 RAM
+#define MEMCFG_GSXACCPROT0_HICWRPROT_GS3   0x8000000U   // HIC WR Protection For GS0 RAM
 
 //*************************************************************************************************
 //
@@ -366,19 +449,35 @@
 
 //*************************************************************************************************
 //
+// The following are defines for the bit fields in the GSxRAMTEST_LOCK register
+//
+//*************************************************************************************************
+#define MEMCFG_GSXRAMTEST_LOCK_GS0     0x1U          // GSxTEST.TEST_GS0 LOCK
+#define MEMCFG_GSXRAMTEST_LOCK_GS1     0x2U          // GSxTEST.TEST_GS1 LOCK
+#define MEMCFG_GSXRAMTEST_LOCK_GS2     0x4U          // GSxTEST.TEST_GS2 LOCK
+#define MEMCFG_GSXRAMTEST_LOCK_GS3     0x8U          // GSxTEST.TEST_GS3 LOCK
+#define MEMCFG_GSXRAMTEST_LOCK_KEY_S   16U
+#define MEMCFG_GSXRAMTEST_LOCK_KEY_M   0xFFFF0000U   // KEY to enable write to lock
+
+//*************************************************************************************************
+//
 // The following are defines for the bit fields in the MSGxLOCK register
 //
 //*************************************************************************************************
-#define MEMCFG_MSGXLOCK_LOCK_CPUTOCLA1   0x2U   // CPUTOCLA1 RAM Lock bits
-#define MEMCFG_MSGXLOCK_LOCK_CLA1TOCPU   0x4U   // CLA1TOCPU RAM Lock bits
+#define MEMCFG_MSGXLOCK_LOCK_CPUTOCLA1   0x2U    // CPUTOCLA1 RAM Lock bits
+#define MEMCFG_MSGXLOCK_LOCK_CLA1TOCPU   0x4U    // CLA1TOCPU RAM Lock bits
+#define MEMCFG_MSGXLOCK_LOCK_CLA1TODMA   0x20U   // CLA1TODMA RAM control fields lock bit
+#define MEMCFG_MSGXLOCK_LOCK_DMATOCLA1   0x40U   // DMATOCLA1 RAM control fields lock bit
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MSGxCOMMIT register
 //
 //*************************************************************************************************
-#define MEMCFG_MSGXCOMMIT_COMMIT_CPUTOCLA1   0x2U   // CPUTOCLA1 RAM control fields COMMIT bit
-#define MEMCFG_MSGXCOMMIT_COMMIT_CLA1TOCPU   0x4U   // CLA1TOCPU RAM control fields COMMIT bit
+#define MEMCFG_MSGXCOMMIT_COMMIT_CPUTOCLA1   0x2U    // CPUTOCLA1 RAM control fields COMMIT bit
+#define MEMCFG_MSGXCOMMIT_COMMIT_CLA1TOCPU   0x4U    // CLA1TOCPU RAM control fields COMMIT bit
+#define MEMCFG_MSGXCOMMIT_COMMIT_CLA1TODMA   0x20U   // CLA1TODMA RAM control fields COMMIT bit
+#define MEMCFG_MSGXCOMMIT_COMMIT_DMATOCLA1   0x40U   // DMATOCLA1 RAM control fields COMMIT bit
 
 //*************************************************************************************************
 //
@@ -386,27 +485,89 @@
 //
 //*************************************************************************************************
 #define MEMCFG_MSGXTEST_TEST_CPUTOCLA1_S   2U
-#define MEMCFG_MSGXTEST_TEST_CPUTOCLA1_M   0xCU    // CPU to CLA1 MSG RAM Mode Select
+#define MEMCFG_MSGXTEST_TEST_CPUTOCLA1_M   0xCU      // CPU to CLA1 MSG RAM Mode Select
 #define MEMCFG_MSGXTEST_TEST_CLA1TOCPU_S   4U
-#define MEMCFG_MSGXTEST_TEST_CLA1TOCPU_M   0x30U   // CLA1 to CPU MSG RAM Mode Select
+#define MEMCFG_MSGXTEST_TEST_CLA1TOCPU_M   0x30U     // CLA1 to CPU MSG RAM Mode Select
+#define MEMCFG_MSGXTEST_TEST_CLA1TODMA_S   10U
+#define MEMCFG_MSGXTEST_TEST_CLA1TODMA_M   0xC00U    // CLA1 to DMA MSG RAM Mode Select
+#define MEMCFG_MSGXTEST_TEST_DMATOCLA1_S   12U
+#define MEMCFG_MSGXTEST_TEST_DMATOCLA1_M   0x3000U   // DMA to CLA1 MSG RAM Mode Select
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MSGxINIT register
 //
 //*************************************************************************************************
-#define MEMCFG_MSGXINIT_INIT_CPUTOCLA1   0x2U   // Initialization control for CPUTOCLA1 MSG RAM
-#define MEMCFG_MSGXINIT_INIT_CLA1TOCPU   0x4U   // Initialization control for CLA1TOCPU MSG RAM
+#define MEMCFG_MSGXINIT_INIT_CPUTOCLA1   0x2U    // Initialization control for CPUTOCLA1 MSG RAM
+#define MEMCFG_MSGXINIT_INIT_CLA1TOCPU   0x4U    // Initialization control for CLA1TOCPU MSG RAM
+#define MEMCFG_MSGXINIT_INIT_CLA1TODMA   0x20U   // Initialization control for CLA1 to DMA MSG RAM
+#define MEMCFG_MSGXINIT_INIT_DMATOCLA1   0x40U   // Initialization control for DMA to CLA1 MSG RAM
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MSGxINITDONE register
 //
 //*************************************************************************************************
-#define MEMCFG_MSGXINITDONE_INITDONE_CPUTOCLA1   0x2U   // Initialization status for CPU to CLA1
-                                                        // MSG RAM
-#define MEMCFG_MSGXINITDONE_INITDONE_CLA1TOCPU   0x4U   // Initialization status for CLA1 to CPU
-                                                        // MSG RAM
+#define MEMCFG_MSGXINITDONE_INITDONE_CPUTOCLA1   0x2U    // Initialization status for CPU to CLA1
+                                                         // MSG RAM
+#define MEMCFG_MSGXINITDONE_INITDONE_CLA1TOCPU   0x4U    // Initialization status for CLA1 to CPU
+                                                         // MSG RAM
+#define MEMCFG_MSGXINITDONE_INITDONE_CLA1TODMA   0x20U   // Initialization status for CLA1 to DMA
+                                                         // MSG RAM
+#define MEMCFG_MSGXINITDONE_INITDONE_DMATOCLA1   0x40U   // Initialization status for DMA to CLA1
+                                                         // MSG RAM
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the MSGxRAMTEST_LOCK register
+//
+//*************************************************************************************************
+#define MEMCFG_MSGXRAMTEST_LOCK_CPUTOCLA1   0x2U          // MSGxRAMTEST_LOCK.CPUTOCLA1Lock
+                                                          // Configuration
+#define MEMCFG_MSGXRAMTEST_LOCK_CLA1TOCPU   0x4U          // MSGxRAMTEST_LOCK.CLA1TOCPULock
+                                                          // Configuration
+#define MEMCFG_MSGXRAMTEST_LOCK_CLA1TODMA   0x20U         // MSGxRAMTEST_LOCK.CLA1TODMALock
+                                                          // Configuration
+#define MEMCFG_MSGXRAMTEST_LOCK_DMATOCLA1   0x40U         // MSGxRAMTEST_LOCK.DMATOCLA1Lock
+                                                          // Configuration
+#define MEMCFG_MSGXRAMTEST_LOCK_KEY_S       16U
+#define MEMCFG_MSGXRAMTEST_LOCK_KEY_M       0xFFFF0000U   // KEY to enable write to lock
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the ROM_LOCK register
+//
+//*************************************************************************************************
+#define MEMCFG_ROM_LOCK_LOCK_BOOTROM      0x1U          // BOOTROM Lock bits
+#define MEMCFG_ROM_LOCK_LOCK_SECUREROM    0x2U          // SECUREROM Lock bits
+#define MEMCFG_ROM_LOCK_LOCK_CLADATAROM   0x4U          // CLADATAROM Lock bits
+#define MEMCFG_ROM_LOCK_LOCK_CLAPROGROM   0x8U          // CLAPROGROM Lock bits
+#define MEMCFG_ROM_LOCK_KEY_S             16U
+#define MEMCFG_ROM_LOCK_KEY_M             0xFFFF0000U   // Key for writing ROM LOCK
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the ROM_TEST register
+//
+//*************************************************************************************************
+#define MEMCFG_ROM_TEST_TEST_BOOTROM_S      0U
+#define MEMCFG_ROM_TEST_TEST_BOOTROM_M      0x3U    // Selects the different modes for BOOTROM
+#define MEMCFG_ROM_TEST_TEST_SECUREROM_S    2U
+#define MEMCFG_ROM_TEST_TEST_SECUREROM_M    0xCU    // Selects the different modes for SECUREROM
+#define MEMCFG_ROM_TEST_TEST_CLADATAROM_S   4U
+#define MEMCFG_ROM_TEST_TEST_CLADATAROM_M   0x30U   // Selects the different modes for CLADATAROM
+#define MEMCFG_ROM_TEST_TEST_CLAPROGROM_S   6U
+#define MEMCFG_ROM_TEST_TEST_CLAPROGROM_M   0xC0U   // Selects the different modes for CLAPROGROM
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the ROM_FORCE_ERROR register
+//
+//*************************************************************************************************
+#define MEMCFG_ROM_FORCE_ERROR_FORCE_BOOTROM_ERROR      0x1U   // Force Bootrom Parity Error
+#define MEMCFG_ROM_FORCE_ERROR_FORCE_SECUREROM_ERROR    0x2U   // Force SECUREROM Parity Error
+#define MEMCFG_ROM_FORCE_ERROR_FORCE_CLADATAROM_ERROR   0x4U   // Force CLADATAROM Parity Error
+#define MEMCFG_ROM_FORCE_ERROR_FORCE_CLAPROGROM_ERROR   0x8U   // Force CLAPROGROM Parity Error
 
 
 //*************************************************************************************************
@@ -414,93 +575,114 @@
 // The following are defines for the bit fields in the NMAVFLG register
 //
 //*************************************************************************************************
-#define MEMCFG_NMAVFLG_CPUREAD     0x1U    // Non Master CPU Read Access Violation Flag
-#define MEMCFG_NMAVFLG_CPUWRITE    0x2U    // Non Master CPU Write Access Violation Flag
-#define MEMCFG_NMAVFLG_CPUFETCH    0x4U    // Non Master CPU Fetch Access Violation Flag
-#define MEMCFG_NMAVFLG_DMAWRITE    0x8U    // Non Master DMA Write Access Violation Flag
-#define MEMCFG_NMAVFLG_CLA1READ    0x10U   // Non Master CLA1 Read Access Violation Flag
-#define MEMCFG_NMAVFLG_CLA1WRITE   0x20U   // Non Master CLA1 Write Access Violation Flag
-#define MEMCFG_NMAVFLG_CLA1FETCH   0x40U   // Non Master CLA1 Fetch Access Violation Flag
+#define MEMCFG_NMAVFLG_CPUREAD     0x1U      // Non Master CPU Read Access Violation Flag
+#define MEMCFG_NMAVFLG_CPUWRITE    0x2U      // Non Master CPU Write Access Violation Flag
+#define MEMCFG_NMAVFLG_CPUFETCH    0x4U      // Non Master CPU Fetch Access Violation Flag
+#define MEMCFG_NMAVFLG_DMAWRITE    0x8U      // Non Master DMA Write Access Violation Flag
+#define MEMCFG_NMAVFLG_CLA1READ    0x10U     // Non Master CLA1 Read Access Violation Flag
+#define MEMCFG_NMAVFLG_CLA1WRITE   0x20U     // Non Master CLA1 Write Access Violation Flag
+#define MEMCFG_NMAVFLG_CLA1FETCH   0x40U     // Non Master CLA1 Fetch Access Violation Flag
+#define MEMCFG_NMAVFLG_DMAREAD     0x400U    // Non Master DMA Read Access Violation Flag
+#define MEMCFG_NMAVFLG_HICREAD     0x800U    // Non Master HIC Read Access Violation Flag
+#define MEMCFG_NMAVFLG_HICWRITE    0x1000U   // Non Master HIC Write Access Violation Flag
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the NMAVSET register
 //
 //*************************************************************************************************
-#define MEMCFG_NMAVSET_CPUREAD     0x1U    // Non Master CPU Read Access Violation Flag Set
-#define MEMCFG_NMAVSET_CPUWRITE    0x2U    // Non Master CPU Write Access Violation Flag Set
-#define MEMCFG_NMAVSET_CPUFETCH    0x4U    // Non Master CPU Fetch Access Violation Flag Set
-#define MEMCFG_NMAVSET_DMAWRITE    0x8U    // Non Master DMA Write Access Violation Flag Set
-#define MEMCFG_NMAVSET_CLA1READ    0x10U   // Non Master CLA1 Read Access Violation Flag Set
-#define MEMCFG_NMAVSET_CLA1WRITE   0x20U   // Non Master CLA1 Write Access Violation Flag Set
-#define MEMCFG_NMAVSET_CLA1FETCH   0x40U   // Non Master CLA1 Fetch Access Violation Flag Set
+#define MEMCFG_NMAVSET_CPUREAD     0x1U      // Non Master CPU Read Access Violation Flag Set
+#define MEMCFG_NMAVSET_CPUWRITE    0x2U      // Non Master CPU Write Access Violation Flag Set
+#define MEMCFG_NMAVSET_CPUFETCH    0x4U      // Non Master CPU Fetch Access Violation Flag Set
+#define MEMCFG_NMAVSET_DMAWRITE    0x8U      // Non Master DMA Write Access Violation Flag Set
+#define MEMCFG_NMAVSET_CLA1READ    0x10U     // Non Master CLA1 Read Access Violation Flag Set
+#define MEMCFG_NMAVSET_CLA1WRITE   0x20U     // Non Master CLA1 Write Access Violation Flag Set
+#define MEMCFG_NMAVSET_CLA1FETCH   0x40U     // Non Master CLA1 Fetch Access Violation Flag Set
+#define MEMCFG_NMAVSET_DMAREAD     0x400U    // Non Master DMA Read Access Violation Flag Set
+#define MEMCFG_NMAVSET_HICREAD     0x800U    // Non Master HIC Read Access Violation Flag Set
+#define MEMCFG_NMAVSET_HICWRITE    0x1000U   // Non Master HIC Write Access Violation Flag Set
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the NMAVCLR register
 //
 //*************************************************************************************************
-#define MEMCFG_NMAVCLR_CPUREAD     0x1U    // Non Master CPU Read Access Violation Flag Clear
-#define MEMCFG_NMAVCLR_CPUWRITE    0x2U    // Non Master CPU Write Access Violation Flag Clear
-#define MEMCFG_NMAVCLR_CPUFETCH    0x4U    // Non Master CPU Fetch Access Violation Flag Clear
-#define MEMCFG_NMAVCLR_DMAWRITE    0x8U    // Non Master DMA Write Access Violation Flag Clear
-#define MEMCFG_NMAVCLR_CLA1READ    0x10U   // Non Master CLA1 Read Access Violation Flag Clear
-#define MEMCFG_NMAVCLR_CLA1WRITE   0x20U   // Non Master CLA1 Write Access Violation Flag Clear
-#define MEMCFG_NMAVCLR_CLA1FETCH   0x40U   // Non Master CLA1 Fetch Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_CPUREAD     0x1U      // Non Master CPU Read Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_CPUWRITE    0x2U      // Non Master CPU Write Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_CPUFETCH    0x4U      // Non Master CPU Fetch Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_DMAWRITE    0x8U      // Non Master DMA Write Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_CLA1READ    0x10U     // Non Master CLA1 Read Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_CLA1WRITE   0x20U     // Non Master CLA1 Write Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_CLA1FETCH   0x40U     // Non Master CLA1 Fetch Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_DMAREAD     0x400U    // Non Master DMA Read Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_HICREAD     0x800U    // Non Master HIC Read Access Violation Flag Clear
+#define MEMCFG_NMAVCLR_HICWRITE    0x1000U   // Non Master HIC Write Access Violation Flag Clear
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the NMAVINTEN register
 //
 //*************************************************************************************************
-#define MEMCFG_NMAVINTEN_CPUREAD     0x1U    // Non Master CPU Read Access Violation Interrupt
-                                             // Enable
-#define MEMCFG_NMAVINTEN_CPUWRITE    0x2U    // Non Master CPU Write Access Violation Interrupt
-                                             // Enable
-#define MEMCFG_NMAVINTEN_CPUFETCH    0x4U    // Non Master CPU Fetch Access Violation Interrupt
-                                             // Enable
-#define MEMCFG_NMAVINTEN_CLA1READ    0x10U   // Non Master CLA1 Read Access Violation Interrupt
-                                             // Enable
-#define MEMCFG_NMAVINTEN_CLA1WRITE   0x20U   // Non Master CLA1 Write Access Violation Interrupt
-                                             // Enable
-#define MEMCFG_NMAVINTEN_CLA1FETCH   0x40U   // Non Master CLA1 Fetch Access Violation Interrupt
-                                             // Enable
+#define MEMCFG_NMAVINTEN_CPUREAD     0x1U      // Non Master CPU Read Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_CPUWRITE    0x2U      // Non Master CPU Write Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_CPUFETCH    0x4U      // Non Master CPU Fetch Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_DMAWRITE    0x8U      // Non Master DMA Write Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_CLA1READ    0x10U     // Non Master CLA1 Read Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_CLA1WRITE   0x20U     // Non Master CLA1 Write Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_CLA1FETCH   0x40U     // Non Master CLA1 Fetch Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_DMAREAD     0x400U    // Non Master DMA Read Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_HICREAD     0x800U    // Non Master HIC Read Access Violation Interrupt
+                                               // Enable
+#define MEMCFG_NMAVINTEN_HICWRITE    0x1000U   // Non Master HIC Write Access Violation Interrupt
+                                               // Enable
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MAVFLG register
 //
 //*************************************************************************************************
-#define MEMCFG_MAVFLG_CPUFETCH   0x1U   // Master CPU Fetch Access Violation Flag
-#define MEMCFG_MAVFLG_CPUWRITE   0x2U   // Master CPU Write Access Violation Flag
-#define MEMCFG_MAVFLG_DMAWRITE   0x4U   // Master DMA Write Access Violation Flag
+#define MEMCFG_MAVFLG_CPUFETCH    0x1U   // Master CPU Fetch Access Violation Flag
+#define MEMCFG_MAVFLG_CPUWRITE    0x2U   // Master CPU Write Access Violation Flag
+#define MEMCFG_MAVFLG_DMAWRITE    0x4U   // Master DMA Write Access Violation Flag
+#define MEMCFG_MAVFLG_HICAWRITE   0x8U   // Master HICA Write Access Violation Flag
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MAVSET register
 //
 //*************************************************************************************************
-#define MEMCFG_MAVSET_CPUFETCH   0x1U   // Master CPU Fetch Access Violation Flag Set
-#define MEMCFG_MAVSET_CPUWRITE   0x2U   // Master CPU Write Access Violation Flag Set
-#define MEMCFG_MAVSET_DMAWRITE   0x4U   // Master DMA Write Access Violation Flag Set
+#define MEMCFG_MAVSET_CPUFETCH    0x1U   // Master CPU Fetch Access Violation Flag Set
+#define MEMCFG_MAVSET_CPUWRITE    0x2U   // Master CPU Write Access Violation Flag Set
+#define MEMCFG_MAVSET_DMAWRITE    0x4U   // Master DMA Write Access Violation Flag Set
+#define MEMCFG_MAVSET_HICAWRITE   0x8U   // Master HICA Write Access Violation Flag Set
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MAVCLR register
 //
 //*************************************************************************************************
-#define MEMCFG_MAVCLR_CPUFETCH   0x1U   // Master CPU Fetch Access Violation Flag Clear
-#define MEMCFG_MAVCLR_CPUWRITE   0x2U   // Master CPU Write Access Violation Flag Clear
-#define MEMCFG_MAVCLR_DMAWRITE   0x4U   // Master DMA Write Access Violation Flag Clear
+#define MEMCFG_MAVCLR_CPUFETCH    0x1U   // Master CPU Fetch Access Violation Flag Clear
+#define MEMCFG_MAVCLR_CPUWRITE    0x2U   // Master CPU Write Access Violation Flag Clear
+#define MEMCFG_MAVCLR_DMAWRITE    0x4U   // Master DMA Write Access Violation Flag Clear
+#define MEMCFG_MAVCLR_HICAWRITE   0x8U   // Master HICA Write Access Violation Flag Clear
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the MAVINTEN register
 //
 //*************************************************************************************************
-#define MEMCFG_MAVINTEN_CPUFETCH   0x1U   // Master CPU Fetch Access Violation Interrupt Enable
-#define MEMCFG_MAVINTEN_CPUWRITE   0x2U   // Master CPU Write Access Violation Interrupt Enable
-#define MEMCFG_MAVINTEN_DMAWRITE   0x4U   // Master DMA Write Access Violation Interrupt Enable
+#define MEMCFG_MAVINTEN_CPUFETCH    0x1U   // Master CPU Fetch Access Violation Interrupt Enable
+#define MEMCFG_MAVINTEN_CPUWRITE    0x2U   // Master CPU Write Access Violation Interrupt Enable
+#define MEMCFG_MAVINTEN_DMAWRITE    0x4U   // Master DMA Write Access Violation Interrupt Enable
+#define MEMCFG_MAVINTEN_HICAWRITE   0x8U   // Master HICA Write Access Violation Interrupt Enable
 
 
 //*************************************************************************************************
@@ -508,54 +690,68 @@
 // The following are defines for the bit fields in the UCERRFLG register
 //
 //*************************************************************************************************
-#define MEMCFG_UCERRFLG_CPURDERR    0x1U   // CPU Uncorrectable Read Error Flag
-#define MEMCFG_UCERRFLG_DMARDERR    0x2U   // DMA Uncorrectable Read Error Flag
-#define MEMCFG_UCERRFLG_CLA1RDERR   0x4U   // CLA1 Uncorrectable Read Error Flag
+#define MEMCFG_UCERRFLG_CPURDERR    0x1U    // CPU Uncorrectable Read Error Flag
+#define MEMCFG_UCERRFLG_DMARDERR    0x2U    // DMA Uncorrectable Read Error Flag
+#define MEMCFG_UCERRFLG_CLA1RDERR   0x4U    // CLA1 Uncorrectable Read Error Flag
+#define MEMCFG_UCERRFLG_HICARDERR   0x20U   // HICA Uncorrectable Read Error Flag
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the UCERRSET register
 //
 //*************************************************************************************************
-#define MEMCFG_UCERRSET_CPURDERR    0x1U   // CPU Uncorrectable Read Error Flag Set
-#define MEMCFG_UCERRSET_DMARDERR    0x2U   // DMA Uncorrectable Read Error Flag Set
-#define MEMCFG_UCERRSET_CLA1RDERR   0x4U   // CLA1 Uncorrectable Read Error Flag Set
+#define MEMCFG_UCERRSET_CPURDERR    0x1U    // CPU Uncorrectable Read Error Flag Set
+#define MEMCFG_UCERRSET_DMARDERR    0x2U    // DMA Uncorrectable Read Error Flag Set
+#define MEMCFG_UCERRSET_CLA1RDERR   0x4U    // CLA1 Uncorrectable Read Error Flag Set
+#define MEMCFG_UCERRSET_HICARDERR   0x20U   // HICA Uncorrectable Read Error Flag Set
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the UCERRCLR register
 //
 //*************************************************************************************************
-#define MEMCFG_UCERRCLR_CPURDERR    0x1U   // CPU Uncorrectable Read Error Flag Clear
-#define MEMCFG_UCERRCLR_DMARDERR    0x2U   // DMA Uncorrectable Read Error Flag Clear
-#define MEMCFG_UCERRCLR_CLA1RDERR   0x4U   // CLA1 Uncorrectable Read Error Flag Clear
+#define MEMCFG_UCERRCLR_CPURDERR    0x1U    // CPU Uncorrectable Read Error Flag Clear
+#define MEMCFG_UCERRCLR_DMARDERR    0x2U    // DMA Uncorrectable Read Error Flag Clear
+#define MEMCFG_UCERRCLR_CLA1RDERR   0x4U    // CLA1 Uncorrectable Read Error Flag Clear
+#define MEMCFG_UCERRCLR_HICARDERR   0x20U   // HICA Uncorrectable Read Error Flag Clear
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the CERRFLG register
 //
 //*************************************************************************************************
-#define MEMCFG_CERRFLG_CPURDERR    0x1U   // CPU Correctable Read Error Flag
-#define MEMCFG_CERRFLG_DMARDERR    0x2U   // DMA Correctable Read Error Flag
-#define MEMCFG_CERRFLG_CLA1RDERR   0x4U   // CLA1 Correctable Read Error Flag
+#define MEMCFG_CERRFLG_CPURDERR    0x1U    // CPU Correctable Read Error Flag
+#define MEMCFG_CERRFLG_DMARDERR    0x2U    // DMA Correctable Read Error Flag
+#define MEMCFG_CERRFLG_CLA1RDERR   0x4U    // CLA1 Correctable Read Error Flag
+#define MEMCFG_CERRFLG_HICRDERR    0x20U   // HIC Correctable Read Error Flag
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the CERRSET register
 //
 //*************************************************************************************************
-#define MEMCFG_CERRSET_CPURDERR    0x1U   // CPU Correctable Read Error Flag Set
-#define MEMCFG_CERRSET_DMARDERR    0x2U   // DMA Correctable Read Error Flag Set
-#define MEMCFG_CERRSET_CLA1RDERR   0x4U   // CLA1 Correctable Read Error Flag Set
+#define MEMCFG_CERRSET_CPURDERR    0x1U    // CPU Correctable Read Error Flag Set
+#define MEMCFG_CERRSET_DMARDERR    0x2U    // DMA Correctable Read Error Flag Set
+#define MEMCFG_CERRSET_CLA1RDERR   0x4U    // CLA1 Correctable Read Error Flag Set
+#define MEMCFG_CERRSET_HICRDERR    0x20U   // HIC Correctable Read Error Flag Set
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the CERRCLR register
 //
 //*************************************************************************************************
-#define MEMCFG_CERRCLR_CPURDERR    0x1U   // CPU Correctable Read Error Flag Clear
-#define MEMCFG_CERRCLR_DMARDERR    0x2U   // DMA Correctable Read Error Flag Clear
-#define MEMCFG_CERRCLR_CLA1RDERR   0x4U   // CLA1 Correctable Read Error Flag Clear
+#define MEMCFG_CERRCLR_CPURDERR    0x1U    // CPU Correctable Read Error Flag Clear
+#define MEMCFG_CERRCLR_DMARDERR    0x2U    // DMA Correctable Read Error Flag Clear
+#define MEMCFG_CERRCLR_CLA1RDERR   0x4U    // CLA1 Correctable Read Error Flag Clear
+#define MEMCFG_CERRCLR_HICRDERR    0x20U   // HIC Correctable Read Error Flag Clear
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CERRTHRES register
+//
+//*************************************************************************************************
+#define MEMCFG_CERRTHRES_CERRTHRES_S   0U
+#define MEMCFG_CERRTHRES_CERRTHRES_M   0xFFFFU   // Correctable error threshold.
 
 //*************************************************************************************************
 //
@@ -584,6 +780,23 @@
 //
 //*************************************************************************************************
 #define MEMCFG_CEINTEN_CEINTEN   0x1U   // CPU/DMA Correctable Error Interrupt Enable.
+
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CPU_RAM_TEST_ERROR_STS register
+//
+//*************************************************************************************************
+#define MEMCFG_CPU_RAM_TEST_ERROR_STS_COR_ERROR   0x1U   // COR_ERROR flag
+#define MEMCFG_CPU_RAM_TEST_ERROR_STS_UNC_ERROR   0x2U   // UNC_ERROR flag
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the CPU_RAM_TEST_ERROR_STS_CLR register
+//
+//*************************************************************************************************
+#define MEMCFG_CPU_RAM_TEST_ERROR_STS_CLR_COR_ERROR   0x1U   // COR_ERROR flag clear bit
+#define MEMCFG_CPU_RAM_TEST_ERROR_STS_CLR_UNC_ERROR   0x2U   // UNC_ERROR flag clear bit
 
 
 

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -55,7 +55,7 @@ CMPSS_configFilterHigh(uint32_t base, uint16_t samplePrescale,
     // Check the arguments.
     //
     ASSERT(CMPSS_isBaseValid(base));
-    ASSERT(samplePrescale <= 1023U);
+    ASSERT(samplePrescale <= 65535U);
     ASSERT((sampleWindow >= 1U) && (sampleWindow <= 32U));
     ASSERT((threshold - 1U) >= ((sampleWindow - 1U) / 2U));
 
@@ -96,7 +96,7 @@ CMPSS_configFilterLow(uint32_t base, uint16_t samplePrescale,
     // Check the arguments.
     //
     ASSERT(CMPSS_isBaseValid(base));
-    ASSERT(samplePrescale <= 1023U);
+    ASSERT(samplePrescale <= 65535U);
     ASSERT((sampleWindow >= 1U) && (sampleWindow <= 32U));
     ASSERT((threshold - 1U) >= ((sampleWindow - 1U) / 2U));
 

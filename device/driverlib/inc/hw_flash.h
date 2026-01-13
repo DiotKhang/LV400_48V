@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -99,9 +99,11 @@
 //
 //*************************************************************************************************
 #define FLASH_FBFALLBACK_BNKPWR0_S   0U
-#define FLASH_FBFALLBACK_BNKPWR0_M   0x3U   // Bank Power Mode of BANK0
+#define FLASH_FBFALLBACK_BNKPWR0_M   0x3U    // Bank Power Mode of BANK0
 #define FLASH_FBFALLBACK_BNKPWR1_S   2U
-#define FLASH_FBFALLBACK_BNKPWR1_M   0xCU   // Bank Power Mode of BANK1
+#define FLASH_FBFALLBACK_BNKPWR1_M   0xCU    // Bank Power Mode of BANK1
+#define FLASH_FBFALLBACK_BNKPWR2_S   4U
+#define FLASH_FBFALLBACK_BNKPWR2_M   0x30U   // Bank Power Mode of BANK2
 
 //*************************************************************************************************
 //
@@ -110,6 +112,7 @@
 //*************************************************************************************************
 #define FLASH_FBPRDY_BANK0RDY   0x1U      // Flash Bank Active Power State
 #define FLASH_FBPRDY_BANK1RDY   0x2U      // Flash Bank Active Power State
+#define FLASH_FBPRDY_BANK2RDY   0x4U      // Flash Bank Active Power State
 #define FLASH_FBPRDY_PUMPRDY    0x8000U   // Flash Pump Active Power Mode
 
 //*************************************************************************************************
@@ -134,6 +137,8 @@
 // The following are defines for the bit fields in the FMSTAT register
 //
 //*************************************************************************************************
+#define FLASH_FMSTAT_PSUSP      0x2U      //  Program Suspend.
+#define FLASH_FMSTAT_ESUSP      0x4U      //  Erase Suspend.
 #define FLASH_FMSTAT_VOLTSTAT   0x8U      // Flash Pump Power Status
 #define FLASH_FMSTAT_CSTAT      0x10U     // Command Fail Status
 #define FLASH_FMSTAT_INVDAT     0x20U     // Invalid Data

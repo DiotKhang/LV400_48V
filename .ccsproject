@@ -11,5 +11,5 @@
 	<filesToOpen value=""/>
 	<connection value="common/targetdb/connections/TIXDS110_Connection.xml"/>
 	<isTargetConfigurationManual value="false"/>
-	<activeTargetConfiguration value="targetConfigs/TMS320F280049C.ccxml"/>
+	<activeTargetConfiguration value="targetConfigs/TMS320F280039C.ccxml"/>
 </projectOptions>

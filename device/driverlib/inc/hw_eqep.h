@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -73,6 +73,7 @@
 #define EQEP_O_REV            0x30U   // QEP Revision Number
 #define EQEP_O_QEPSTROBESEL   0x32U   // QEP Strobe select register
 #define EQEP_O_QMACTRL        0x34U   // QMA Control register
+#define EQEP_O_QEPSRCSEL      0x36U   // QEP Source Select Register
 
 
 //*************************************************************************************************
@@ -80,6 +81,7 @@
 // The following are defines for the bit fields in the QDECCTL register
 //
 //*************************************************************************************************
+#define EQEP_QDECCTL_QIDIRE   0x1U      // Qep Index Direction Enhancement enable
 #define EQEP_QDECCTL_QSP      0x20U     // QEPS input polarity
 #define EQEP_QDECCTL_QIP      0x40U     // QEPI input polarity
 #define EQEP_QDECCTL_QBP      0x80U     // QEPB input polarity
@@ -250,6 +252,20 @@
 //*************************************************************************************************
 #define EQEP_QMACTRL_MODE_S   0U
 #define EQEP_QMACTRL_MODE_M   0x7U   // QMA Mode Select
+
+//*************************************************************************************************
+//
+// The following are defines for the bit fields in the QEPSRCSEL register
+//
+//*************************************************************************************************
+#define EQEP_QEPSRCSEL_QEPASEL_S   0U
+#define EQEP_QEPSRCSEL_QEPASEL_M   0xFU      // QEPA Source select
+#define EQEP_QEPSRCSEL_QEPBSEL_S   4U
+#define EQEP_QEPSRCSEL_QEPBSEL_M   0xF0U     // QEPB Source select
+#define EQEP_QEPSRCSEL_QEPISEL_S   8U
+#define EQEP_QEPSRCSEL_QEPISEL_M   0xF00U    // QEPI Source select
+#define EQEP_QEPSRCSEL_QEPSSEL_S   12U
+#define EQEP_QEPSRCSEL_QEPSSEL_M   0xF000U   // QEPS Source select
 
 
 

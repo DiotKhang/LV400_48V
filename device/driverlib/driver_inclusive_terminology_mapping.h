@@ -57,6 +57,7 @@
 // SysCtrl
 //*****************************************************************************
 #define SysCtl_AccessMaster     SysCtl_AccessController
+#define SYSCTL_ACCESS_HICMASTER SYSCTL_ACCESS_HIC
 
 
 //*****************************************************************************

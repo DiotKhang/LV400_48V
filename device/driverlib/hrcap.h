@@ -6,7 +6,7 @@
 //
 //#############################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -129,8 +129,7 @@ static inline bool
 HRCAP_isBaseValid(uint32_t base)
 {
     return(
-           (base == HRCAP6_BASE) ||
-           (base == HRCAP7_BASE)
+           (base == HRCAP3_BASE)
           );
 }
 #endif
@@ -597,8 +596,8 @@ HRCAP_convertEventTimeStampNanoseconds(uint32_t timeStamp,
     //
     // Convert the raw count value to nanoseconds using the given scale factor.
     //
-    return((float32_t)timeStamp * scaleFactor * ((float32_t)10.0 /
-                                                 (float32_t)128.0));
+    return((float32_t)timeStamp * scaleFactor * ((float32_t)25.0 /
+                                                 (float32_t)384.0));
 }
 
 

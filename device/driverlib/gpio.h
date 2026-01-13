@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -79,6 +79,7 @@ extern "C"
 //*****************************************************************************
 #define GPIO_CTRL_REGS_STEP     ((GPIO_O_GPBCTRL - GPIO_O_GPACTRL) / 2U)
 #define GPIO_DATA_REGS_STEP     ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 2U)
+#define GPIO_DATA_READ_REGS_STEP ((GPIO_O_GPBDAT_R - GPIO_O_GPADAT_R) / 2U)
 
 #define GPIO_GPxCTRL_INDEX      (GPIO_O_GPACTRL / 2U)
 #define GPIO_GPxQSEL_INDEX      (GPIO_O_GPAQSEL1 / 2U)
@@ -97,6 +98,8 @@ extern "C"
 #define GPIO_GPxSET_INDEX       (GPIO_O_GPASET / 2U)
 #define GPIO_GPxCLEAR_INDEX     (GPIO_O_GPACLEAR / 2U)
 #define GPIO_GPxTOGGLE_INDEX    (GPIO_O_GPATOGGLE / 2U)
+
+#define GPIO_GPxDAT_R_INDEX     (GPIO_O_GPADAT_R / 2U)
 
 #define GPIO_MUX_TO_GMUX        (GPIO_O_GPAGMUX1 - GPIO_O_GPAMUX1)
 
@@ -225,7 +228,7 @@ typedef enum
 static inline bool
 GPIO_isPinValid(uint32_t pin)
 {
-    return((pin <= 59U) || ((pin >= 224U) && (pin <= 247U)));
+    return((pin <= 61U) || ((pin >= 224U) && (pin <= 253U)));
 }
 #endif
 
@@ -424,6 +427,38 @@ GPIO_readPin(uint32_t pin)
     return((gpioDataReg[GPIO_GPxDAT_INDEX] >> (pin % 32U)) & (uint32_t)0x1U);
 }
 
+//*****************************************************************************
+//
+//! Reads the data register value for specified pin.
+//!
+//! \param pin is the identifying GPIO number of the pin.
+//!
+//! The value available at the data register for the specified pin is read, as
+//! specified by \e pin. The value is returned for both input and output pins.
+//!
+//! The pin is specified by its numerical value. For example, GPIO34 is
+//! specified by passing 34 as \e pin.
+//!
+//! \sa GPIO_readPin()
+//!
+//! \return Returns the value in the data register for the specified pin.
+//
+//*****************************************************************************
+static inline uint32_t
+GPIO_readPinDataRegister(uint32_t pin)
+{
+    volatile uint32_t *gpioDataReg;
+
+    //
+    // Check the arguments.
+    //
+    ASSERT(GPIO_isPinValid(pin));
+
+    gpioDataReg = (uint32_t *)((uintptr_t)GPIODATAREAD_BASE) +
+                  ((pin / 32U) * GPIO_DATA_READ_REGS_STEP);
+
+    return((gpioDataReg[GPIO_GPxDAT_R_INDEX] >> (pin % 32U)) & (uint32_t)0x1U);
+}
 
 //*****************************************************************************
 //
@@ -524,6 +559,38 @@ GPIO_readPortData(GPIO_Port port)
     return(gpioDataReg[GPIO_GPxDAT_INDEX]);
 }
 
+//*****************************************************************************
+//
+//! Reads the data written in GPIO Data Register.
+//!
+//! \param port is the GPIO port being accessed in the form of \b GPIO_PORT_X
+//! where X is the port letter.
+//!
+//! Reads the data written in GPIO Data Register for the specified port. In
+//! previous devices, read of GPIO data registers resulted in read of
+//! corespoinding pins. The function \b GPIO_readPortData() returns the value
+//! on pin.
+//!
+//! \sa GPIO_readPortData()
+//!
+//! \return Returns the value in the data register for the specified port. Each
+//! bit of the the return value represents a pin on the port, where bit 0
+//! represents GPIO port pin 0, bit 1 represents GPIO port pin 1, and so on.
+//
+//*****************************************************************************
+static inline uint32_t
+GPIO_readPortDataRegister(GPIO_Port port)
+{
+    volatile uint32_t *gpioDataReg;
+
+    //
+    // Get the starting address of the port's registers and return DATA.
+    //
+    gpioDataReg = (uint32_t *)((uintptr_t)GPIODATAREAD_BASE) +
+                  ((uint32_t)port * GPIO_DATA_READ_REGS_STEP);
+
+    return(gpioDataReg[GPIO_GPxDAT_R_INDEX]);
+}
 
 //*****************************************************************************
 //

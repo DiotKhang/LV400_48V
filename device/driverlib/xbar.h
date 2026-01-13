@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -77,13 +77,10 @@ extern "C"
 // Not intended for use by application code.
 //
 //*****************************************************************************
-#define XBAR_OUTPUT_CFG_REG_BASE  (OUTPUTXBAR_BASE + XBAR_O_OUTPUT1MUX0TO15CFG)
-#define XBAR_OUTPUT_EN_REG_BASE   (OUTPUTXBAR_BASE + XBAR_O_OUTPUT1MUXENABLE)
 #define XBAR_EPWM_CFG_REG_BASE    (EPWMXBAR_BASE + XBAR_O_TRIP4MUX0TO15CFG)
 #define XBAR_EPWM_EN_REG_BASE     (EPWMXBAR_BASE + XBAR_O_TRIP4MUXENABLE)
 #define XBAR_CLB_CFG_REG_BASE     (CLBXBAR_BASE + XBAR_O_AUXSIG0MUX0TO15CFG)
 #define XBAR_CLB_EN_REG_BASE      (CLBXBAR_BASE + XBAR_O_AUXSIG0MUXENABLE)
-#define XBAR_INPUT_BASE           (INPUTXBAR_BASE + XBAR_O_INPUT1SELECT)
 
 #define XBAR_INPUT_FLG_INPUT_M    0x00FFU
 #define XBAR_INPUT_FLG_REG_M      0xFF00U
@@ -92,11 +89,71 @@ extern "C"
 #define XBAR_INPUT_FLG_REG_3      0x0200U
 #define XBAR_INPUT_FLG_REG_4      0x0300U
 
-#define XBAR_GPIO_MAX_CNT                59U
+#define XBAR_GPIO_MAX_CNT                61U
 #define XBAR_GPIO_AIO_MIN_CNT            224U
-#define XBAR_GPIO_AIO_MAX_CNT            247U
+#define XBAR_GPIO_AIO_MAX_CNT            253U
 #define XBAR_NON_GPIO_MIN_CNT            0xFFFDU
 #define XBAR_NON_GPIO_MAX_CNT            0xFFFFU
+
+//
+// To acheive backward compatibilty for previously defined macros naming
+// in XBAR
+//
+
+//
+//OUTPUTXBAR
+//
+#define XBAR_OUT_MUX16_SD1FLT1_COMPH            XBAR_OUT_MUX16_SD1FLT1_CEVT1
+#define XBAR_OUT_MUX16_SD1FLT1_COMPH_OR_COMPL   XBAR_OUT_MUX16_SD1FLT1_CEVT1_OR_CEVT2
+#define XBAR_OUT_MUX17_SD1FLT1_COMPL            XBAR_OUT_MUX17_SD1FLT1_CEVT2
+#define XBAR_OUT_MUX18_SD1FLT2_COMPH            XBAR_OUT_MUX18_SD1FLT2_CEVT1
+#define XBAR_OUT_MUX18_SD1FLT2_COMPH_OR_COMPL   XBAR_OUT_MUX18_SD1FLT2_CEVT1_OR_CEVT2
+#define XBAR_OUT_MUX19_SD1FLT2_COMPL            XBAR_OUT_MUX19_SD1FLT2_CEVT2
+#define XBAR_OUT_MUX20_SD1FLT3_COMPH            XBAR_OUT_MUX20_SD1FLT3_CEVT1
+#define XBAR_OUT_MUX20_SD1FLT3_COMPH_OR_COMPL   XBAR_OUT_MUX20_SD1FLT3_CEVT1_OR_CEVT2
+#define XBAR_OUT_MUX21_SD1FLT3_COMPL            XBAR_OUT_MUX21_SD1FLT3_CEVT2
+#define XBAR_OUT_MUX22_SD1FLT4_COMPH            XBAR_OUT_MUX22_SD1FLT4_CEVT1
+#define XBAR_OUT_MUX22_SD1FLT4_COMPH_OR_COMPL   XBAR_OUT_MUX22_SD1FLT4_CEVT1_OR_CEVT2
+#define XBAR_OUT_MUX23_SD1FLT4_COMPL            XBAR_OUT_MUX23_SD1FLT4_CEVT2
+#define XBAR_OUT_MUX24_SD2FLT1_COMPH            XBAR_OUT_MUX24_SD2FLT1_CEVT1       
+#define XBAR_OUT_MUX24_SD2FLT1_COMPH_OR_COMPL   XBAR_OUT_MUX24_SD2FLT1_CEVT1_OR_CEVT2 
+#define XBAR_OUT_MUX25_SD2FLT1_COMPL            XBAR_OUT_MUX25_SD2FLT1_CEVT2          
+#define XBAR_OUT_MUX26_SD2FLT2_COMPH            XBAR_OUT_MUX26_SD2FLT2_CEVT1        
+#define XBAR_OUT_MUX26_SD2FLT2_COMPH_OR_COMPL   XBAR_OUT_MUX26_SD2FLT2_CEVT1_OR_CEVT2
+#define XBAR_OUT_MUX27_SD2FLT2_COMPL            XBAR_OUT_MUX27_SD2FLT2_CEVT2          
+#define XBAR_OUT_MUX28_SD2FLT3_COMPH            XBAR_OUT_MUX28_SD2FLT3_CEVT1      
+#define XBAR_OUT_MUX28_SD2FLT3_COMPH_OR_COMPL   XBAR_OUT_MUX28_SD2FLT3_CEVT1_OR_CEVT2 
+#define XBAR_OUT_MUX29_SD2FLT3_COMPL            XBAR_OUT_MUX29_SD2FLT3_CEVT2       
+#define XBAR_OUT_MUX30_SD2FLT4_COMPH            XBAR_OUT_MUX30_SD2FLT4_CEVT1         
+#define XBAR_OUT_MUX30_SD2FLT4_COMPH_OR_COMPL   XBAR_OUT_MUX30_SD2FLT4_CEVT1_OR_CEVT2
+#define XBAR_OUT_MUX31_SD2FLT4_COMPL            XBAR_OUT_MUX31_SD2FLT4_CEVT2
+//
+//EPWMXBAR
+//
+#define XBAR_EPWM_MUX16_SD1FLT1_COMPH            XBAR_EPWM_MUX16_SD1FLT1_CEVT1
+#define XBAR_EPWM_MUX16_SD1FLT1_COMPH_OR_COMPL   XBAR_EPWM_MUX16_SD1FLT1_CEVT1_OR_CEVT2
+#define XBAR_EPWM_MUX17_SD1FLT1_COMPL            XBAR_EPWM_MUX17_SD1FLT1_CEVT2
+#define XBAR_EPWM_MUX18_SD1FLT2_COMPH            XBAR_EPWM_MUX18_SD1FLT2_CEVT1
+#define XBAR_EPWM_MUX18_SD1FLT2_COMPH_OR_COMPL   XBAR_EPWM_MUX18_SD1FLT2_CEVT1_OR_CEVT2
+#define XBAR_EPWM_MUX19_SD1FLT2_COMPL            XBAR_EPWM_MUX19_SD1FLT2_CEVT2
+#define XBAR_EPWM_MUX20_SD1FLT3_COMPH            XBAR_EPWM_MUX20_SD1FLT3_CEVT1
+#define XBAR_EPWM_MUX20_SD1FLT3_COMPH_OR_COMPL   XBAR_EPWM_MUX20_SD1FLT3_CEVT1_OR_CEVT2
+#define XBAR_EPWM_MUX21_SD1FLT3_COMPL            XBAR_EPWM_MUX21_SD1FLT3_CEVT2
+#define XBAR_EPWM_MUX22_SD1FLT4_COMPH            XBAR_EPWM_MUX22_SD1FLT4_CEVT1
+#define XBAR_EPWM_MUX22_SD1FLT4_COMPH_OR_COMPL   XBAR_EPWM_MUX22_SD1FLT4_CEVT1_OR_CEVT2
+#define XBAR_EPWM_MUX23_SD1FLT4_COMPL            XBAR_EPWM_MUX23_SD1FLT4_CEVT2
+#define XBAR_EPWM_MUX24_SD2FLT1_COMPH            XBAR_EPWM_MUX24_SD2FLT1_CEVT1       
+#define XBAR_EPWM_MUX24_SD2FLT1_COMPH_OR_COMPL   XBAR_EPWM_MUX24_SD2FLT1_CEVT1_OR_CEVT2 
+#define XBAR_EPWM_MUX25_SD2FLT1_COMPL            XBAR_EPWM_MUX25_SD2FLT1_CEVT2          
+#define XBAR_EPWM_MUX26_SD2FLT2_COMPH            XBAR_EPWM_MUX26_SD2FLT2_CEVT1        
+#define XBAR_EPWM_MUX26_SD2FLT2_COMPH_OR_COMPL   XBAR_EPWM_MUX26_SD2FLT2_CEVT1_OR_CEVT2
+#define XBAR_EPWM_MUX27_SD2FLT2_COMPL            XBAR_EPWM_MUX27_SD2FLT2_CEVT2          
+#define XBAR_EPWM_MUX28_SD2FLT3_COMPH            XBAR_EPWM_MUX28_SD2FLT3_CEVT1      
+#define XBAR_EPWM_MUX28_SD2FLT3_COMPH_OR_COMPL   XBAR_EPWM_MUX28_SD2FLT3_CEVT1_OR_CEVT2 
+#define XBAR_EPWM_MUX29_SD2FLT3_COMPL            XBAR_EPWM_MUX29_SD2FLT3_CEVT2       
+#define XBAR_EPWM_MUX30_SD2FLT4_COMPH            XBAR_EPWM_MUX30_SD2FLT4_CEVT1         
+#define XBAR_EPWM_MUX30_SD2FLT4_COMPH_OR_COMPL   XBAR_EPWM_MUX30_SD2FLT4_CEVT1_OR_CEVT2
+#define XBAR_EPWM_MUX31_SD2FLT4_COMPL            XBAR_EPWM_MUX31_SD2FLT4_CEVT2
 
 #ifndef DOXYGEN_PDF_IGNORE
 //*****************************************************************************
@@ -260,50 +317,99 @@ typedef enum
     XBAR_OUT_MUX06_CMPSS4_CTRIPOUTH        = 0x0C00,
     XBAR_OUT_MUX06_CMPSS4_CTRIPOUTH_OR_L   = 0x0C01,
     XBAR_OUT_MUX06_ADCAEVT4                = 0x0C02,
-    XBAR_OUT_MUX06_ECAP4_OUT               = 0x0C03,
     XBAR_OUT_MUX07_CMPSS4_CTRIPOUTL        = 0x0E00,
     XBAR_OUT_MUX07_INPUTXBAR4              = 0x0E01,
     XBAR_OUT_MUX07_CLB2_OUT5               = 0x0E02,
     XBAR_OUT_MUX07_ADCCEVT4                = 0x0E03,
-    XBAR_OUT_MUX08_CMPSS5_CTRIPOUTH        = 0x1000,
-    XBAR_OUT_MUX08_CMPSS5_CTRIPOUTH_OR_L   = 0x1001,
     XBAR_OUT_MUX08_ADCBEVT1                = 0x1002,
-    XBAR_OUT_MUX08_ECAP5_OUT               = 0x1003,
-    XBAR_OUT_MUX09_CMPSS5_CTRIPOUTL        = 0x1200,
     XBAR_OUT_MUX09_INPUTXBAR5              = 0x1201,
     XBAR_OUT_MUX09_CLB3_OUT4               = 0x1202,
-    XBAR_OUT_MUX10_CMPSS6_CTRIPOUTH        = 0x1400,
-    XBAR_OUT_MUX10_CMPSS6_CTRIPOUTH_OR_L   = 0x1401,
     XBAR_OUT_MUX10_ADCBEVT2                = 0x1402,
-    XBAR_OUT_MUX10_ECAP6_OUT               = 0x1403,
-    XBAR_OUT_MUX11_CMPSS6_CTRIPOUTL        = 0x1600,
     XBAR_OUT_MUX11_INPUTXBAR6              = 0x1601,
     XBAR_OUT_MUX11_CLB3_OUT5               = 0x1602,
-    XBAR_OUT_MUX12_CMPSS7_CTRIPOUTH        = 0x1800,
-    XBAR_OUT_MUX12_CMPSS7_CTRIPOUTH_OR_L   = 0x1801,
     XBAR_OUT_MUX12_ADCBEVT3                = 0x1802,
-    XBAR_OUT_MUX12_ECAP7_OUT               = 0x1803,
-    XBAR_OUT_MUX13_CMPSS7_CTRIPOUTL        = 0x1A00,
+    XBAR_OUT_MUX14_EXTSYNCOUT              = 0x1C03,
+    XBAR_OUT_MUX14_ADCBEVT4                = 0x1C02,
     XBAR_OUT_MUX13_ADCSOCA                 = 0x1A01,
     XBAR_OUT_MUX13_CLB4_OUT4               = 0x1A02,
-    XBAR_OUT_MUX14_ADCBEVT4                = 0x1C02,
-    XBAR_OUT_MUX14_EXTSYNCOUT              = 0x1C03,
     XBAR_OUT_MUX15_ADCSOCB                 = 0x1E01,
     XBAR_OUT_MUX15_CLB4_OUT5               = 0x1E02,
-    XBAR_OUT_MUX16_SD1FLT1_COMPH           = 0x2000,
-    XBAR_OUT_MUX16_SD1FLT1_COMPH_OR_COMPL  = 0x2001,
-    XBAR_OUT_MUX17_SD1FLT1_COMPL           = 0x2200,
+    XBAR_OUT_MUX16_SD1FLT1_CEVT1           = 0x2000,
+    XBAR_OUT_MUX16_SD1FLT1_CEVT1_OR_CEVT2  = 0x2001,
+    XBAR_OUT_MUX17_SD1FLT1_CEVT2           = 0x2200,
     XBAR_OUT_MUX17_CLAHALT                 = 0x2203,
-    XBAR_OUT_MUX18_SD1FLT2_COMPH           = 0x2400,
-    XBAR_OUT_MUX18_SD1FLT2_COMPH_OR_COMPL  = 0x2401,
-    XBAR_OUT_MUX19_SD1FLT2_COMPL           = 0x2600,
-    XBAR_OUT_MUX20_SD1FLT3_COMPH           = 0x2800,
-    XBAR_OUT_MUX20_SD1FLT3_COMPH_OR_COMPL  = 0x2801,
-    XBAR_OUT_MUX21_SD1FLT3_COMPL           = 0x2A00,
-    XBAR_OUT_MUX22_SD1FLT4_COMPH           = 0x2C00,
-    XBAR_OUT_MUX22_SD1FLT4_COMPH_OR_COMPL  = 0x2C01,
-    XBAR_OUT_MUX23_SD1FLT4_COMPL           = 0x2E00,
+    XBAR_OUT_MUX18_SD1FLT2_CEVT1           = 0x2400,
+    XBAR_OUT_MUX18_SD1FLT2_CEVT1_OR_CEVT2  = 0x2401,
+    XBAR_OUT_MUX19_SD1FLT2_CEVT2           = 0x2600,
+    XBAR_OUT_MUX20_SD1FLT3_CEVT1           = 0x2800,
+    XBAR_OUT_MUX20_SD1FLT3_CEVT1_OR_CEVT2  = 0x2801,
+    XBAR_OUT_MUX21_SD1FLT3_CEVT2           = 0x2A00,
+    XBAR_OUT_MUX21_FSIA_RX_TRIG2           = 0x2A03,
+    XBAR_OUT_MUX22_SD1FLT4_CEVT1           = 0x2C00,
+    XBAR_OUT_MUX22_SD1FLT4_CEVT1_OR_CEVT2  = 0x2C01,
+    XBAR_OUT_MUX23_SD1FLT4_CEVT2           = 0x2E00,
+    XBAR_OUT_MUX24_SD2FLT1_CEVT1           = 0x3000,
+    XBAR_OUT_MUX24_SD2FLT1_CEVT1_OR_CEVT2  = 0x3001,
+    XBAR_OUT_MUX25_SD2FLT1_CEVT2           = 0x3200,
+    XBAR_OUT_MUX26_SD2FLT2_CEVT1           = 0x3400,
+    XBAR_OUT_MUX26_SD2FLT2_CEVT1_OR_CEVT2  = 0x3401,
+    XBAR_OUT_MUX27_SD2FLT2_CEVT2           = 0x3600,
+    XBAR_OUT_MUX28_SD2FLT3_CEVT1           = 0x3800,
+    XBAR_OUT_MUX28_SD2FLT3_CEVT1_OR_CEVT2  = 0x3801,
+    XBAR_OUT_MUX29_SD2FLT3_CEVT2           = 0x3A00,
+    XBAR_OUT_MUX30_SD2FLT4_CEVT1           = 0x3C00,
+    XBAR_OUT_MUX30_SD2FLT4_CEVT1_OR_CEVT2  = 0x3C01,
+    XBAR_OUT_MUX31_SD2FLT4_CEVT2           = 0x3E00,
+    XBAR_OUT_MUX19_ERRSTS                  = 0x2603,
+    XBAR_OUT_MUX30_EPG1_OUT0               = 0x3C03,
+    XBAR_OUT_MUX31_ERRSTS                  = 0x3E02,
+    XBAR_OUT_MUX31_EPG1_OUT1               = 0x3E03,
 
+    //
+    //CLBOUTPUTXBAR
+    //
+    XBAR_OUT_MUX00_CLB1_OUT0               = 0x0000,
+    XBAR_OUT_MUX00_XTRIP_OUT1              = 0x0003,
+    XBAR_OUT_MUX01_CLB1_OUT1               = 0x0200,
+    XBAR_OUT_MUX01_XTRIP_OUT2              = 0x0203,
+    XBAR_OUT_MUX02_CLB1_OUT2               = 0x0400,
+    XBAR_OUT_MUX03_CLB1_OUT3               = 0x0600,
+    XBAR_OUT_MUX04_CLB1_OUT4               = 0x0800,
+    XBAR_OUT_MUX05_CLB1_OUT5               = 0x0A00,
+    XBAR_OUT_MUX06_CLB1_OUT6               = 0x0C00,
+    XBAR_OUT_MUX07_CLB1_OUT7               = 0x0E00,
+    XBAR_OUT_MUX08_CLB2_OUT0               = 0x1000,
+    XBAR_OUT_MUX08_XTRIP_OUT3              = 0x1003,
+    XBAR_OUT_MUX09_CLB2_OUT1               = 0x1200,
+    XBAR_OUT_MUX09_XTRIP_OUT4              = 0x1203,
+    XBAR_OUT_MUX10_CLB2_OUT2              = 0x1400,
+    XBAR_OUT_MUX11_CLB2_OUT3              = 0x1600,
+    XBAR_OUT_MUX12_CLB2_OUT4              = 0x1800,
+    XBAR_OUT_MUX13_CLB2_OUT5              = 0x1A00,
+    XBAR_OUT_MUX14_CLB2_OUT6              = 0x1C00,
+    XBAR_OUT_MUX15_CLB2_OUT7              = 0x1E00,
+    XBAR_OUT_MUX16_CLB3_OUT0              = 0x2000,
+    XBAR_OUT_MUX16_XTRIP_OUT5             = 0x2003,
+    XBAR_OUT_MUX17_CLB3_OUT1              = 0x2200,
+    XBAR_OUT_MUX17_XTRIP_OUT6             = 0x2203,
+    XBAR_OUT_MUX18_CLB3_OUT2              = 0x2400,
+    XBAR_OUT_MUX19_CLB3_OUT3              = 0x2600,
+    XBAR_OUT_MUX20_CLB3_OUT4              = 0x2800,
+    XBAR_OUT_MUX21_CLB3_OUT5              = 0x2A00,
+    XBAR_OUT_MUX22_CLB3_OUT6              = 0x2C00,
+    XBAR_OUT_MUX23_CLB3_OUT7              = 0x2E00,
+    XBAR_OUT_MUX24_CLB4_OUT0              = 0x3000,
+    XBAR_OUT_MUX24_XTRIP_OUT7             = 0x3003,
+    XBAR_OUT_MUX25_CLB4_OUT1              = 0x3200,
+    XBAR_OUT_MUX25_XTRIP_OUT8             = 0x3203,
+    XBAR_OUT_MUX26_CLB4_OUT2              = 0x3400,
+    XBAR_OUT_MUX27_CLB4_OUT3              = 0x3600,
+    XBAR_OUT_MUX28_CLB4_OUT4              = 0x3800,
+    XBAR_OUT_MUX29_CLB4_OUT5              = 0x3A00,
+    XBAR_OUT_MUX30_CLB4_OUT6              = 0x3C00,
+    XBAR_OUT_MUX30_EPG1_OUT2              = 0x3C03,
+    XBAR_OUT_MUX31_CLB4_OUT7              = 0x3E00,
+    XBAR_OUT_MUX31_EPG1_OUT3              = 0x3E03,
 } XBAR_OutputMuxConfig;
 
 //*****************************************************************************
@@ -341,56 +447,76 @@ typedef enum
     XBAR_EPWM_MUX06_CMPSS4_CTRIPH          = 0x0C00,
     XBAR_EPWM_MUX06_CMPSS4_CTRIPH_OR_L     = 0x0C01,
     XBAR_EPWM_MUX06_ADCAEVT4               = 0x0C02,
-    XBAR_EPWM_MUX06_ECAP4_OUT              = 0x0C03,
     XBAR_EPWM_MUX07_CMPSS4_CTRIPL          = 0x0E00,
     XBAR_EPWM_MUX07_INPUTXBAR4             = 0x0E01,
     XBAR_EPWM_MUX07_CLB2_OUT5              = 0x0E02,
     XBAR_EPWM_MUX07_ADCCEVT4               = 0x0E03,
-    XBAR_EPWM_MUX08_CMPSS5_CTRIPH          = 0x1000,
-    XBAR_EPWM_MUX08_CMPSS5_CTRIPH_OR_L     = 0x1001,
     XBAR_EPWM_MUX08_ADCBEVT1               = 0x1002,
-    XBAR_EPWM_MUX08_ECAP5_OUT              = 0x1003,
-    XBAR_EPWM_MUX09_CMPSS5_CTRIPL          = 0x1200,
     XBAR_EPWM_MUX09_INPUTXBAR5             = 0x1201,
     XBAR_EPWM_MUX09_CLB3_OUT4              = 0x1202,
-    XBAR_EPWM_MUX10_CMPSS6_CTRIPH          = 0x1400,
-    XBAR_EPWM_MUX10_CMPSS6_CTRIPH_OR_L     = 0x1401,
     XBAR_EPWM_MUX10_ADCBEVT2               = 0x1402,
-    XBAR_EPWM_MUX10_ECAP6_OUT              = 0x1403,
-    XBAR_EPWM_MUX11_CMPSS6_CTRIPL          = 0x1600,
     XBAR_EPWM_MUX11_INPUTXBAR6             = 0x1601,
     XBAR_EPWM_MUX11_CLB3_OUT5              = 0x1602,
-    XBAR_EPWM_MUX12_CMPSS7_CTRIPH          = 0x1800,
-    XBAR_EPWM_MUX12_CMPSS7_CTRIPH_OR_L     = 0x1801,
     XBAR_EPWM_MUX12_ADCBEVT3               = 0x1802,
-    XBAR_EPWM_MUX12_ECAP7_OUT              = 0x1803,
-    XBAR_EPWM_MUX13_CMPSS7_CTRIPL          = 0x1A00,
     XBAR_EPWM_MUX13_ADCSOCA                = 0x1A01,
     XBAR_EPWM_MUX13_CLB4_OUT4              = 0x1A02,
     XBAR_EPWM_MUX14_ADCBEVT4               = 0x1C02,
     XBAR_EPWM_MUX14_EXTSYNCOUT             = 0x1C03,
     XBAR_EPWM_MUX15_ADCSOCB                = 0x1E01,
     XBAR_EPWM_MUX15_CLB4_OUT5              = 0x1E02,
-    XBAR_EPWM_MUX16_SD1FLT1_COMPH          = 0x2000,
-    XBAR_EPWM_MUX16_SD1FLT1_COMPH_OR_COMPL = 0x2001,
-    XBAR_EPWM_MUX17_SD1FLT1_COMPL          = 0x2200,
+    XBAR_EPWM_MUX16_SD1FLT1_CEVT1          = 0x2000,
+    XBAR_EPWM_MUX16_SD1FLT1_CEVT1_OR_CEVT2 = 0x2001,
+    XBAR_EPWM_MUX16_SD1FLT1_COMPZ          = 0x2002,
+    XBAR_EPWM_MUX16_SD1FLT1_DRINT          = 0x2003,
+    XBAR_EPWM_MUX17_SD1FLT1_CEVT2          = 0x2200,
     XBAR_EPWM_MUX17_INPUTXBAR7             = 0x2201,
     XBAR_EPWM_MUX17_CLAHALT                = 0x2203,
-    XBAR_EPWM_MUX18_SD1FLT2_COMPH          = 0x2400,
-    XBAR_EPWM_MUX18_SD1FLT2_COMPH_OR_COMPL = 0x2401,
-    XBAR_EPWM_MUX19_SD1FLT2_COMPL          = 0x2600,
+    XBAR_EPWM_MUX18_SD1FLT2_CEVT1          = 0x2400,
+    XBAR_EPWM_MUX18_SD1FLT2_CEVT1_OR_CEVT2 = 0x2401,
+    XBAR_EPWM_MUX18_SD1FLT2_COMPZ          = 0x2402,
+    XBAR_EPWM_MUX18_SD1FLT2_DRINT          = 0x2403,
+    XBAR_EPWM_MUX19_SD1FLT2_CEVT2          = 0x2600,
     XBAR_EPWM_MUX19_INPUTXBAR8             = 0x2601,
-    XBAR_EPWM_MUX20_SD1FLT3_COMPH          = 0x2800,
-    XBAR_EPWM_MUX20_SD1FLT3_COMPH_OR_COMPL = 0x2801,
-    XBAR_EPWM_MUX21_SD1FLT3_COMPL          = 0x2A00,
+    XBAR_EPWM_MUX19_ERRORSTS               = 0x2603,
+    XBAR_EPWM_MUX20_SD1FLT3_CEVT1          = 0x2800,
+    XBAR_EPWM_MUX20_SD1FLT3_CEVT1_OR_CEVT2 = 0x2801,
+    XBAR_EPWM_MUX20_SD1FLT3_COMPZ          = 0x2802,
+    XBAR_EPWM_MUX20_SD1FLT3_DRINT          = 0x2803,
+    XBAR_EPWM_MUX21_SD1FLT3_CEVT2          = 0x2A00,
     XBAR_EPWM_MUX21_INPUTXBAR9             = 0x2A01,
-    XBAR_EPWM_MUX22_SD1FLT4_COMPH          = 0x2C00,
-    XBAR_EPWM_MUX22_SD1FLT4_COMPH_OR_COMPL = 0x2C01,
-    XBAR_EPWM_MUX23_SD1FLT4_COMPL          = 0x2E00,
+    XBAR_EPWM_MUX22_SD1FLT4_CEVT1          = 0x2C00,
+    XBAR_EPWM_MUX22_SD1FLT4_CEVT1_OR_CEVT2 = 0x2C01,
+    XBAR_EPWM_MUX22_SD1FLT4_COMPZ          = 0x2C02,
+    XBAR_EPWM_MUX22_SD1FLT4_DRINT          = 0x2C03,
+    XBAR_EPWM_MUX23_SD1FLT4_CEVT2          = 0x2E00,
     XBAR_EPWM_MUX23_INPUTXBAR10            = 0x2E01,
+    XBAR_EPWM_MUX24_SD2FLT1_CEVT1          = 0x3000,
+    XBAR_EPWM_MUX24_SD2FLT1_CEVT1_OR_CEVT2 = 0x3001,
+    XBAR_EPWM_MUX24_SD2FLT1_COMPZ          = 0x3002,
+    XBAR_EPWM_MUX24_SD2FLT1_DRINT          = 0x3003,
+    XBAR_EPWM_MUX25_SD2FLT1_CEVT2          = 0x3200,
     XBAR_EPWM_MUX25_INPUTXBAR11            = 0x3201,
+    XBAR_EPWM_MUX25_MCAN_FEVT0             = 0x3202,
+    XBAR_EPWM_MUX26_SD2FLT2_CEVT1          = 0x3400,
+    XBAR_EPWM_MUX26_SD2FLT2_CEVT1_OR_CEVT2 = 0x3401,
+    XBAR_EPWM_MUX26_SD2FLT2_COMPZ          = 0x3402,
+    XBAR_EPWM_MUX26_SD2FLT2_DRINT          = 0x3403,
+    XBAR_EPWM_MUX27_SD2FLT2_CEVT2          = 0x3600,
     XBAR_EPWM_MUX27_INPUTXBAR12            = 0x3601,
+    XBAR_EPWM_MUX27_MCAN_FEVT1             = 0x3602,
+    XBAR_EPWM_MUX28_SD2FLT3_CEVT1          = 0x3800,
+    XBAR_EPWM_MUX28_SD2FLT3_CEVT1_OR_CEVT2 = 0x3801,
+    XBAR_EPWM_MUX28_SD2FLT3_COMPZ          = 0x3802,
+    XBAR_EPWM_MUX28_SD2FLT3_DRINT          = 0x3803,
+    XBAR_EPWM_MUX29_SD2FLT3_CEVT2          = 0x3A00,
     XBAR_EPWM_MUX29_INPUTXBAR13            = 0x3A01,
+    XBAR_EPWM_MUX29_MCAN_FEVT2             = 0x3A02,
+    XBAR_EPWM_MUX30_SD2FLT4_CEVT1          = 0x3C00,
+    XBAR_EPWM_MUX30_SD2FLT4_CEVT1_OR_CEVT2 = 0x3C01,
+    XBAR_EPWM_MUX30_SD2FLT4_COMPZ          = 0x3C02,
+    XBAR_EPWM_MUX30_SD2FLT4_DRINT          = 0x3C03,
+    XBAR_EPWM_MUX31_SD2FLT4_CEVT2          = 0x3E00,
+    XBAR_EPWM_MUX31_ERRORSTS               = 0x3E02,
     XBAR_EPWM_MUX31_INPUTXBAR14            = 0x3E01
 } XBAR_EPWMMuxConfig;
 
@@ -429,65 +555,77 @@ typedef enum
     XBAR_CLB_MUX06_CMPSS4_CTRIPH           = 0x0C00,
     XBAR_CLB_MUX06_CMPSS4_CTRIPH_OR_L      = 0x0C01,
     XBAR_CLB_MUX06_ADCAEVT4                = 0x0C02,
-    XBAR_CLB_MUX06_ECAP4_OUT               = 0x0C03,
     XBAR_CLB_MUX07_CMPSS4_CTRIPL           = 0x0E00,
     XBAR_CLB_MUX07_INPUTXBAR4              = 0x0E01,
     XBAR_CLB_MUX07_CLB2_OUT5               = 0x0E02,
     XBAR_CLB_MUX07_ADCCEVT4                = 0x0E03,
-    XBAR_CLB_MUX08_CMPSS5_CTRIPH           = 0x1000,
-    XBAR_CLB_MUX08_CMPSS5_CTRIPH_OR_L      = 0x1001,
     XBAR_CLB_MUX08_ADCBEVT1                = 0x1002,
-    XBAR_CLB_MUX08_ECAP5_OUT               = 0x1003,
-    XBAR_CLB_MUX09_CMPSS5_CTRIPL           = 0x1200,
     XBAR_CLB_MUX09_INPUTXBAR5              = 0x1201,
     XBAR_CLB_MUX09_CLB3_OUT4               = 0x1202,
-    XBAR_CLB_MUX10_CMPSS6_CTRIPH           = 0x1400,
-    XBAR_CLB_MUX10_CMPSS6_CTRIPH_OR_L      = 0x1401,
     XBAR_CLB_MUX10_ADCBEVT2                = 0x1402,
-    XBAR_CLB_MUX10_ECAP6_OUT               = 0x1403,
-    XBAR_CLB_MUX11_CMPSS6_CTRIPL           = 0x1600,
-    XBAR_CLB_MUX11_INPUTXBAR6              = 0x1601,
-    XBAR_CLB_MUX11_CLB3_OUT5               = 0x1602,
-    XBAR_CLB_MUX12_CMPSS7_CTRIPH           = 0x1800,
-    XBAR_CLB_MUX12_CMPSS7_CTRIPH_OR_L      = 0x1801,
-    XBAR_CLB_MUX12_ADCBEVT3                = 0x1802,
-    XBAR_CLB_MUX12_ECAP7_OUT               = 0x1803,
-    XBAR_CLB_MUX13_CMPSS7_CTRIPL           = 0x1A00,
-    XBAR_CLB_MUX13_ADCSOCA                 = 0x1A01,
-    XBAR_CLB_MUX13_CLB4_OUT4               = 0x1A02,
-    XBAR_CLB_MUX14_ADCBEVT4                = 0x1C02,
-    XBAR_CLB_MUX14_EXTSYNCOUT              = 0x1C03,
-    XBAR_CLB_MUX15_ADCSOCB                 = 0x1E01,
-    XBAR_CLB_MUX15_CLB4_OUT5               = 0x1E02,
-    XBAR_CLB_MUX16_SD1FLT1_COMPH           = 0x2000,
-    XBAR_CLB_MUX16_SD1FLT1_COMPH_OR_COMPL  = 0x2001,
-    XBAR_CLB_MUX16_SD1FLT1_COMPZ           = 0x2002,
-    XBAR_CLB_MUX16_SD1FLT1_DRINT           = 0x2003,
-    XBAR_CLB_MUX17_SD1FLT1_COMPL           = 0x2200,
-    XBAR_CLB_MUX17_INPUTXBAR7              = 0x2201,
-    XBAR_CLB_MUX17_CLAHALT                 = 0x2203,
-    XBAR_CLB_MUX18_SD1FLT2_COMPH           = 0x2400,
-    XBAR_CLB_MUX18_SD1FLT2_COMPH_OR_COMPL  = 0x2401,
-    XBAR_CLB_MUX18_SD1FLT2_COMPZ           = 0x2402,
-    XBAR_CLB_MUX18_SD1FLT2_DRINT           = 0x2403,
-    XBAR_CLB_MUX19_SD1FLT2_COMPL           = 0x2600,
-    XBAR_CLB_MUX19_INPUTXBAR8              = 0x2601,
-    XBAR_CLB_MUX20_SD1FLT3_COMPH           = 0x2800,
-    XBAR_CLB_MUX20_SD1FLT3_COMPH_OR_COMPL  = 0x2801,
-    XBAR_CLB_MUX20_SD1FLT3_COMPZ           = 0x2802,
-    XBAR_CLB_MUX20_SD1FLT3_DRINT           = 0x2803,
-    XBAR_CLB_MUX21_SD1FLT3_COMPL           = 0x2A00,
-    XBAR_CLB_MUX21_INPUTXBAR9              = 0x2A01,
-    XBAR_CLB_MUX22_SD1FLT4_COMPH           = 0x2C00,
-    XBAR_CLB_MUX22_SD1FLT4_COMPH_OR_COMPL  = 0x2C01,
-    XBAR_CLB_MUX22_SD1FLT4_COMPZ           = 0x2C02,
-    XBAR_CLB_MUX22_SD1FLT4_DRINT           = 0x2C03,
-    XBAR_CLB_MUX23_SD1FLT4_COMPL           = 0x2E00,
-    XBAR_CLB_MUX23_INPUTXBAR10             = 0x2E01,
-    XBAR_CLB_MUX25_INPUTXBAR11             = 0x3201,
-    XBAR_CLB_MUX27_INPUTXBAR12             = 0x3601,
-    XBAR_CLB_MUX29_INPUTXBAR13             = 0x3A01,
-    XBAR_CLB_MUX31_INPUTXBAR14             = 0x3E01,
+    XBAR_CLB_MUX11_INPUTXBAR6             = 0x1601,
+    XBAR_CLB_MUX11_CLB3_OUT5              = 0x1602,
+    XBAR_CLB_MUX12_ADCBEVT3               = 0x1802,
+    XBAR_CLB_MUX13_ADCSOCA                = 0x1A01,
+    XBAR_CLB_MUX13_CLB4_OUT4              = 0x1A02,
+    XBAR_CLB_MUX14_ADCBEVT4               = 0x1C02,
+    XBAR_CLB_MUX14_EXTSYNCOUT             = 0x1C03,
+    XBAR_CLB_MUX15_ADCSOCB                = 0x1E01,
+    XBAR_CLB_MUX15_CLB4_OUT5              = 0x1E02,
+    XBAR_CLB_MUX16_SD1FLT1_COMPH          = 0x2000,
+    XBAR_CLB_MUX16_SD1FLT1_COMPH_OR_COMPL = 0x2001,
+    XBAR_CLB_MUX16_SD1FLT1_COMPZ          = 0x2002,
+    XBAR_CLB_MUX16_SD1FLT1_DRINT          = 0x2003,
+    XBAR_CLB_MUX17_SD1FLT1_COMPL          = 0x2200,
+    XBAR_CLB_MUX17_INPUTXBAR7             = 0x2201,
+    XBAR_CLB_MUX17_CLAHALT                = 0x2203,
+    XBAR_CLB_MUX18_SD1FLT2_COMPH          = 0x2400,
+    XBAR_CLB_MUX18_SD1FLT2_COMPH_OR_COMPL = 0x2401,
+    XBAR_CLB_MUX18_SD1FLT2_COMPZ          = 0x2402,
+    XBAR_CLB_MUX18_SD1FLT2_DRINT          = 0x2403,
+    XBAR_CLB_MUX19_SD1FLT2_COMPL          = 0x2600,
+    XBAR_CLB_MUX19_INPUTXBAR8             = 0x2601,
+    XBAR_CLB_MUX19_ERRORSTS               = 0x2603,
+    XBAR_CLB_MUX20_SD1FLT3_COMPH          = 0x2800,
+    XBAR_CLB_MUX20_SD1FLT3_COMPH_OR_COMPL = 0x2801,
+    XBAR_CLB_MUX20_SD1FLT3_COMPZ          = 0x2802,
+    XBAR_CLB_MUX20_SD1FLT3_DRINT          = 0x2803,
+    XBAR_CLB_MUX21_SD1FLT3_COMPL          = 0x2A00,
+    XBAR_CLB_MUX21_INPUTXBAR9             = 0x2A01,
+    XBAR_CLB_MUX22_SD1FLT4_COMPH          = 0x2C00,
+    XBAR_CLB_MUX22_SD1FLT4_COMPH_OR_COMPL = 0x2C01,
+    XBAR_CLB_MUX22_SD1FLT4_COMPZ          = 0x2C02,
+    XBAR_CLB_MUX22_SD1FLT4_DRINT          = 0x2C03,
+    XBAR_CLB_MUX23_SD1FLT4_COMPL          = 0x2E00,
+    XBAR_CLB_MUX23_INPUTXBAR10            = 0x2E01,
+    XBAR_CLB_MUX24_SD2FLT1_COMPH          = 0x3000,
+    XBAR_CLB_MUX24_SD2FLT1_COMPH_OR_COMPL = 0x3001,
+    XBAR_CLB_MUX24_SD2FLT1_COMPZ          = 0x3002,
+    XBAR_CLB_MUX24_SD2FLT1_DRINT          = 0x3003,
+    XBAR_CLB_MUX25_SD2FLT1_COMPL          = 0x3200,
+    XBAR_CLB_MUX25_INPUTXBAR11            = 0x3201,
+    XBAR_CLB_MUX25_MCAN_FEVT0             = 0x3202,
+    XBAR_CLB_MUX26_SD2FLT2_COMPH          = 0x3400,
+    XBAR_CLB_MUX26_SD2FLT2_COMPH_OR_COMPL = 0x3401,
+    XBAR_CLB_MUX26_SD2FLT2_COMPZ          = 0x3402,
+    XBAR_CLB_MUX26_SD2FLT2_DRINT          = 0x3403,
+    XBAR_CLB_MUX27_SD2FLT2_COMPL          = 0x3600,
+    XBAR_CLB_MUX27_INPUTXBAR12            = 0x3601,
+    XBAR_CLB_MUX27_MCAN_FEVT1             = 0x3602,
+    XBAR_CLB_MUX28_SD2FLT3_COMPH          = 0x3800,
+    XBAR_CLB_MUX28_SD2FLT3_COMPH_OR_COMPL = 0x3801,
+    XBAR_CLB_MUX28_SD2FLT3_COMPZ          = 0x3802,
+    XBAR_CLB_MUX28_SD2FLT3_DRINT          = 0x3803,
+    XBAR_CLB_MUX29_SD2FLT3_COMPL          = 0x3A00,
+    XBAR_CLB_MUX29_INPUTXBAR13            = 0x3A01,
+    XBAR_CLB_MUX29_MCAN_FEVT2             = 0x3A02,
+    XBAR_CLB_MUX30_SD2FLT4_COMPH          = 0x3C00,
+    XBAR_CLB_MUX30_SD2FLT4_COMPH_OR_COMPL = 0x3C01,
+    XBAR_CLB_MUX30_SD2FLT4_COMPZ          = 0x3C02,
+    XBAR_CLB_MUX30_SD2FLT4_DRINT          = 0x3C03,
+    XBAR_CLB_MUX31_SD2FLT4_COMPL          = 0x3E00,
+    XBAR_CLB_MUX31_ERRORSTS               = 0x3E02,
+    XBAR_CLB_MUX31_INPUTXBAR14             = 0x3E01
 } XBAR_CLBMuxConfig;
 
 
@@ -510,14 +648,6 @@ typedef enum
     XBAR_INPUT_FLG_CMPSS3_CTRIPH    = 0x0005,
     XBAR_INPUT_FLG_CMPSS4_CTRIPL    = 0x0006,
     XBAR_INPUT_FLG_CMPSS4_CTRIPH    = 0x0007,
-    XBAR_INPUT_FLG_CMPSS5_CTRIPL    = 0x0008,
-    XBAR_INPUT_FLG_CMPSS5_CTRIPH    = 0x0009,
-    XBAR_INPUT_FLG_CMPSS6_CTRIPL    = 0x000A,
-    XBAR_INPUT_FLG_CMPSS6_CTRIPH    = 0x000B,
-    XBAR_INPUT_FLG_CMPSS7_CTRIPL    = 0x000C,
-    XBAR_INPUT_FLG_CMPSS7_CTRIPH    = 0x000D,
-    XBAR_INPUT_FLG_CMPSS8_CTRIPL    = 0x000E,
-    XBAR_INPUT_FLG_CMPSS8_CTRIPH    = 0x000F,
     XBAR_INPUT_FLG_CMPSS1_CTRIPOUTL = 0x0010,
     XBAR_INPUT_FLG_CMPSS1_CTRIPOUTH = 0x0011,
     XBAR_INPUT_FLG_CMPSS2_CTRIPOUTL = 0x0012,
@@ -526,14 +656,6 @@ typedef enum
     XBAR_INPUT_FLG_CMPSS3_CTRIPOUTH = 0x0015,
     XBAR_INPUT_FLG_CMPSS4_CTRIPOUTL = 0x0016,
     XBAR_INPUT_FLG_CMPSS4_CTRIPOUTH = 0x0017,
-    XBAR_INPUT_FLG_CMPSS5_CTRIPOUTL = 0x0018,
-    XBAR_INPUT_FLG_CMPSS5_CTRIPOUTH = 0x0019,
-    XBAR_INPUT_FLG_CMPSS6_CTRIPOUTL = 0x001A,
-    XBAR_INPUT_FLG_CMPSS6_CTRIPOUTH = 0x001B,
-    XBAR_INPUT_FLG_CMPSS7_CTRIPOUTL = 0x001C,
-    XBAR_INPUT_FLG_CMPSS7_CTRIPOUTH = 0x001D,
-    XBAR_INPUT_FLG_CMPSS8_CTRIPOUTL = 0x001E,
-    XBAR_INPUT_FLG_CMPSS8_CTRIPOUTH = 0x001F,
     //
     // XBARFLG2
     //
@@ -556,18 +678,11 @@ typedef enum
     XBAR_INPUT_FLG_ECAP1_OUT        = 0x0110,
     XBAR_INPUT_FLG_ECAP2_OUT        = 0x0111,
     XBAR_INPUT_FLG_ECAP3_OUT        = 0x0112,
-    XBAR_INPUT_FLG_ECAP4_OUT        = 0x0113,
-    XBAR_INPUT_FLG_ECAP5_OUT        = 0x0114,
-    XBAR_INPUT_FLG_ECAP6_OUT        = 0x0115,
     XBAR_INPUT_FLG_EXTSYNCOUT       = 0x0116,
     XBAR_INPUT_FLG_ADCAEVT1         = 0x0117,
     XBAR_INPUT_FLG_ADCAEVT2         = 0x0118,
     XBAR_INPUT_FLG_ADCAEVT3         = 0x0119,
     XBAR_INPUT_FLG_ADCAEVT4         = 0x011A,
-    XBAR_INPUT_FLG_ADCBEVT1         = 0x011B,
-    XBAR_INPUT_FLG_ADCBEVT2         = 0x011C,
-    XBAR_INPUT_FLG_ADCBEVT3         = 0x011D,
-    XBAR_INPUT_FLG_ADCBEVT4         = 0x011E,
     XBAR_INPUT_FLG_ADCCEVT1         = 0x011F,
     //
     // XBARFLG3
@@ -575,10 +690,6 @@ typedef enum
     XBAR_INPUT_FLG_ADCCEVT2         = 0x0200,
     XBAR_INPUT_FLG_ADCCEVT3         = 0x0201,
     XBAR_INPUT_FLG_ADCCEVT4         = 0x0202,
-    XBAR_INPUT_FLG_ADCDEVT1         = 0x0203,
-    XBAR_INPUT_FLG_ADCDEVT2         = 0x0204,
-    XBAR_INPUT_FLG_ADCDEVT3         = 0x0205,
-    XBAR_INPUT_FLG_ADCDEVT4         = 0x0206,
     XBAR_INPUT_FLG_SD1FLT1_COMPL    = 0x0207,
     XBAR_INPUT_FLG_SD1FLT1_COMPH    = 0x0208,
     XBAR_INPUT_FLG_SD1FLT2_COMPL    = 0x0209,
@@ -587,7 +698,14 @@ typedef enum
     XBAR_INPUT_FLG_SD1FLT3_COMPH    = 0x020C,
     XBAR_INPUT_FLG_SD1FLT4_COMPL    = 0x020D,
     XBAR_INPUT_FLG_SD1FLT4_COMPH    = 0x020E,
-    XBAR_INPUT_FLG_ECAP7_OUT        = 0x0217,
+    XBAR_INPUT_FLG_SD2FLT1_COMPL    = 0x020F,
+    XBAR_INPUT_FLG_SD2FLT1_COMPH    = 0x0210,
+    XBAR_INPUT_FLG_SD2FLT2_COMPL    = 0x0211,
+    XBAR_INPUT_FLG_SD2FLT2_COMPH    = 0x0212,
+    XBAR_INPUT_FLG_SD2FLT3_COMPL    = 0x0213,
+    XBAR_INPUT_FLG_SD2FLT3_COMPH    = 0x0214,
+    XBAR_INPUT_FLG_SD2FLT4_COMPL    = 0x0215,
+    XBAR_INPUT_FLG_SD2FLT4_COMPH    = 0x0216,
     XBAR_INPUT_FLG_SD1FLT1_COMPZ    = 0x0218,
     XBAR_INPUT_FLG_SD1FLT1_DRINT    = 0x0219,
     XBAR_INPUT_FLG_SD1FLT2_COMPZ    = 0x021A,
@@ -599,6 +717,18 @@ typedef enum
     //
     // XBARFLG4
     //
+    XBAR_INPUT_FLG_SD2FLT1_COMPZ    = 0x0300,
+    XBAR_INPUT_FLG_SD2FLT1_DRINT    = 0x0301,
+    XBAR_INPUT_FLG_SD2FLT2_COMPZ    = 0x0302,
+    XBAR_INPUT_FLG_SD2FLT2_DRINT    = 0x0303,
+    XBAR_INPUT_FLG_SD2FLT3_COMPZ    = 0x0304,
+    XBAR_INPUT_FLG_SD2FLT3_DRINT    = 0x0305,
+    XBAR_INPUT_FLG_SD2FLT4_COMPZ    = 0x0306,
+    XBAR_INPUT_FLG_SD2FLT4_DRINT    = 0x0307,
+    XBAR_INPUT_FLG_EMAC_PPS0        = 0x0308,
+    XBAR_INPUT_FLG_MCANA_FEVT0      = 0x0309,
+    XBAR_INPUT_FLG_MCANA_FEVT1      = 0x030A,
+    XBAR_INPUT_FLG_MCANA_FEVT2      = 0x030B,
     XBAR_INPUT_FLG_CLB1_OUT4        = 0x0310,
     XBAR_INPUT_FLG_CLB1_OUT5        = 0x0311,
     XBAR_INPUT_FLG_CLB2_OUT4        = 0x0312,
@@ -607,6 +737,7 @@ typedef enum
     XBAR_INPUT_FLG_CLB3_OUT5        = 0x0315,
     XBAR_INPUT_FLG_CLB4_OUT4        = 0x0316,
     XBAR_INPUT_FLG_CLB4_OUT5        = 0x0317,
+    XBAR_INPUT_FLG_ERRORSTS_ERROR   = 0x031C,
     XBAR_INPUT_FLG_CLAHALT          = 0x031F,
 } XBAR_InputFlag;
 #endif
@@ -618,14 +749,42 @@ typedef enum
 //*****************************************************************************
 //*****************************************************************************
 //
+//! \internal
+//! Checks a X-BAR base address.
+//!
+//! \param base is the base address of the X-BAR.
+//!
+//! This function determines if a X-BAR base address is valid.
+//!
+//! \return Returns \b true if the base address is valid and \b false
+//! otherwise.
+//
+//*****************************************************************************
+#ifdef DEBUG
+static inline bool
+XBAR_isBaseValid(uint32_t base)
+{
+    return((base == OUTPUTXBAR_BASE) ||
+           (base == CLBOUTPUTXBAR_BASE) || (base == CLBINPUTXBAR_BASE ) ||
+           (base == INPUTXBAR_BASE));
+
+}
+#endif
+//*****************************************************************************
+//
 //! Enables the Output X-BAR mux values to be passed to the output signal.
 //!
+//! \param base specifies the X-BAR Enable register base address.
 //! \param output is the X-BAR output being configured.
 //! \param muxes is a bit field of the muxes to be enabled.
 //!
 //! This function enables the mux values to be passed to the X-BAR output
 //! signal. The \e output parameter is a value \b XBAR_OUTPUTy where y is
 //! the output number between 1 and 8 inclusive.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! The \e muxes parameter is a bit field of the muxes being enabled where bit
 //! 0 represents mux 0, bit 1 represents mux 1 and so on. Defines are provided
@@ -637,14 +796,20 @@ typedef enum
 //
 //*****************************************************************************
 static inline void
-XBAR_enableOutputMux(XBAR_OutputNum output, uint32_t muxes)
+XBAR_enableOutputMux(uint32_t base, XBAR_OutputNum output, uint32_t muxes)
 {
+    uint16_t outputNum = (uint16_t)output;
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Set the enable bit.
     //
     EALLOW;
 
-    HWREG(XBAR_OUTPUT_EN_REG_BASE + (uint16_t)output) |= muxes;
+    HWREG(base + XBAR_O_OUTPUT1MUXENABLE + outputNum) |= muxes;
 
     EDIS;
 
@@ -655,12 +820,17 @@ XBAR_enableOutputMux(XBAR_OutputNum output, uint32_t muxes)
 //
 //! Disables the Output X-BAR mux values from being passed to the output.
 //!
+//! \param base specifies the X-BAR Enable Register base address.
 //! \param output is the X-BAR output being configured.
 //! \param muxes is a bit field of the muxes to be disabled.
 //!
 //! This function disables the mux values from being passed to the X-BAR output
 //! signal. The \e output parameter is a value \b XBAR_OUTPUTy where y is
 //! the output number between 1 and 8 inclusive.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! The \e muxes parameter is a bit field of the muxes being disabled where bit
 //! 0 represents mux 0, bit 1 represents mux 1 and so on. Defines are provided
@@ -672,14 +842,21 @@ XBAR_enableOutputMux(XBAR_OutputNum output, uint32_t muxes)
 //
 //*****************************************************************************
 static inline void
-XBAR_disableOutputMux(XBAR_OutputNum output, uint32_t muxes)
+XBAR_disableOutputMux(uint32_t base, XBAR_OutputNum output, uint32_t muxes)
 {
+    uint16_t outputNum = (uint16_t)output;
+
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Clear the enable bit.
     //
     EALLOW;
 
-    HWREG(XBAR_OUTPUT_EN_REG_BASE + (uint16_t)output) &= ~(muxes);
+    HWREG(base + XBAR_O_OUTPUT1MUXENABLE + outputNum) &= ~(muxes);
 
     EDIS;
 }
@@ -688,10 +865,15 @@ XBAR_disableOutputMux(XBAR_OutputNum output, uint32_t muxes)
 //
 //! Enables or disables the output latch to drive the selected output.
 //!
+//! \param base specifies the X-BAR base address.
 //! \param output is the X-BAR output being configured.
 //! The valid inputs are XBAR_OUTPUTy where y is from 1 to 8.
 //! \param enable is a flag that determines whether or not the latch is
 //! selected to drive the X-BAR output.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! This function sets the Output X-BAR output signal latch mode. If the
 //! \e enable parameter is \b true, the output specified by \e output will be
@@ -701,8 +883,13 @@ XBAR_disableOutputMux(XBAR_OutputNum output, uint32_t muxes)
 //
 //*****************************************************************************
 static inline void
-XBAR_setOutputLatchMode(XBAR_OutputNum output, bool enable)
+XBAR_setOutputLatchMode(uint32_t base, XBAR_OutputNum output, bool enable)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     EALLOW;
 
     //
@@ -710,13 +897,13 @@ XBAR_setOutputLatchMode(XBAR_OutputNum output, bool enable)
     //
     if(enable)
     {
-        HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTLATCHENABLE) |=
-            0x1U << ((uint16_t)output / 2U);
+        HWREGH(base + XBAR_O_OUTPUTLATCHENABLE) |=
+               0x1U << ((uint16_t)output / 2U);
     }
     else
     {
-        HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTLATCHENABLE) &=
-            ~(0x1U << ((uint16_t)output / 2U));
+        HWREGH(base + XBAR_O_OUTPUTLATCHENABLE) &=
+               ~(0x1U << ((uint16_t)output / 2U));
     }
 
     EDIS;
@@ -726,20 +913,30 @@ XBAR_setOutputLatchMode(XBAR_OutputNum output, bool enable)
 //
 //! Returns the status of the output latch
 //!
+//! \param base specifies the X-BAR base address.
 //! \param output is the X-BAR output being checked.
 //! The valid inputs are XBAR_OUTPUTy where y is from 1 to 8.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! \return Returns \b true if the output corresponding to \e output was
 //! triggered. If not, it will return \b false.
 //
 //*****************************************************************************
 static inline bool
-XBAR_getOutputLatchStatus(XBAR_OutputNum output)
+XBAR_getOutputLatchStatus(uint32_t base, XBAR_OutputNum output)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Get the status of the Output X-BAR output latch.
     //
-    return((HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTLATCH) &
+    return((HWREGH(base + XBAR_O_OUTPUTLATCH) &
             (0x1U << ((uint16_t)output / 2U))) != 0U);
 }
 
@@ -747,8 +944,13 @@ XBAR_getOutputLatchStatus(XBAR_OutputNum output)
 //
 //! Clears the output latch for the specified output.
 //!
+//! \param base specifies the X-BAR base address.
 //! \param output is the X-BAR output being configured.
 //! The valid inputs are XBAR_OUTPUTy where y is from 1 to 8.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! This function clears the Output X-BAR output latch. The output to be
 //! configured is specified by the \e output parameter.
@@ -757,12 +959,17 @@ XBAR_getOutputLatchStatus(XBAR_OutputNum output)
 //
 //*****************************************************************************
 static inline void
-XBAR_clearOutputLatch(XBAR_OutputNum output)
+XBAR_clearOutputLatch(uint32_t base, XBAR_OutputNum output)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Set the bit that clears the corresponding OUTPUTLATCH bit.
     //
-    HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTLATCHCLR) |=
+        HWREGH(base + XBAR_O_OUTPUTLATCHCLR) |=
         0x1U << ((uint16_t)output / 2U);
 }
 
@@ -770,8 +977,13 @@ XBAR_clearOutputLatch(XBAR_OutputNum output)
 //
 //! Forces the output latch for the specified output.
 //!
+//! \param base specifies the X-BAR base address.
 //! \param output is the X-BAR output being configured.
 //! The valid inputs are XBAR_OUTPUTy where y is from 1 to 8.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! This function forces the Output X-BAR output latch. The output to be
 //! configured is specified by the \e output parameter.
@@ -780,12 +992,17 @@ XBAR_clearOutputLatch(XBAR_OutputNum output)
 //
 //*****************************************************************************
 static inline void
-XBAR_forceOutputLatch(XBAR_OutputNum output)
+XBAR_forceOutputLatch(uint32_t base, XBAR_OutputNum output)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Set the bit that forces the corresponding OUTPUTLATCH bit.
     //
-    HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTLATCHFRC) =
+    HWREGH(base + XBAR_O_OUTPUTLATCHFRC) =
         (uint16_t)0x1U << ((uint16_t)output / 2U);
 }
 
@@ -793,10 +1010,15 @@ XBAR_forceOutputLatch(XBAR_OutputNum output)
 //
 //! Configures the polarity of an Output X-BAR output.
 //!
+//! \param base specifies the X-BAR base address.
 //! \param output is the X-BAR output being configured.
 //! The valid inputs are XBAR_OUTPUTy where y is from 1 to 8.
 //! \param invert is a flag that determines whether the output is active-high
 //! or active-low.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! This function inverts the Output X-BAR signal if the \e invert parameter is
 //! \b true. If \e invert is \b false, the signal will be passed as is. The
@@ -807,8 +1029,13 @@ XBAR_forceOutputLatch(XBAR_OutputNum output)
 //
 //*****************************************************************************
 static inline void
-XBAR_invertOutputSignal(XBAR_OutputNum output, bool invert)
+XBAR_invertOutputSignal(uint32_t base, XBAR_OutputNum output, bool invert)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Set or clear the polarity setting bit based on the invert parameter.
     //
@@ -816,12 +1043,12 @@ XBAR_invertOutputSignal(XBAR_OutputNum output, bool invert)
 
     if(invert)
     {
-        HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTINV) |=
+        HWREGH(base + XBAR_O_OUTPUTINV) |=
             0x1U << ((uint16_t)output / 2U);
     }
     else
     {
-        HWREGH(OUTPUTXBAR_BASE + XBAR_O_OUTPUTINV) &=
+        HWREGH(base + XBAR_O_OUTPUTINV) &=
             ~(0x1U << ((uint16_t)output / 2U));
     }
 
@@ -933,8 +1160,13 @@ XBAR_invertEPWMSignal(XBAR_TripNum trip, bool invert)
 //
 //! Sets the GPIO / non-GPIO pin for an Input X-BAR input.
 //!
+//! \param base specifies the X-BAR base address.
 //! \param input is the X-BAR input being configured.
 //! \param pin is the identifying number of the pin.
+//!
+//! The \e base parameter can take base addresses
+//! INPUTXBAR_BASE
+//! or CLBINPUTXBAR_BASE.
 //!
 //! This function configures which GPIO is assigned to an Input X-BAR input.
 //! The \e input parameter is a value in the form of a define \b XBAR_INPUTy
@@ -954,7 +1186,7 @@ XBAR_invertEPWMSignal(XBAR_TripNum trip, bool invert)
 //
 //*****************************************************************************
 static inline void
-XBAR_setInputPin(XBAR_InputNum input, uint16_t pin)
+XBAR_setInputPin(uint32_t base, XBAR_InputNum input, uint16_t pin)
 {
     //
     // Check the argument.
@@ -962,13 +1194,14 @@ XBAR_setInputPin(XBAR_InputNum input, uint16_t pin)
     ASSERT((pin <= XBAR_GPIO_MAX_CNT) ||
           ((pin >= XBAR_NON_GPIO_MIN_CNT) && (pin <= XBAR_NON_GPIO_MAX_CNT)) ||
           ((pin >= XBAR_GPIO_AIO_MIN_CNT) && (pin <= XBAR_GPIO_AIO_MAX_CNT)));
+    ASSERT(XBAR_isBaseValid(base));
 
     //
     // Write the requested pin to the appropriate input select register.
     //
     EALLOW;
 
-    HWREGH(XBAR_INPUT_BASE + (uint16_t)input) = pin;
+    HWREGH(base + XBAR_O_INPUT1SELECT + (uint16_t)input) = pin;
 
     EDIS;
 }
@@ -977,21 +1210,31 @@ XBAR_setInputPin(XBAR_InputNum input, uint16_t pin)
 //
 //! Locks an input to the Input X-BAR.
 //!
+//! \param base specifies the X-BAR base address.
 //! \param input is an input to the Input X-BAR.
 //!
 //! This function locks the specific input on the Input X-BAR.
+//!
+//! The \e base parameter can take base addresses
+//! INPUTXBAR_BASE
+//! or CLBINPUTXBAR_BASE .
 //!
 //! \return None.
 //
 //*****************************************************************************
 static inline void
-XBAR_lockInput(XBAR_InputNum input)
+XBAR_lockInput(uint32_t base, XBAR_InputNum input)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // lock the input in the INPUTSELECTLOCK register.
     //
     EALLOW;
-    HWREG(INPUTXBAR_BASE + XBAR_O_INPUTSELECTLOCK) =
+    HWREG(base + XBAR_O_INPUTSELECTLOCK) =
             1UL << (uint16_t)input;
     EDIS;
 }
@@ -1000,23 +1243,33 @@ XBAR_lockInput(XBAR_InputNum input)
 //
 //! Locks the Output X-BAR.
 //!
+//! \param base specifies the X-BAR base address.
 //! This function locks the Output X-BAR.
+//!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
 //!
 //! \return None.
 //
 //*****************************************************************************
 static inline void
-XBAR_lockOutput(void)
+XBAR_lockOutput(uint32_t base)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     //
     // Lock the Output X-BAR with the OUTPUTLOCK register.
     // Write key 0x5A5A to the KEY bits and 1 to LOCK bit.
     //
     EALLOW;
 
-    HWREG(OUTPUTXBAR_BASE + XBAR_O_OUTPUTLOCK) =
-        ((uint32_t)0x5A5A << XBAR_OUTPUTLOCK_KEY_S) |
-        (uint32_t)XBAR_OUTPUTLOCK_LOCK;
+    HWREG(base + XBAR_O_OUTPUTLOCK) =
+         ((uint32_t)0x5A5A << XBAR_OUTPUTLOCK_KEY_S) |
+         (uint32_t)XBAR_OUTPUTLOCK_LOCK;
 
     EDIS;
 }
@@ -1152,6 +1405,7 @@ XBAR_invertCLBSignal(XBAR_AuxSigNum auxSignal, bool invert)
 //! Configures the Output X-BAR mux that determines the signals passed to an
 //! output.
 //!
+//! \param base specifies the X-BAR Config Register base address.
 //! \param output is the X-BAR output being configured.
 //! \param muxConfig is mux configuration that specifies the signal.
 //!
@@ -1160,10 +1414,18 @@ XBAR_invertCLBSignal(XBAR_AuxSigNum auxSignal, bool invert)
 //! parameter is a value \b XBAR_OUTPUTy where y is a the output number
 //! between 1 and 8 inclusive.
 //!
+//! The \e base parameter can take base addresses
+//! OUTPUTXBAR_BASE
+//! or CLBOUTPUTXBAR_BASE.
+//!
 //! The \e muxConfig parameter for OUTPUT XBAR is the mux configuration
 //! value that specifies which signal will be passed from the mux. The
 //! values have the format of \b XBAR_OUT_MUXnn_xx where the 'xx' is
 //! the signal and nn is the mux number.
+//!
+//! The \e muxConfig parameter for the CLB OUTPUT XBAR have the similar
+//! format as \b XBAR_OUT_MUXnn_xx where the 'xx' is the signal and nn is
+//! the mux number.
 //!
 //! This function may be called for each mux of an output and their values will
 //! be logically OR'd before being passed to the output signal. This means that
@@ -1178,7 +1440,8 @@ XBAR_invertCLBSignal(XBAR_AuxSigNum auxSignal, bool invert)
 //
 //*****************************************************************************
 extern void
-XBAR_setOutputMuxConfig(XBAR_OutputNum output, XBAR_OutputMuxConfig muxConfig);
+XBAR_setOutputMuxConfig(uint32_t base, XBAR_OutputNum output,
+                        XBAR_OutputMuxConfig muxConfig);
 
 //*****************************************************************************
 //

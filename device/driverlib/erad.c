@@ -89,17 +89,19 @@ ERAD_configCounterInCountingMode(uint32_t base,
         // If ERAD_EVENT_NO_EVENT is selected, clear the counter input select
         // enable bit. The counter will count CPU cycles.
         //
-        HWREGH(base + ERAD_O_CTM_INPUT_SEL) = 0U;
+        HWREGH(base + ERAD_O_CTM_CNTL) &= ERAD_CTM_CNTL_CNT_INP_SEL_EN;
     }
     else
     {
         //
-        // For any other value, set the counter input select enable bit and
-        // configure the counter input event.
+        // For any other value, set the event to be counted and counter input
+        // select enable bit.
         //
         HWREGH(base + ERAD_O_CTM_INPUT_SEL) =
-          ((uint16_t)config_params.event << ERAD_CTM_INPUT_SEL_CNT_INP_SEL_S) |
-          ERAD_CTM_INPUT_SEL_CTM_INP_SEL_EN;
+          (((uint16_t)config_params.event << ERAD_CTM_INPUT_SEL_CNT_INP_SEL_S) &
+          ERAD_CTM_INPUT_SEL_CNT_INP_SEL_M);
+
+        HWREGH(base + ERAD_O_CTM_CNTL) |= ERAD_CTM_CNTL_CNT_INP_SEL_EN;
     }
 
     //
@@ -109,15 +111,16 @@ ERAD_configCounterInCountingMode(uint32_t base,
     // parameters
     //
     HWREGH(base + ERAD_O_CTM_CNTL) =
-        (HWREGH(base + ERAD_O_CTM_CNTL) & (~(ERAD_CTM_CNTL_RTOSINT      |
-                                             ERAD_CTM_CNTL_STOP         |
-                                             ERAD_CTM_CNTL_RST_ON_MATCH |
-                                             ERAD_CTM_CNTL_EVENT_MODE   |
-                                             ERAD_CTM_CNTL_START_STOP_MODE))) |
-        ((uint16_t)config_params.enable_int   << ERAD_CTM_CNTL_RTOSINT_S)     |
-        ((uint16_t)config_params.enable_stop  << ERAD_CTM_CNTL_STOP_S)        |
-        ((uint16_t)config_params.event_mode   << ERAD_CTM_CNTL_EVENT_MODE_S)  |
-        ((uint16_t)config_params.rst_on_match << ERAD_CTM_CNTL_RST_ON_MATCH_S);
+      (HWREGH(base + ERAD_O_CTM_CNTL) & (~(ERAD_CTM_CNTL_START_STOP_CUMULATIVE |
+                                           ERAD_CTM_CNTL_RTOSINT      |
+                                           ERAD_CTM_CNTL_STOP         |
+                                           ERAD_CTM_CNTL_RST_ON_MATCH |
+                                           ERAD_CTM_CNTL_EVENT_MODE   |
+                                           ERAD_CTM_CNTL_START_STOP_MODE))) |
+      ((uint16_t)config_params.enable_int   << ERAD_CTM_CNTL_RTOSINT_S)     |
+      ((uint16_t)config_params.enable_stop  << ERAD_CTM_CNTL_STOP_S)        |
+      ((uint16_t)config_params.event_mode   << ERAD_CTM_CNTL_EVENT_MODE_S)  |
+      ((uint16_t)config_params.rst_on_match << ERAD_CTM_CNTL_RST_ON_MATCH_S);
 
     EDIS;
 }
@@ -161,11 +164,16 @@ ERAD_configCounterInStartStopMode(uint32_t base,
         //
         // If ERAD_EVENT_NO_EVENT is selected, clear the counter input select
         // enable bit. The counter will count CPU cycles.
-        // Set the start and stop events
+        // Set start and stop events
         //
+        HWREGH(base + ERAD_O_CTM_CNTL) &= ~ERAD_CTM_CNTL_CNT_INP_SEL_EN;
+
         HWREGH(base + ERAD_O_CTM_INPUT_SEL) =
-                ((uint16_t)start_event << ERAD_CTM_INPUT_SEL_STA_INP_SEL_S) |
-                ((uint16_t)stop_event << ERAD_CTM_INPUT_SEL_STO_INP_SEL_S);
+                ((uint16_t)start_event << ERAD_CTM_INPUT_SEL_STA_INP_SEL_S);
+
+        HWREGH(base + ERAD_O_CTM_INPUT_SEL_2) |=
+                ((uint16_t)stop_event << ERAD_CTM_INPUT_SEL_2_STO_INP_SEL_S);
+
     }
     else
     {
@@ -173,16 +181,109 @@ ERAD_configCounterInStartStopMode(uint32_t base,
         // For any other value, set the counter input select enable bit and
         // configure the counter input, start event and stop event,
         //
+        //
+        HWREGH(base + ERAD_O_CTM_CNTL) |= ERAD_CTM_CNTL_CNT_INP_SEL_EN;
+
         HWREGH(base + ERAD_O_CTM_INPUT_SEL) =
            ((uint16_t)config_params.event << ERAD_CTM_INPUT_SEL_CNT_INP_SEL_S) |
-           ((uint16_t)start_event         << ERAD_CTM_INPUT_SEL_STA_INP_SEL_S) |
-           ((uint16_t)stop_event          << ERAD_CTM_INPUT_SEL_STO_INP_SEL_S) |
-           ERAD_CTM_INPUT_SEL_CTM_INP_SEL_EN;
+           ((uint16_t)start_event         << ERAD_CTM_INPUT_SEL_STA_INP_SEL_S);
+
+        HWREGH(base + ERAD_O_CTM_INPUT_SEL_2) |=
+           ((uint16_t)stop_event << ERAD_CTM_INPUT_SEL_2_STO_INP_SEL_S);
+
     }
 
     //
-    // Setting the counter in Start-Stop mode, with the reset values
-    // remaining as they are
+    // Set the counter in Normal count mode
+    // Set the event mode as Rising edge or Active
+    // Enable interrupt, CPU halt and reset on match if specified in the
+    // parameters
+    //
+    HWREGH(base + ERAD_O_CTM_CNTL) =
+      (HWREGH(base + ERAD_O_CTM_CNTL) & (~(ERAD_CTM_CNTL_START_STOP_CUMULATIVE |
+                                           ERAD_CTM_CNTL_RTOSINT      |
+                                           ERAD_CTM_CNTL_STOP         |
+                                           ERAD_CTM_CNTL_RST_ON_MATCH |
+                                           ERAD_CTM_CNTL_EVENT_MODE)))     |
+      ERAD_CTM_CNTL_START_STOP_MODE                                        |
+      ((uint16_t)config_params.enable_int   << ERAD_CTM_CNTL_RTOSINT_S)    |
+      ((uint16_t)config_params.enable_stop  << ERAD_CTM_CNTL_STOP_S)       |
+      ((uint16_t)config_params.event_mode   << ERAD_CTM_CNTL_EVENT_MODE_S) |
+      ((uint16_t)config_params.rst_on_match << ERAD_CTM_CNTL_RST_ON_MATCH_S);
+
+    EDIS;
+}
+
+//*****************************************************************************
+//
+// ERAD_configCounterInCumulativeMode
+//
+//*****************************************************************************
+void
+ERAD_configCounterInCumulativeMode(uint32_t base,
+                                   ERAD_Counter_Config config_params,
+                                   ERAD_Counter_Input_Event start_event,
+                                   ERAD_Counter_Input_Event stop_event)
+{
+    //
+    // Check if owner is APPLICATION or NO_OWNER
+    //
+    ASSERT((ERAD_getOwnership() == ERAD_OWNER_APPLICATION) ||
+                                  (ERAD_getOwnership() == ERAD_OWNER_NOOWNER));
+
+    //
+    // Check if the base is valid
+    //
+    ASSERT(ERAD_isValidCounterBase(base));
+
+    //
+    // Check if the counter is in IDLE state
+    //
+    ASSERT(ERAD_getCounterStatus(base) == ERAD_STATE_IDLE);
+
+    //
+    // Write into registers to configure the counter
+    //
+    EALLOW;
+
+    HWREG(base + ERAD_O_CTM_REF) = config_params.reference;
+
+    if(config_params.event == ERAD_EVENT_NO_EVENT)
+    {
+        //
+        // If ERAD_EVENT_NO_EVENT is selected, clear the counter input select
+        // enable bit. The counter will count CPU cycles.
+        // Set start and stop events
+        //
+        HWREGH(base + ERAD_O_CTM_CNTL) &= ~ERAD_CTM_CNTL_CNT_INP_SEL_EN;
+
+        HWREGH(base + ERAD_O_CTM_INPUT_SEL) =
+                ((uint16_t)start_event << ERAD_CTM_INPUT_SEL_STA_INP_SEL_S);
+
+        HWREGH(base + ERAD_O_CTM_INPUT_SEL_2) |=
+                ((uint16_t)stop_event << ERAD_CTM_INPUT_SEL_2_STO_INP_SEL_S);
+
+    }
+    else
+    {
+        //
+        // For any other value, set the counter input select enable bit and
+        // configure the counter input, start event and stop event,
+        //
+        //
+        HWREGH(base + ERAD_O_CTM_CNTL) |= ERAD_CTM_CNTL_CNT_INP_SEL_EN;
+
+        HWREGH(base + ERAD_O_CTM_INPUT_SEL) =
+           ((uint16_t)config_params.event << ERAD_CTM_INPUT_SEL_CNT_INP_SEL_S) |
+           ((uint16_t)start_event         << ERAD_CTM_INPUT_SEL_STA_INP_SEL_S);
+
+        HWREGH(base + ERAD_O_CTM_INPUT_SEL_2) |=
+            ((uint16_t)stop_event << ERAD_CTM_INPUT_SEL_2_STO_INP_SEL_S);
+
+    }
+
+    //
+    // Set the counter in Normal count mode
     // Set the event mode as Rising edge or Active
     // Enable interrupt, CPU halt and reset on match if specified in the
     // parameters
@@ -191,16 +292,75 @@ ERAD_configCounterInStartStopMode(uint32_t base,
         (HWREGH(base + ERAD_O_CTM_CNTL) & (~(ERAD_CTM_CNTL_RTOSINT      |
                                              ERAD_CTM_CNTL_STOP         |
                                              ERAD_CTM_CNTL_RST_ON_MATCH |
-                                             ERAD_CTM_CNTL_EVENT_MODE )))    |
+                                             ERAD_CTM_CNTL_EVENT_MODE)))     |
         ERAD_CTM_CNTL_START_STOP_MODE                                        |
+        ERAD_CTM_CNTL_START_STOP_CUMULATIVE                                  |
         ((uint16_t)config_params.enable_int   << ERAD_CTM_CNTL_RTOSINT_S)    |
         ((uint16_t)config_params.enable_stop  << ERAD_CTM_CNTL_STOP_S)       |
         ((uint16_t)config_params.event_mode   << ERAD_CTM_CNTL_EVENT_MODE_S) |
         ((uint16_t)config_params.rst_on_match << ERAD_CTM_CNTL_RST_ON_MATCH_S);
 
     EDIS;
+
 }
 
+//*****************************************************************************
+//
+// ERAD_configMask
+//
+//*****************************************************************************
+void
+ERAD_configMask(ERAD_Mask mask, uint32_t instances, bool enable_int)
+{
+    uint16_t bitpos;
+    uint16_t mask_tmp = (uint16_t)mask;
+
+    EALLOW;
+
+    if(mask_tmp < 4U)
+    {
+        bitpos = mask_tmp << 3U;
+
+        HWREG(ERAD_GLOBAL_BASE + ERAD_O_GLBL_EVENT_AND_MASK) =
+                    (HWREG(ERAD_GLOBAL_BASE + ERAD_O_GLBL_EVENT_AND_MASK) |
+                     (0xFFUL << bitpos)) & (~(instances << bitpos));
+
+        bitpos = mask_tmp;
+
+        if(enable_int)
+        {
+            HWREGH(ERAD_GLOBAL_BASE + ERAD_O_GLBL_AND_EVENT_INT_MASK) &=
+                    ~(1U << bitpos);
+        }
+        else
+        {
+            HWREGH(ERAD_GLOBAL_BASE + ERAD_O_GLBL_AND_EVENT_INT_MASK) |=
+                    (1U << bitpos);
+        }
+    }
+    else
+    {
+        bitpos = (mask_tmp - 4U) << 3U;
+
+        HWREG(ERAD_GLOBAL_BASE + ERAD_O_GLBL_EVENT_OR_MASK) =
+                    (HWREG(ERAD_GLOBAL_BASE + ERAD_O_GLBL_EVENT_OR_MASK) |
+                     (0xFFUL << bitpos)) & (~(instances << bitpos));
+
+        bitpos = mask_tmp - 4U;
+
+        if(enable_int)
+        {
+            HWREGH(ERAD_GLOBAL_BASE + ERAD_O_GLBL_OR_EVENT_INT_MASK) &=
+                    ~(1U << bitpos);
+        }
+        else
+        {
+            HWREGH(ERAD_GLOBAL_BASE + ERAD_O_GLBL_OR_EVENT_INT_MASK) |=
+                    (1U << bitpos);
+        }
+    }
+    EDIS;
+}
 //*****************************************************************************
 //
 // ERAD_profile

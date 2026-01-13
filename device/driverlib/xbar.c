@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -46,8 +46,14 @@
 //
 //*****************************************************************************
 void
-XBAR_setOutputMuxConfig(XBAR_OutputNum output, XBAR_OutputMuxConfig muxConfig)
+XBAR_setOutputMuxConfig(uint32_t base, XBAR_OutputNum output,
+                        XBAR_OutputMuxConfig muxConfig)
 {
+    //
+    // Check the arguments.
+    //
+    ASSERT(XBAR_isBaseValid(base));
+
     uint32_t shift;
     uint16_t offset;
 
@@ -74,8 +80,8 @@ XBAR_setOutputMuxConfig(XBAR_OutputNum output, XBAR_OutputMuxConfig muxConfig)
     //
     EALLOW;
 
-    HWREG(XBAR_OUTPUT_CFG_REG_BASE + offset) =
-        (HWREG(XBAR_OUTPUT_CFG_REG_BASE + offset) &
+    HWREG(base + XBAR_O_OUTPUT1MUX0TO15CFG + offset) =
+        (HWREG(base + XBAR_O_OUTPUT1MUX0TO15CFG + offset) &
          ~((uint32_t)0x3U << shift)) |
         (((uint32_t)muxConfig & 0x3U) << shift);
 

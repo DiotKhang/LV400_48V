@@ -17,17 +17,10 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>driverlib.lib</name>
-			<type>1</type>
-			<locationURI>COM_TI_C2000WARE_INSTALL_DIR/driverlib/f28004x/driverlib/ccs/Debug/driverlib.lib</locationURI>
-		</link>
-	</linkedResources>
 	<variableList>
 		<variable>
 			<name>C2000WARE_DLIB_ROOT</name>
-			<value>$%7BCOM_TI_C2000WARE_INSTALL_DIR%7D/driverlib/f28004x/driverlib</value>
+			<value>$%7BPROJECT_ROOT%7D/device/driverlib</value>
 		</variable>
 		<variable>
 			<name>C2000WARE_ROOT</name>

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -39,6 +39,7 @@
 //###########################################################################
 
 #include "gpio.h"
+#include "asysctl.h"
 
 //*****************************************************************************
 //
@@ -158,7 +159,7 @@ GPIO_setInterruptPin(uint32_t pin, GPIO_ExternalIntNum extIntNum)
 
     if(input != XBAR_INPUT1)
     {
-        XBAR_setInputPin(input, (uint16_t)pin);
+        XBAR_setInputPin(INPUTXBAR_BASE, input, (uint16_t)pin);
     }
 }
 
@@ -421,7 +422,9 @@ GPIO_setAnalogMode(uint32_t pin, GPIO_AnalogMode mode)
     //
     // Check the arguments.
     //
-    ASSERT(((pin >= 224U) && (pin <= 247U)) || (pin == 22U) || (pin == 23U));
+    ASSERT(((pin >= 224U) && (pin <= 253U) && (pin != 234U) && (pin != 235U) &&
+           (pin != 243U) && (pin != 246U) && (pin != 250U)) ||
+           (pin == 20U) || (pin == 21U));
 
     pinMask = (uint32_t)1U << (pin % 32U);
     gpioBaseAddr = (uint32_t *)GPIOCTRL_BASE +
@@ -438,6 +441,14 @@ GPIO_setAnalogMode(uint32_t pin, GPIO_AnalogMode mode)
         // Enable analog mode
         //
         gpioBaseAddr[GPIO_GPxAMSEL_INDEX] |= pinMask;
+        if((pin == 20U) || (pin == 21U))
+        {
+            //
+            // Set AGPIOCTL
+            //
+            HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLA +
+                   ((pin / 32U) * 2U)) |= (pinMask);
+        }
     }
     else
     {
@@ -445,6 +456,14 @@ GPIO_setAnalogMode(uint32_t pin, GPIO_AnalogMode mode)
         // Disable analog mode
         //
         gpioBaseAddr[GPIO_GPxAMSEL_INDEX] &= ~pinMask;
+        if((pin == 20U) || (pin == 21U))
+        {
+            //
+            // Clear AGPIOCTL
+            //
+            HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLA +
+                   ((pin / 32U) * 2U)) &= ~(pinMask);
+        }
     }
 
     EDIS;

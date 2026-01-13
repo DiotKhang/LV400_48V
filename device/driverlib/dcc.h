@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -95,9 +95,9 @@ extern "C"
 #define DCC_REG_WORD_MASK    (0xFFFFU)
 
 //
-// A 8-bit register mask
+// A 7-bit register mask
 //
-#define DCC_REG_BYTE_MASK    (0xFFU)
+#define DCC_REG_BYTE_MASK    (0x7FU)
 
 //
 // A mask for the DCC counter seed registers
@@ -124,17 +124,6 @@ typedef enum
     DCC_MODE_COUNTER_ONE  = 0xB00U
 } DCC_SingleShotMode;
 
-//*****************************************************************************
-//
-//! The following are defines for the identifier parameter of the
-//! DCC_getRevisionNumber() function.
-//
-//*****************************************************************************
-typedef enum
-{
-    DCC_REVISION_MINOR       = 0x0U,  //!< The module minor revision number
-    DCC_REVISION_MAJOR       = 0x2U,  //!< The module major revision number
-} DCC_RevisionNumber;
 
 //*****************************************************************************
 //
@@ -144,9 +133,16 @@ typedef enum
 //*****************************************************************************
 typedef enum
 {
-    DCC_COUNT1SRC_PLL           = 0x0U, //!< PLLRAWCLK Clock Out Source
-    DCC_COUNT1SRC_INTOSC1       = 0x2U, //!< Internal Oscillator1 Clock Source
-    DCC_COUNT1SRC_INTOSC2       = 0x3U, //!< Internal Oscillator2 Clock Source
+    DCC_COUNT1SRC_PLL             = 0x0U, //!< PLLRAWCLK Clock Out Source
+    DCC_COUNT1SRC_INTOSC1         = 0x2U, //!< Internal Oscillator1 Clock Source
+    DCC_COUNT1SRC_INTOSC2         = 0x3U, //!< Internal Oscillator2 Clock Source
+    DCC_COUNT1SRC_SYSCLK          = 0x6U, //!< SYSCLK (System Clock) Source
+    DCC_COUNT1SRC_AUXCLKIN        = 0xAU, //!< AUXCLKIN (Auxiliary Clock) Source
+    DCC_COUNT1SRC_EPWM            = 0xBU, //!< EPWM Clock Source
+    DCC_COUNT1SRC_ADCCLK          = 0xDU, //!< ADC Clock Source
+    DCC_COUNT1SRC_WDCLK           = 0xEU, //!< Watch Dog Clock Source
+    DCC_COUNT1SRC_CANX            = 0xFU, //!< CANxBIT Clock Source
+    DCC_COUNT1SRC_SYSAPLL_CLK_AUX = 0x16U, //!< System APLL Aux Clk
 } DCC_Count1ClockSource;
 
 //*****************************************************************************
@@ -160,6 +156,9 @@ typedef enum
     DCC_COUNT0SRC_XTAL       = 0x0U,    //!< XTAL Clock Source
     DCC_COUNT0SRC_INTOSC1    = 0x1U,    //!< Internal Oscillator1 Clock Source
     DCC_COUNT0SRC_INTOSC2    = 0x2U,    //!< Internal Oscillator2 Clock Source
+    DCC_COUNT0SRC_SYSCLK     = 0x5U,    //!< System Clock Source
+    DCC_COUNT0SRC_AUXCLK     = 0x8U,    //!< AUX Clock Source
+    DCC_COUNT0SRC_XBAR       = 0xCU,    //!< Input XBAR Clock Source
 } DCC_Count0ClockSource;
 
 //*****************************************************************************
@@ -185,7 +184,8 @@ static inline bool
 DCC_isBaseValid(uint32_t base)
 {
     return(
-           (base == DCC0_BASE)
+           (base == DCC0_BASE) ||
+           (base == DCC1_BASE)
           );
 }
 #endif
@@ -678,12 +678,12 @@ DCC_setCounter1ClkSource(uint32_t base, DCC_Count1ClockSource source)
     EALLOW;
 
     //
-    //  DCC Clk source is of 4bits DCCCLKSRC1[3:0]
+    //  DCC Clk source is of 5bits DCCCLKSRC1[4:0]
     //
     HWREGH(base + DCC_O_CLKSRC1) = (HWREGH(base + DCC_O_CLKSRC1) &
-                                    (DCC_REG_BYTE_MASK << 4U)) |
+                                   (DCC_REG_BYTE_MASK << 5U)) |
                                    ((DCC_ENABLE_VALUE << 12U) |
-                                    (uint16_t)source);
+                                   (uint16_t)source);
 
     EDIS;
 }
@@ -713,9 +713,13 @@ DCC_setCounter0ClkSource(uint32_t base, DCC_Count0ClockSource source)
     //
     EALLOW;
 
+    //
+    //  DCC Clk source is of 5bits DCCCLKSRC0[4:0]
+    //
     HWREGH(base + DCC_O_CLKSRC0) = (HWREGH(base + DCC_O_CLKSRC0) &
-                                    ~(DCC_CLKSRC0_CLKSRC0_M)) |
-                                    (uint16_t)source;
+                                   (DCC_REG_BYTE_MASK << 5U)) |
+                                   ((DCC_ENABLE_VALUE << 12U) |
+                                   (uint16_t)source);
 
     EDIS;
 }
@@ -836,25 +840,6 @@ DCC_setCounterSeeds(uint32_t base, uint32_t counter0, uint32_t validCounter0,
 
     EDIS;
 }
-
-//*****************************************************************************
-//
-//! Get DCC Version Number
-//!
-//! \param base is the DCC module base address
-//! \param identifier is the selected revision number identifier
-//!
-//! This function gets the specific version number.
-//!
-//! The \e identifier parameter can have one of these values:
-//! - \b DCC_REVISION_MINOR      - The minor revision number
-//! - \b DCC_REVISION_MAJOR      - The major revision number
-//!
-//! \return Specified revision number
-//
-//*****************************************************************************
-extern uint16_t
-DCC_getRevisionNumber(uint32_t base, DCC_RevisionNumber identifier);
 
 
 //*****************************************************************************

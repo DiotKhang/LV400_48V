@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -111,7 +111,6 @@
 #define ADC_O_PPB4TRIPHI   0x5CU   // ADC PPB4 Trip High Register
 #define ADC_O_PPB4TRIPLO   0x5EU   // ADC PPB4 Trip Low/Trigger Time Stamp Register
 #define ADC_O_INTCYCLE     0x6FU   // ADC Early Interrupt Generation Cycle
-#define ADC_O_INLTRIM1     0x70U   // ADC Linearity Trim 1 Register
 #define ADC_O_INLTRIM2     0x72U   // ADC Linearity Trim 2 Register
 #define ADC_O_INLTRIM3     0x74U   // ADC Linearity Trim 3 Register
 

@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -66,7 +66,6 @@ extern "C"
 #include "inc/hw_types.h"
 #include "debug.h"
 #include "cpu.h"
-#include "sysctl.h"
 
 //*****************************************************************************
 //
@@ -77,9 +76,7 @@ extern "C"
 // ASysCtl_setAnalogReference1P65()
 //
 //*****************************************************************************
-#define ASYSCTL_VREFHIA  0x1U //!< VREFHIA
-#define ASYSCTL_VREFHIB  0x2U //!< VREFHIB
-#define ASYSCTL_VREFHIC  0x4U //!< VREFHIC
+#define ASYSCTL_VREFHI  0x1U //!< VREFHI
 
 //*****************************************************************************
 //
@@ -92,9 +89,6 @@ extern "C"
 #define ASYSCTL_CMPHNMUX_SELECT_2 0x2U //!< CMPHNMUX select 2
 #define ASYSCTL_CMPHNMUX_SELECT_3 0x4U //!< CMPHNMUX select 3
 #define ASYSCTL_CMPHNMUX_SELECT_4 0x8U //!< CMPHNMUX select 4
-#define ASYSCTL_CMPHNMUX_SELECT_5 0x10U //!< CMPHNMUX select 5
-#define ASYSCTL_CMPHNMUX_SELECT_6 0x20U //!< CMPHNMUX select 6
-#define ASYSCTL_CMPHNMUX_SELECT_7 0x40U //!< CMPHNMUX select 7
 
 //*****************************************************************************
 //
@@ -107,9 +101,6 @@ extern "C"
 #define ASYSCTL_CMPLNMUX_SELECT_2 0x2U //!< CMPLNMUX select 2
 #define ASYSCTL_CMPLNMUX_SELECT_3 0x4U //!< CMPLNMUX select 3
 #define ASYSCTL_CMPLNMUX_SELECT_4 0x8U //!< CMPLNMUX select 4
-#define ASYSCTL_CMPLNMUX_SELECT_5 0x10U //!< CMPLNMUX select 5
-#define ASYSCTL_CMPLNMUX_SELECT_6 0x20U //!< CMPLNMUX select 6
-#define ASYSCTL_CMPLNMUX_SELECT_7 0x40U //!< CMPLNMUX select 7
 
 //*****************************************************************************
 //
@@ -121,10 +112,7 @@ typedef enum
     ASYSCTL_CMPHPMUX_SELECT_1 = 0U, //!< CMPHPMUX select 1
     ASYSCTL_CMPHPMUX_SELECT_2 = 3U, //!< CMPHPMUX select 2
     ASYSCTL_CMPHPMUX_SELECT_3 = 6U, //!< CMPHPMUX select 3
-    ASYSCTL_CMPHPMUX_SELECT_4 = 9U, //!< CMPHPMUX select 4
-    ASYSCTL_CMPHPMUX_SELECT_5 = 12U, //!< CMPHPMUX select 5
-    ASYSCTL_CMPHPMUX_SELECT_6 = 16U, //!< CMPHPMUX select 6
-    ASYSCTL_CMPHPMUX_SELECT_7 = 19U  //!< CMPHPMUX select 7
+    ASYSCTL_CMPHPMUX_SELECT_4 = 9U  //!< CMPHPMUX select 4
 } ASysCtl_CMPHPMuxSelect;
 
 //*****************************************************************************
@@ -137,20 +125,8 @@ typedef enum
     ASYSCTL_CMPLPMUX_SELECT_1 = 0U, //!< CMPLPMUX select 1
     ASYSCTL_CMPLPMUX_SELECT_2 = 3U, //!< CMPLPMUX select 2
     ASYSCTL_CMPLPMUX_SELECT_3 = 6U, //!< CMPLPMUX select 3
-    ASYSCTL_CMPLPMUX_SELECT_4 = 9U, //!< CMPLPMUX select 4
-    ASYSCTL_CMPLPMUX_SELECT_5 = 12U, //!< CMPLPMUX select 5
-    ASYSCTL_CMPLPMUX_SELECT_6 = 16U, //!< CMPLPMUX select 6
-    ASYSCTL_CMPLPMUX_SELECT_7 = 19U  //!< CMPLPMUX select 7
+    ASYSCTL_CMPLPMUX_SELECT_4 = 9U  //!< CMPLPMUX select 4
 } ASysCtl_CMPLPMuxSelect;
-
-//*****************************************************************************
-//
-//! ASysCtl_getInductorFaultStatus &  ASysCtl_getSwitchSequenceStatus used
-//! for function ASysCtl_enableDCDC().
-//
-//*****************************************************************************
-static inline bool ASysCtl_getInductorFaultStatus(void);
-static inline bool ASysCtl_getSwitchSequenceStatus(void);
 
 //*****************************************************************************
 //
@@ -210,9 +186,7 @@ ASysCtl_disableTemperatureSensor(void)
 //!
 //! The parameter \e reference can be a combination of the following values:
 //!
-//! - \b ASYSCTL_VREFHIA
-//! - \b ASYSCTL_VREFHIB
-//! - \b ASYSCTL_VREFHIC
+//! - \b ASYSCTL_VREFHI
 //!
 //! \return None.
 //
@@ -221,9 +195,7 @@ static inline void
 ASysCtl_setAnalogReferenceInternal(uint16_t reference)
 {
     ASSERT((reference & (
-                         ASYSCTL_VREFHIA |
-                         ASYSCTL_VREFHIB |
-                         ASYSCTL_VREFHIC
+                         ASYSCTL_VREFHI
                         )) == reference);
 
     EALLOW;
@@ -244,9 +216,7 @@ ASysCtl_setAnalogReferenceInternal(uint16_t reference)
 //!
 //! The parameter \e reference can be a combination of the following values:
 //!
-//! - \b ASYSCTL_VREFHIA
-//! - \b ASYSCTL_VREFHIB
-//! - \b ASYSCTL_VREFHIC
+//! - \b ASYSCTL_VREFHI
 //!
 //! \return None.
 //
@@ -255,9 +225,7 @@ static inline void
 ASysCtl_setAnalogReferenceExternal(uint16_t reference)
 {
     ASSERT((reference & (
-                         ASYSCTL_VREFHIA |
-                         ASYSCTL_VREFHIB |
-                         ASYSCTL_VREFHIC
+                         ASYSCTL_VREFHI
                         )) == reference);
 
     EALLOW;
@@ -277,9 +245,7 @@ ASysCtl_setAnalogReferenceExternal(uint16_t reference)
 //!
 //! The parameter \e reference can be a combination of the following values:
 //!
-//! - \b ASYSCTL_VREFHIA
-//! - \b ASYSCTL_VREFHIB
-//! - \b ASYSCTL_VREFHIC
+//! - \b ASYSCTL_VREFHI
 //!
 //! \return None.
 //
@@ -287,9 +253,7 @@ ASysCtl_setAnalogReferenceExternal(uint16_t reference)
 static inline void ASysCtl_setAnalogReference2P5(uint16_t reference)
 {
     ASSERT((reference & (
-                         ASYSCTL_VREFHIA |
-                         ASYSCTL_VREFHIB |
-                         ASYSCTL_VREFHIC
+                         ASYSCTL_VREFHI
                         )) == reference);
 
     EALLOW;
@@ -310,9 +274,7 @@ static inline void ASysCtl_setAnalogReference2P5(uint16_t reference)
 //!
 //! The parameter \e reference can be a combination of the following values:
 //!
-//! - \b ASYSCTL_VREFHIA
-//! - \b ASYSCTL_VREFHIB
-//! - \b ASYSCTL_VREFHIC
+//! - \b ASYSCTL_VREFHI
 //!
 //! \return None.
 //
@@ -320,9 +282,7 @@ static inline void ASysCtl_setAnalogReference2P5(uint16_t reference)
 static inline void ASysCtl_setAnalogReference1P65(uint16_t reference)
 {
     ASSERT((reference & (
-                         ASYSCTL_VREFHIA |
-                         ASYSCTL_VREFHIB |
-                         ASYSCTL_VREFHIC
+                         ASYSCTL_VREFHI
                         )) == reference);
 
     EALLOW;
@@ -337,127 +297,6 @@ static inline void ASysCtl_setAnalogReference1P65(uint16_t reference)
 
 //*****************************************************************************
 //
-//! Enable DC-DC.
-//!
-//! This function enables the DC-DC and checks if the enable was successful
-//! when switching from the VREG to the DC-DC .
-//!
-//! \return Return value \b true indicates that the DC-DC enable was
-//! successful when switching from the VREG to the DC-DC . Return
-//! value of \b false indicates that the DC-DC enable with switch failed.
-//!
-//! \note The internal DC-DC regulator is disabled by default. To use this
-//! supply, the device must power up initially with the internal LDO (VREG)
-//! and then transition to the internal DC-DC regulator.
-//
-//*****************************************************************************
-static inline bool ASysCtl_enableDCDC(void)
-{
-    EALLOW;
-
-    //
-    // Write 1 to enable bit.
-    //
-    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_DCDCCTL) |= ASYSCTL_DCDCCTL_DCDCEN;
-
-    EDIS;
-
-    //
-    // Wait till the transition from VREG to DC-DC was successful
-    //
-    while(ASysCtl_getSwitchSequenceStatus() == false);
-
-    //
-    // Check if the external inductor connected to the DC-DC is functional
-    //
-    if(ASysCtl_getInductorFaultStatus() == true)
-    {
-        //
-        // Delay 80us for the DC-DC regulator output to settle
-        //
-        SysCtl_delay(1599U);
-
-        //
-        // The DC-DC enable was successful when switching
-        // from the VREG to the DC-DC
-        //
-        return(true);
-    }
-    else
-    {
-        //
-        // The DC-DC enable was unsuccessful when switching
-        // from the VREG to the DC-DC
-        //
-        return(false);
-    }
-}
-
-//*****************************************************************************
-//
-//! Disable DC-DC.
-//!
-//! \return None.
-//
-//*****************************************************************************
-static inline void ASysCtl_disableDCDC(void)
-{
-    EALLOW;
-
-    //
-    // Write 0 to enable bit.
-    //
-    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_DCDCCTL) &= ~ASYSCTL_DCDCCTL_DCDCEN;
-
-   //
-   // Delay 80us for the internal LDO (VREG) to power back up
-   //
-   SysCtl_delay(1599U);
-
-    EDIS;
-}
-
-//*****************************************************************************
-//
-//! Gets the inductor status.
-//!
-//! This function returns the inductor status.
-//!
-//! \return Return value \b true indicates that the external inductor connected
-//! to DC-DC is functional.  Return value of \b false indicates it is faulty or
-//! not connected.
-//
-//*****************************************************************************
-static inline bool ASysCtl_getInductorFaultStatus(void)
-{
-    //
-    // Return the status the INDDETECT bit.
-    //
-    return((HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_DCDCSTS) &
-            ASYSCTL_DCDCSTS_INDDETECT) == ASYSCTL_DCDCSTS_INDDETECT);
-}
-
-//*****************************************************************************
-//
-//! Gets the Switch Sequence Status.
-//!
-//! This function returns the Switch Sequence Status.
-//!
-//! \return Return value \b false indicates that the switch to DC-DC is not
-//! complete. Return value of \b true indicates it is complete.
-//
-//*****************************************************************************
-static inline bool ASysCtl_getSwitchSequenceStatus(void)
-{
-    //
-    // Return the status the SWSEQDONE bit.
-    //
-    return((HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_DCDCSTS) &
-            ASYSCTL_DCDCSTS_SWSEQDONE) == ASYSCTL_DCDCSTS_SWSEQDONE);
-}
-
-//*****************************************************************************
-//
 //! Select the value for CMPHNMXSEL.
 //!
 //! \param select is a combination of CMPHNMXSEL values.
@@ -468,9 +307,6 @@ static inline bool ASysCtl_getSwitchSequenceStatus(void)
 //! - \b ASYSCTL_CMPHNMUX_SELECT_2
 //! - \b ASYSCTL_CMPHNMUX_SELECT_3
 //! - \b ASYSCTL_CMPHNMUX_SELECT_4
-//! - \b ASYSCTL_CMPHNMUX_SELECT_5
-//! - \b ASYSCTL_CMPHNMUX_SELECT_6
-//! - \b ASYSCTL_CMPHNMUX_SELECT_7
 //!
 //! \return None.
 //
@@ -502,9 +338,6 @@ static inline void ASysCtl_selectCMPHNMux(uint16_t select)
 //! - \b ASYSCTL_CMPHNMUX_SELECT_2
 //! - \b ASYSCTL_CMPHNMUX_SELECT_3
 //! - \b ASYSCTL_CMPHNMUX_SELECT_4
-//! - \b ASYSCTL_CMPHNMUX_SELECT_5
-//! - \b ASYSCTL_CMPHNMUX_SELECT_6
-//! - \b ASYSCTL_CMPHNMUX_SELECT_7
 //!
 //! \return None.
 //
@@ -547,9 +380,6 @@ static inline void ASysCtl_selectCMPHNMuxValue(uint16_t select, uint16_t value)
 //! - \b ASYSCTL_CMPLNMUX_SELECT_2
 //! - \b ASYSCTL_CMPLNMUX_SELECT_3
 //! - \b ASYSCTL_CMPLNMUX_SELECT_4
-//! - \b ASYSCTL_CMPLNMUX_SELECT_5
-//! - \b ASYSCTL_CMPLNMUX_SELECT_6
-//! - \b ASYSCTL_CMPLNMUX_SELECT_7
 //!
 //! \return None.
 //
@@ -581,9 +411,6 @@ static inline void ASysCtl_selectCMPLNMux(uint16_t select)
 //! - \b ASYSCTL_CMPLNMUX_SELECT_2
 //! - \b ASYSCTL_CMPLNMUX_SELECT_3
 //! - \b ASYSCTL_CMPLNMUX_SELECT_4
-//! - \b ASYSCTL_CMPLNMUX_SELECT_5
-//! - \b ASYSCTL_CMPLNMUX_SELECT_6
-//! - \b ASYSCTL_CMPLNMUX_SELECT_7
 //!
 //! \return None.
 //
@@ -619,7 +446,7 @@ static inline void ASysCtl_selectCMPLNMuxValue(uint16_t select, uint16_t value)
 //! Select the value for CMPHPMXSEL.
 //!
 //! \param select is of type ASysCtl_CMPHPMuxSelect.
-//! \param value is 0, 1, 2, 3, or 4.
+//! \param value is 0, 1, 2, 3, 4 or 5.
 //!
 //! This function is used to write a value to one mux select at a time.
 //! The parameter \e select can be one of the following values:
@@ -628,9 +455,6 @@ static inline void ASysCtl_selectCMPLNMuxValue(uint16_t select, uint16_t value)
 //! - \b ASYSCTL_CMPHPMUX_SELECT_2
 //! - \b ASYSCTL_CMPHPMUX_SELECT_3
 //! - \b ASYSCTL_CMPHPMUX_SELECT_4
-//! - \b ASYSCTL_CMPHPMUX_SELECT_5
-//! - \b ASYSCTL_CMPHPMUX_SELECT_6
-//! - \b ASYSCTL_CMPHPMUX_SELECT_7
 //!
 //! \return None.
 //
@@ -638,7 +462,7 @@ static inline void ASysCtl_selectCMPLNMuxValue(uint16_t select, uint16_t value)
 static inline void
 ASysCtl_selectCMPHPMux(ASysCtl_CMPHPMuxSelect select, uint32_t value)
 {
-    ASSERT(value <= 4U);
+    ASSERT(value <= 5U);
 
     EALLOW;
 
@@ -658,7 +482,7 @@ ASysCtl_selectCMPHPMux(ASysCtl_CMPHPMuxSelect select, uint32_t value)
 //! Select the value for CMPLPMXSEL.
 //!
 //! \param select is of type ASysCtl_CMPLPMuxSelect.
-//! \param value is 0, 1, 2, 3, or 4.
+//! \param value is 0, 1, 2, 3, 4 or 5.
 //!
 //! This function is used to write a value to one mux select at a time.
 //! The parameter \e select can be one of the following values:
@@ -667,9 +491,6 @@ ASysCtl_selectCMPHPMux(ASysCtl_CMPHPMuxSelect select, uint32_t value)
 //! - \b ASYSCTL_CMPLPMUX_SELECT_2
 //! - \b ASYSCTL_CMPLPMUX_SELECT_3
 //! - \b ASYSCTL_CMPLPMUX_SELECT_4
-//! - \b ASYSCTL_CMPLPMUX_SELECT_5
-//! - \b ASYSCTL_CMPLPMUX_SELECT_6
-//! - \b ASYSCTL_CMPLPMUX_SELECT_7
 //!
 //! \return None.
 //
@@ -677,7 +498,7 @@ ASysCtl_selectCMPHPMux(ASysCtl_CMPHPMuxSelect select, uint32_t value)
 static inline void
 ASysCtl_selectCMPLPMux(ASysCtl_CMPLPMuxSelect select, uint32_t value)
 {
-    ASSERT(value <= 4U);
+    ASSERT(value <= 5U);
 
     EALLOW;
 
@@ -745,44 +566,6 @@ static inline void ASysCtl_lockVMON(void)
     // Write a 1 to the lock bit in the LOCK register.
     //
     HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) |= ASYSCTL_LOCK_VMONCTL;
-
-    EDIS;
-}
-
-//*****************************************************************************
-//
-//! Locks the DCDC control register.
-//!
-//! \return None.
-//
-//*****************************************************************************
-static inline void ASysCtl_lockDCDC(void)
-{
-    EALLOW;
-
-    //
-    // Write a 1 to the lock bit in the LOCK register.
-    //
-    HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) |= ASYSCTL_LOCK_DCDCCTL;
-
-    EDIS;
-}
-
-//*****************************************************************************
-//
-//! Locks the ADCIN control register.
-//!
-//! \return None.
-//
-//*****************************************************************************
-static inline void ASysCtl_lockPGAADCINMux(void)
-{
-    EALLOW;
-
-    //
-    // Write a 1 to the lock bit in the LOCK register.
-    //
-    HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) |= ASYSCTL_LOCK_ADCINMXSEL;
 
     EDIS;
 }
@@ -880,6 +663,44 @@ static inline void ASysCtl_lockVREG(void)
     HWREGH(ANALOGSUBSYS_BASE + ASYSCTL_O_LOCK) |= ASYSCTL_LOCK_VREGCTL;
 
     EDIS;
+}
+
+//*****************************************************************************
+//
+//! Enable loopback from DAC to ADCs.
+//!
+//! \param config can be bitwise OR of the following values:
+//! - ASYSCTL_ADCDACLOOPBACK_ENLB2ADCA
+//! - ASYSCTL_ADCDACLOOPBACK_ENLB2ADCB
+//! - ASYSCTL_ADCDACLOOPBACK_ENLB2ADCC
+//!
+//! \return None
+//
+//*****************************************************************************
+static inline void ASysCtl_enableADCDACLoopback(uint32_t config)
+{
+    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_ADCDACLOOPBACK) =
+            (HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_ADCDACLOOPBACK) | config) |
+            (0xA5A5UL << ASYSCTL_ADCDACLOOPBACK_KEY_S);
+}
+
+//*****************************************************************************
+//
+//! Disable loopback from DAC to ADCs.
+//!
+//! \param config can be bitwise OR of the following values:
+//! - ASYSCTL_ADCDACLOOPBACK_ENLB2ADCA
+//! - ASYSCTL_ADCDACLOOPBACK_ENLB2ADCB
+//! - ASYSCTL_ADCDACLOOPBACK_ENLB2ADCC
+//!
+//! \return None
+//
+//*****************************************************************************
+static inline void ASysCtl_disableADCDACLoopback(uint32_t config)
+{
+    HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_ADCDACLOOPBACK) =
+            (HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_ADCDACLOOPBACK) & ~config) |
+            (0xA5A5UL << ASYSCTL_ADCDACLOOPBACK_KEY_S);
 }
 
 

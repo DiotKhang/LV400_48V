@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -196,14 +196,6 @@
 
 //*************************************************************************************************
 //
-// The following are defines for the bit fields in the CTRIPLFILCLKCTL register
-//
-//*************************************************************************************************
-#define CMPSS_CTRIPLFILCLKCTL_CLKPRESCALE_S   0U
-#define CMPSS_CTRIPLFILCLKCTL_CLKPRESCALE_M   0x3FFU   // Sample Clock Prescale
-
-//*************************************************************************************************
-//
 // The following are defines for the bit fields in the CTRIPHFILCTL register
 //
 //*************************************************************************************************
@@ -212,14 +204,6 @@
 #define CMPSS_CTRIPHFILCTL_THRESH_S    9U
 #define CMPSS_CTRIPHFILCTL_THRESH_M    0x3E00U   // Majority Voting Threshold
 #define CMPSS_CTRIPHFILCTL_FILINIT     0x8000U   // Filter Initialization Bit
-
-//*************************************************************************************************
-//
-// The following are defines for the bit fields in the CTRIPHFILCLKCTL register
-//
-//*************************************************************************************************
-#define CMPSS_CTRIPHFILCLKCTL_CLKPRESCALE_S   0U
-#define CMPSS_CTRIPHFILCLKCTL_CLKPRESCALE_M   0x3FFU   // Sample Clock Prescale
 
 //*************************************************************************************************
 //

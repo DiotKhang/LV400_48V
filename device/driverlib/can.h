@@ -6,7 +6,7 @@
 //
 //###########################################################################
 // $Copyright:
-// Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions 
@@ -309,8 +309,7 @@ static inline bool
 CAN_isBaseValid(uint32_t base)
 {
     return(
-           (base == CANA_BASE) ||
-           (base == CANB_BASE)
+           (base == CANA_BASE)
           );
 }
 #endif
@@ -570,13 +569,6 @@ CAN_selectClockSource(uint32_t base, CAN_ClockSource source)
                     (HWREGH(CLKCFG_BASE + SYSCTL_O_CLKSRCCTL2) &
                      ~SYSCTL_CLKSRCCTL2_CANABCLKSEL_M) |
                     ((uint16_t)source << SYSCTL_CLKSRCCTL2_CANABCLKSEL_S);
-            break;
-
-        case CANB_BASE:
-            HWREGH(CLKCFG_BASE + SYSCTL_O_CLKSRCCTL2) =
-                    (HWREGH(CLKCFG_BASE + SYSCTL_O_CLKSRCCTL2) &
-                     ~SYSCTL_CLKSRCCTL2_CANBBCLKSEL_M) |
-                    ((uint16_t)source << SYSCTL_CLKSRCCTL2_CANBBCLKSEL_S);
             break;
 
         default:
